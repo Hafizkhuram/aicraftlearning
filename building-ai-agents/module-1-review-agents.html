@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Module 1 review | AICraft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:var(--body);
+    font-size:17px;
+    line-height:1.7;
+    color:var(--text);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* Header */
+  header{
+    border-bottom:1px solid var(--border);
+    background:var(--card);
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(8px);
+    background:rgba(255,255,255,.85);
+  }
+  .header-inner{
+    max-width:1100px;margin:0 auto;
+    padding:18px 28px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;
+  }
+  .brand{
+    display:inline-flex;align-items:center;
+    text-decoration:none;
+    transition:opacity .15s;
+  }
+  .brand:hover{opacity:.85}
+  .brand-logo{
+    height:36px;width:auto;
+    display:block;
+  }
+  .header-meta{
+    display:flex;align-items:center;gap:20px;
+    font-size:13px;color:var(--text-mute);
+  }
+  .header-meta .sep{opacity:.4}
+  .lesson-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 10px;border-radius:999px;
+    background:var(--mint);color:var(--forest);
+    font-weight:600;font-size:12px;letter-spacing:.02em;
+  }
+  .lesson-badge::before{
+    content:"";width:6px;height:6px;border-radius:50%;
+    background:var(--emerald);
+  }
+
+  main{
+    max-width:760px;margin:0 auto;
+    padding:56px 28px 80px;
+  }
+
+  .review-meta{
+    display:flex;align-items:center;gap:10px;
+    font-size:13px;color:var(--text-mute);
+    margin-bottom:16px;font-weight:500;
+  }
+  .review-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.review-title{
+    font-family:var(--display);
+    font-weight:500;
+    font-size:clamp(34px,4.6vw,48px);
+    line-height:1.08;
+    letter-spacing:-.02em;
+    color:var(--slate);
+    margin:0 0 16px;
+  }
+  h1.review-title em{
+    font-style:italic;
+    color:var(--forest);
+  }
+
+  .review-lede{
+    font-family:var(--display);
+    font-size:19px;line-height:1.55;
+    color:var(--text-soft);
+    font-style:italic;
+    font-weight:400;
+    padding:0 0 0 20px;
+    border-left:3px solid var(--emerald);
+    margin:12px 0 36px;
+  }
+
+  /* Rules / info panel — the pre-start info */
+  .rules{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:26px 30px;
+    margin:0 0 32px;
+  }
+  .rules-title{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);
+    margin:0 0 18px;
+  }
+  .rules-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:18px;
+  }
+  @media (max-width:640px){
+    .rules-grid{grid-template-columns:repeat(2, 1fr);gap:20px}
+  }
+  .rule-item-num{
+    font-family:var(--display);font-weight:500;
+    font-size:32px;line-height:1;
+    color:var(--forest);
+    letter-spacing:-.02em;
+    margin-bottom:4px;
+  }
+  .rule-item-label{
+    font-size:13px;line-height:1.4;
+    color:var(--text-mute);
+  }
+  .rule-item-label strong{
+    color:var(--slate);font-weight:600;
+    display:block;
+  }
+
+  /* Lessons covered block */
+  .covered{
+    background:var(--mint-soft);
+    border:1px solid #A7F3D0;
+    border-radius:12px;
+    padding:20px 24px;
+    margin:0 0 36px;
+  }
+  .covered-label{
+    font-family:var(--display);font-weight:600;
+    font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--forest);
+    margin-bottom:10px;
+  }
+  .covered ul{
+    list-style:none;padding:0;margin:0;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .covered li{
+    display:flex;gap:10px;align-items:flex-start;
+    font-size:15px;color:var(--text);
+    line-height:1.5;
+  }
+  .covered li::before{
+    content:"✓";
+    color:var(--emerald);
+    font-weight:700;
+    flex-shrink:0;
+  }
+  .covered li strong{color:var(--slate);font-weight:600}
+
+  /* Start button */
+  .start-wrap{
+    text-align:center;
+    padding:12px 0 4px;
+  }
+  .btn-start{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--forest);color:#fff;
+    font-family:var(--body);font-weight:600;
+    font-size:16px;
+    padding:16px 32px;border-radius:10px;
+    border:0;cursor:pointer;
+    transition:all .18s;
+    letter-spacing:.01em;
+  }
+  .btn-start:hover{
+    background:var(--slate);
+    transform:translateY(-1px);
+    box-shadow:0 6px 20px rgba(6,95,70,.18);
+  }
+  .btn-start-hint{
+    display:block;margin-top:10px;
+    font-size:13px;color:var(--text-mute);
+  }
+
+  /* Review area */
+  .review-area{display:none}
+  .review-area.show{display:block;animation:fadeIn .35s ease}
+
+  .progress-header{
+    display:flex;justify-content:space-between;align-items:baseline;
+    margin-bottom:10px;
+    font-size:13px;color:var(--text-mute);
+    font-weight:500;
+  }
+  .progress-header strong{color:var(--slate)}
+
+  .progress-dots{
+    display:flex;gap:6px;margin-bottom:32px;
+  }
+  .progress-dots span{
+    flex:1;height:5px;border-radius:3px;
+    background:var(--border);transition:background .3s;
+  }
+  .progress-dots span.done{background:var(--emerald)}
+  .progress-dots span.active{background:var(--forest)}
+
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(6px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .q-number{
+    font-family:var(--display);font-size:13px;color:var(--text-mute);
+    font-weight:500;letter-spacing:.04em;margin-bottom:10px;
+  }
+  .q-text{
+    font-family:var(--display);font-weight:500;
+    font-size:23px;line-height:1.4;color:var(--slate);
+    margin:0 0 28px;letter-spacing:-.005em;
+  }
+
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:16px 18px;
+    border:1.5px solid var(--border);
+    border-radius:10px;
+    cursor:pointer;
+    transition:all .2s;
+    background:var(--card);
+    font-size:15.5px;line-height:1.5;
+  }
+  .option:hover:not(.disabled){
+    border-color:var(--emerald);
+    background:var(--mint-soft);
+  }
+  .option.disabled{cursor:default}
+  .option-letter{
+    width:26px;height:26px;border-radius:7px;
+    background:var(--border-soft);color:var(--text-soft);
+    display:grid;place-items:center;
+    font-weight:700;font-size:13px;flex-shrink:0;
+    transition:all .2s;font-family:var(--display);
+  }
+  .option:hover:not(.disabled) .option-letter{
+    background:var(--emerald);color:#fff;
+  }
+  .option.correct{
+    border-color:var(--success);
+    background:#F0FDF4;
+  }
+  .option.correct .option-letter{
+    background:var(--success);color:#fff;
+  }
+  .option.incorrect{
+    border-color:var(--error);
+    background:#FEF2F2;
+  }
+  .option.incorrect .option-letter{
+    background:var(--error);color:#fff;
+  }
+  .option-check{
+    margin-left:auto;opacity:0;transition:opacity .2s;
+    font-size:20px;line-height:1;
+  }
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+
+  .explanation{
+    display:none;
+    margin-top:20px;padding:18px 20px;
+    border-radius:10px;
+    background:var(--mint-soft);
+    border-left:3px solid var(--emerald);
+    font-size:15px;line-height:1.6;color:var(--forest);
+  }
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{
+    display:block;
+    font-family:var(--display);font-size:13px;
+    letter-spacing:.1em;text-transform:uppercase;
+    color:var(--forest);margin-bottom:6px;
+  }
+  .explanation.wrong{
+    background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D;
+  }
+  .explanation.wrong strong{color:#7F1D1D}
+  .explanation .ref{
+    display:block;margin-top:8px;
+    font-size:12.5px;color:var(--text-mute);
+    font-style:italic;
+    letter-spacing:.01em;
+  }
+  .explanation.wrong .ref{color:#9B6262}
+
+  .review-nav{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:28px;gap:12px;
+  }
+  .btn{
+    border:0;cursor:pointer;font-family:var(--body);
+    font-weight:600;font-size:14.5px;
+    padding:11px 22px;border-radius:8px;
+    transition:all .18s;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn-primary{background:var(--forest);color:#fff}
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{background:var(--border);color:var(--text-mute);cursor:not-allowed;transform:none}
+  .btn-ghost{background:transparent;color:var(--text-mute)}
+  .btn-ghost:hover{color:var(--forest)}
+
+  /* Result state */
+  .result-area{display:none;padding:20px 0 0}
+  .result-area.show{display:block;animation:fadeIn .4s ease}
+
+  .result-card{
+    padding:40px 36px;
+    border-radius:20px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .result-card.pass{
+    background:linear-gradient(135deg,var(--mint-soft) 0%,var(--mint) 100%);
+    border:1px solid #A7F3D0;
+  }
+  .result-card.fail{
+    background:var(--card);
+    border:1px solid var(--border);
+  }
+  .result-card::before{
+    content:"";position:absolute;
+    top:-80px;right:-80px;
+    width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(16,185,129,.22),transparent 70%);
+    pointer-events:none;
+  }
+  .result-card.fail::before{
+    background:radial-gradient(circle,rgba(100,116,139,.1),transparent 70%);
+  }
+
+  .result-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 14px;border-radius:999px;
+    font-family:var(--display);font-size:11px;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;
+    margin-bottom:18px;
+    position:relative;z-index:2;
+  }
+  .result-badge.pass{
+    background:var(--forest);color:#fff;
+  }
+  .result-badge.fail{
+    background:var(--border-soft);color:var(--text-soft);
+  }
+  .result-badge svg{width:13px;height:13px}
+
+  .score-display{
+    font-family:var(--display);font-weight:500;
+    font-size:88px;line-height:1;
+    color:var(--forest);
+    letter-spacing:-.03em;
+    margin:0 0 4px;
+    position:relative;z-index:2;
+  }
+  .score-display span{color:var(--text-mute);font-size:40px}
+
+  .score-label{
+    font-size:13px;color:var(--text-mute);
+    letter-spacing:.08em;text-transform:uppercase;
+    font-weight:600;margin-bottom:22px;
+    position:relative;z-index:2;
+  }
+
+  .result-title{
+    font-family:var(--display);font-weight:600;
+    font-size:28px;line-height:1.25;
+    color:var(--slate);
+    margin:0 0 10px;
+    position:relative;z-index:2;
+    letter-spacing:-.01em;
+  }
+  .result-body{
+    font-size:16px;line-height:1.6;
+    color:var(--text-soft);
+    max-width:460px;margin:0 auto 28px;
+    position:relative;z-index:2;
+  }
+
+  .result-cta{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 28px;
+    background:var(--forest);color:#fff;
+    text-decoration:none;
+    font-family:var(--body);font-weight:600;font-size:15.5px;
+    border-radius:10px;
+    transition:all .18s;
+    position:relative;z-index:2;
+  }
+  .result-cta:hover{
+    background:var(--slate);
+    transform:translateY(-1px);
+    box-shadow:0 6px 20px rgba(6,95,70,.18);
+  }
+  .result-cta-ghost{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:11px 22px;
+    background:transparent;color:var(--text-mute);
+    border:0;cursor:pointer;
+    font-family:var(--body);font-weight:600;font-size:14.5px;
+    border-radius:8px;
+    transition:all .18s;
+    position:relative;z-index:2;
+  }
+  .result-cta-ghost:hover{color:var(--forest)}
+
+  .result-actions{
+    display:flex;align-items:center;justify-content:center;
+    gap:14px;flex-wrap:wrap;
+    position:relative;z-index:2;
+  }
+
+  /* Breakdown for fail state */
+  .breakdown{
+    margin-top:32px;
+    padding:24px 28px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    text-align:left;
+  }
+  .breakdown-title{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);
+    margin:0 0 14px;
+  }
+  .breakdown ul{
+    list-style:none;padding:0;margin:0;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .breakdown li{
+    display:flex;gap:12px;align-items:flex-start;
+    font-size:14.5px;line-height:1.55;color:var(--text-soft);
+  }
+  .breakdown li .mark{
+    flex-shrink:0;
+    width:22px;height:22px;border-radius:6px;
+    display:grid;place-items:center;
+    font-size:13px;font-weight:700;
+  }
+  .breakdown li .mark.right{background:#F0FDF4;color:var(--success)}
+  .breakdown li .mark.wrong{background:#FEF2F2;color:var(--error)}
+  .breakdown li strong{color:var(--slate);font-weight:600}
+
+  /* Module unlocked banner (pass only) */
+  .unlocked{
+    margin-top:28px;
+    padding:20px 24px;
+    border-radius:12px;
+    background:var(--slate);color:#fff;
+    display:flex;align-items:center;gap:16px;
+    position:relative;overflow:hidden;
+  }
+  .unlocked::after{
+    content:"";position:absolute;
+    right:-40px;top:-40px;
+    width:180px;height:180px;border-radius:50%;
+    background:radial-gradient(circle,rgba(16,185,129,.25),transparent 70%);
+    pointer-events:none;
+  }
+  .unlocked-icon{
+    flex-shrink:0;
+    width:44px;height:44px;border-radius:11px;
+    background:var(--emerald);
+    display:grid;place-items:center;
+    color:#fff;
+    position:relative;z-index:2;
+  }
+  .unlocked-icon svg{width:22px;height:22px}
+  .unlocked-text{
+    position:relative;z-index:2;
+  }
+  .unlocked-label{
+    font-family:var(--display);font-size:11px;
+    letter-spacing:.14em;text-transform:uppercase;
+    color:var(--emerald);font-weight:700;
+    margin-bottom:2px;
+  }
+  .unlocked-main{
+    font-family:var(--display);font-weight:600;
+    font-size:17px;color:#fff;line-height:1.3;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AICraft Learning — home">
+      <svg class="brand-logo" viewBox="0 0 420 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="lesson-badge">Module 1 · Review</span>
+      <span class="sep">·</span>
+      <span>~5 min</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ========== START VIEW (pre-quiz) ========== -->
+  <section id="startView">
+    <div class="review-meta">
+      <span>Building AI Agents &amp; Workflows</span>
+      <span class="dot"></span>
+      <span>Module 1 checkpoint</span>
+    </div>
+
+    <h1 class="review-title">Module 1 review — <em>unlock Module 2</em></h1>
+
+    <p class="review-lede">Five questions. They pull from everything you've read so far. Pass this and the build lessons open up.</p>
+
+    <div class="rules">
+      <div class="rules-title">How this works</div>
+      <div class="rules-grid">
+        <div>
+          <div class="rule-item-num">5</div>
+          <div class="rule-item-label"><strong>Questions</strong>Mix of scenarios and judgement calls</div>
+        </div>
+        <div>
+          <div class="rule-item-num">3/5</div>
+          <div class="rule-item-label"><strong>To pass</strong>60% — gets you to Module 2</div>
+        </div>
+        <div>
+          <div class="rule-item-num">∞</div>
+          <div class="rule-item-label"><strong>Retakes</strong>Unlimited, fresh questions each try</div>
+        </div>
+        <div>
+          <div class="rule-item-num">~5</div>
+          <div class="rule-item-label"><strong>Minutes</strong>You can finish over a coffee</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="covered">
+      <div class="covered-label">What this review covers</div>
+      <ul>
+        <li><strong>Lesson 1.1</strong> — Workflows vs. agents, and when each fits</li>
+        <li><strong>Lesson 1.2</strong> — The ROI pattern: what succeeds, what fails</li>
+        <li><strong>Lesson 1.3</strong> — Your stack: n8n, Claude, and what to skip</li>
+        <li><strong>Lesson 1.4</strong> — n8n setup, credentials, and your first workflow</li>
+      </ul>
+    </div>
+
+    <div class="start-wrap">
+      <button class="btn-start" onclick="startReview()">
+        Start the review →
+      </button>
+      <span class="btn-start-hint">Explanations appear after each answer</span>
+    </div>
+  </section>
+
+  <!-- ========== REVIEW AREA (quiz itself) ========== -->
+  <section class="review-area" id="reviewArea">
+    <div class="progress-header">
+      <span>Module 1 review</span>
+      <span>Question <strong id="qCurrent">1</strong> of <strong>5</strong></span>
+    </div>
+
+    <div class="progress-dots" id="progressDots">
+      <span class="active"></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div id="questionsContainer"></div>
+
+    <div class="review-nav" id="reviewNav">
+      <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+    </div>
+  </section>
+
+  <!-- ========== RESULT AREA ========== -->
+  <section class="result-area" id="resultArea">
+    <div class="result-card" id="resultCard">
+      <div class="result-badge" id="resultBadge">
+        <svg viewBox="0 0 20 20" fill="currentColor" id="resultBadgeIcon"></svg>
+        <span id="resultBadgeText"></span>
+      </div>
+      <div class="score-display"><span id="scoreNum">0</span><span>/5</span></div>
+      <div class="score-label" id="scoreLabel">Your score</div>
+      <h2 class="result-title" id="resultTitle"></h2>
+      <p class="result-body" id="resultBody"></p>
+      <div class="result-actions">
+        <a href="#" class="result-cta" id="resultCta"></a>
+        <button class="result-cta-ghost" onclick="resetReview()">↻ Retry review</button>
+      </div>
+    </div>
+
+    <!-- Unlocked banner (pass only) -->
+    <div class="unlocked" id="unlockedBanner" style="display:none">
+      <div class="unlocked-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div class="unlocked-text">
+        <div class="unlocked-label">Module 1 complete</div>
+        <div class="unlocked-main">Module 2 — Build your first workflow — is unlocked.</div>
+      </div>
+    </div>
+
+    <!-- Breakdown (shown either way, more useful on fail) -->
+    <div class="breakdown" id="breakdown">
+      <div class="breakdown-title">Question-by-question</div>
+      <ul id="breakdownList"></ul>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  const totalQuestions = 5;
+  let currentQ = 0;
+  let answers = new Array(totalQuestions).fill(null);
+  let answered = new Array(totalQuestions).fill(false);
+  let attemptCount = 0;
+  let currentSelection = []; // which questions we picked this attempt
+
+  // ---------- QUESTION BANK (10 questions) ----------
+  // Synthesis questions — each draws from across Module 1's lessons.
+  // Canonical first attempt: ids 1-5 in order. Retries: shuffled from the full 10.
+  const questionBank = [
+    {
+      id: 1,
+      ref: 'Lessons 1.1 + 1.2',
+      text: "You want to automate one task this quarter. You have four candidates. Based on Module 1, which is the strongest first pick?",
+      options: [
+        { text: "Drafting client proposals — subjective but slow, and a good writing exercise for AI.", correct: false },
+        { text: "Classifying the 80+ support emails your inbox gets daily and drafting replies for routine ones (human approves before sending).", correct: true },
+        { text: "Shortlisting CVs for your next hire — time-consuming, so automation should help.", correct: false },
+        { text: "Handing customer complaints to an agent that replies autonomously — the fastest resolution wins.", correct: false }
+      ],
+      explanation: "This is the textbook success pattern from Lesson 1.2: high frequency, clean and structured input, measurable outcome, human approval on anything customer-facing. Proposals are judgement-heavy (wrong task). CV shortlisting has legal and bias risk. Autonomous customer replies skip the human-in-the-loop checkpoint. Email triage with drafts-for-approval hits every criterion."
+    },
+    {
+      id: 2,
+      ref: 'Lesson 1.1',
+      text: "A colleague describes their automation idea: every Monday, a system pulls the past week's sales data from your CRM, calculates the same four summary metrics, and emails them to the team. Workflow or agent?",
+      options: [
+        { text: "Agent — because it uses AI, it must be an agent.", correct: false },
+        { text: "Workflow — the steps are the same every Monday. No decision-making is needed.", correct: true },
+        { text: "Multi-agent system — one to pull data, one to calculate, one to email.", correct: false },
+        { text: "Neither — this needs a human to do it properly.", correct: false }
+      ],
+      explanation: "The sticky-note test from Lesson 1.1: could you write the steps in advance, and would they be the same every Monday? Yes to both. That's a workflow. No judgement needed, no branching paths. Reaching for an agent here is exactly the first mistake the lesson warned about."
+    },
+    {
+      id: 3,
+      ref: 'Lessons 1.3 + 1.4',
+      text: "Your colleague wants to 'learn LangChain, CrewAI, and vector databases before building their first workflow so they're properly prepared.' Based on Module 1, what's the right advice?",
+      options: [
+        { text: "Agree — those tools are prerequisites for serious agent work.", correct: false },
+        { text: "Push back — they don't need any of that yet. n8n plus an LLM plus Gmail will ship their first workflow this week. Add complexity only when a specific problem demands it.", correct: true },
+        { text: "Suggest they learn Python first, then tackle LangChain.", correct: false },
+        { text: "Tell them to skip Module 2 entirely and build custom code in Python.", correct: false }
+      ],
+      explanation: "Craft-first principle from Lesson 1.3: three tools, not thirty. Every hour learning LangChain before shipping anything is an hour not building. LangChain, CrewAI, and vector databases solve problems your colleague doesn't yet have. n8n plus an LLM plus their existing business apps handles 95% of what they'll ever build."
+    },
+    {
+      id: 4,
+      ref: 'Lesson 1.2',
+      text: "A vendor pitches you an AI agent that will 'save you 10x the time, starting from day one.' Based on what Module 1 taught you, what's the realistic response?",
+      options: [
+        { text: "Sign up immediately — time savings that large are worth locking in.", correct: false },
+        { text: "Walk away — 10x instant gains is the marketing fantasy. Realistic wins are 20-60% on the right tasks over 6-18 months, which is still excellent but a very different claim.", correct: true },
+        { text: "Ask if they can guarantee 20x so it covers the setup cost.", correct: false },
+        { text: "Sign up only if the price is low — there's no downside.", correct: false }
+      ],
+      explanation: "10x-instant is exactly the language Lesson 1.2 flagged as a warning sign. The honest numbers are 20-60% cost reduction on repetitive tasks with 6-18 month payback. That compounds to real money over time — but anyone promising 10x overnight is either uninformed or selling you something that won't survive first contact with reality."
+    },
+    {
+      id: 5,
+      ref: 'Lesson 1.1',
+      text: "Which of the following is genuinely agent territory, rather than workflow territory?",
+      options: [
+        { text: "Adding a standard label to every invoice over £500.", correct: false },
+        { text: "Sending a templated follow-up three days after every demo booking.", correct: false },
+        { text: "Weekly competitive research — checking what's new on three competitors' sites and summarising notable changes, when you don't know in advance what you'll find.", correct: true },
+        { text: "Renaming files in a folder according to a naming convention.", correct: false }
+      ],
+      explanation: "The path has to genuinely vary. Competitor research is an agent job: you can't write the steps in advance because you don't know what you'll find — a blog post might need following up, a pricing page might have changed, a press release might lead to an investor page. The other three all have fixed, predictable paths — workflow territory."
+    },
+    {
+      id: 6,
+      ref: 'Lesson 1.4',
+      text: "You've just finished Lesson 1.4. Which combination is the minimum you need in place before starting Module 2?",
+      options: [
+        { text: "A self-hosted n8n on a VPS, Docker configured, and SSL certificates installed.", correct: false },
+        { text: "An n8n workspace (Cloud trial or self-hosted), two saved credentials (an LLM plus one business tool like Gmail), and a hello-world workflow that returned a response.", correct: true },
+        { text: "A Business-tier n8n plan, a dedicated API account, and a custom domain.", correct: false },
+        { text: "Three separate LLM subscriptions and a vector database.", correct: false }
+      ],
+      explanation: "Lesson 1.4's bar is deliberately low: a working workspace, two credentials, and one tiny test workflow that confirmed the pipes work. Everything in Module 2 assumes exactly that — and nothing more. Going further than this before Module 2 is procrastination dressed as preparation."
+    },
+    {
+      id: 7,
+      ref: 'Lessons 1.2 + 1.3',
+      text: "A workflow classifying and replying to 500 emails a month. Honest estimate of monthly LLM cost, based on Module 1?",
+      options: [
+        { text: "£200-£400 — anything serious involving AI costs real money.", correct: false },
+        { text: "Something like £2-£10 for a workflow; more like £40+ if you rebuild the same thing as an agent with multiple reasoning calls per email.", correct: true },
+        { text: "It must be free — n8n is open source.", correct: false },
+        { text: "£2,000+ — you'll need an enterprise LLM contract.", correct: false }
+      ],
+      explanation: "The cost story from Lesson 1.3: a well-built workflow at that volume costs single-digit pounds per month. The same task rebuilt as an agent — with multiple reasoning calls per email instead of one — can easily run 10-20x more for no extra business value. Picking the right architecture is worth real money."
+    },
+    {
+      id: 8,
+      ref: 'Lessons 1.1 + 1.2',
+      text: "You spot an automation idea with a fixed four-step process and clean inputs, but the output goes straight to customers with no review. Based on Module 1, what should change before you build it?",
+      options: [
+        { text: "Nothing — the inputs are clean, so the outputs will be clean.", correct: false },
+        { text: "Swap in a more expensive LLM to reduce error rates.", correct: false },
+        { text: "Add a human-in-the-loop approval step — drafts saved for review, not sent automatically — before anything reaches a customer.", correct: true },
+        { text: "Abandon the whole idea — customer-facing AI is never worth the risk.", correct: false }
+      ],
+      explanation: "The fourth criterion from Lesson 1.2's success pattern isn't optional: human approval on anything that touches money, customers, or reputation. The fix isn't to abandon the task or change models — it's to add an approval step. Drafts-to-inbox, not auto-send. That keeps the project in the winning pattern without losing the gains."
+    },
+    {
+      id: 9,
+      ref: 'Lesson 1.3',
+      text: "Which of these statements best matches Module 1's honest 2026 position on choosing between Claude and OpenAI for agent work?",
+      options: [
+        { text: "Claude is always better — never use OpenAI.", correct: false },
+        { text: "Both are within a hair of each other on benchmarks — pick one, use it for every build in this course, and switch later only if you have a concrete reason.", correct: true },
+        { text: "OpenAI is the standard — Claude is only for hobbyists.", correct: false },
+        { text: "Use three LLMs in parallel and compare outputs for every workflow.", correct: false }
+      ],
+      explanation: "Lesson 1.3's craft-first position: frontier models in 2026 are essentially interchangeable for the kind of work a business owner does. Claude Sonnet 4.6 is recommended as a default for its tool-use consistency, but OpenAI works just as well for these builds. Pick one, learn it deeply, stop thinking about it."
+    },
+    {
+      id: 10,
+      ref: 'Lessons 1.2 + 1.4',
+      text: "You've completed all of Module 1 and you're about to start your first real build in Module 2. Based on everything this module taught, which mindset sets you up best?",
+      options: [
+        { text: "Go big — build the most ambitious multi-agent system you can imagine.", correct: false },
+        { text: "Start with a boring, frequent, rule-governed task you actually do every week. Build the simplest thing that works. Keep a human in the loop on anything that matters.", correct: true },
+        { text: "Spend another two weeks learning theory before touching n8n.", correct: false },
+        { text: "Wait until AI gets better — agents aren't ready yet.", correct: false }
+      ],
+      explanation: "This is the whole thesis of Module 1: pick winnable battles (Lesson 1.2), start with workflows not agents (Lesson 1.1), use the three-tool stack (Lesson 1.3), keep the bar for readiness low (Lesson 1.4). Boring, frequent, measurable, with a human checkpoint — that's the shape of every system you're about to build in this course."
+    }
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // First attempt: ids 1-5 in order, canonical option ordering.
+  // Retries: shuffle from the full 10, shuffle options too.
+  function pickQuestions() {
+    if (attemptCount === 0) {
+      const canonical = [1,2,3,4,5].map(id => questionBank.find(q => q.id === id));
+      return canonical.map(q => ({ ...q, options: q.options.slice() }));
+    }
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  function renderQuestions() {
+    currentSelection = pickQuestions();
+    const container = document.getElementById('questionsContainer');
+    container.innerHTML = '';
+
+    currentSelection.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A','B','C','D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+          <span class="ref">Draws on: ${q.ref}</span>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  const progressDots = document.querySelectorAll('#progressDots span');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+
+  function startReview() {
+    document.getElementById('startView').style.display = 'none';
+    document.getElementById('reviewArea').classList.add('show');
+    renderQuestions();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function getCards() {
+    return document.querySelectorAll('.q-card');
+  }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    progressDots.forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < i) d.classList.add('done');
+      else if (idx === i) d.classList.add('active');
+    });
+    document.getElementById('qCurrent').textContent = i + 1;
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('reviewArea').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) {
+      currentQ++;
+      showQuestion(currentQ);
+    } else {
+      showResults();
+    }
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) {
+      currentQ--;
+      showQuestion(currentQ);
+    }
+  }
+
+  function showResults() {
+    getCards().forEach(c => c.classList.remove('active'));
+    document.getElementById('reviewNav').style.display = 'none';
+    progressDots.forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+
+    const score = answers.filter(a => a === true).length;
+    const passed = score >= 3;
+
+    document.getElementById('scoreNum').textContent = score;
+    document.getElementById('reviewArea').style.display = 'none';
+    document.getElementById('resultArea').classList.add('show');
+
+    // Pass / fail styling and content
+    const card = document.getElementById('resultCard');
+    const badge = document.getElementById('resultBadge');
+    const badgeIcon = document.getElementById('resultBadgeIcon');
+    const badgeText = document.getElementById('resultBadgeText');
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+    const cta = document.getElementById('resultCta');
+    const unlocked = document.getElementById('unlockedBanner');
+
+    if (passed) {
+      card.classList.remove('fail');
+      card.classList.add('pass');
+      badge.classList.remove('fail');
+      badge.classList.add('pass');
+      badgeIcon.innerHTML = '<path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.5 7.5l-4 4a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06L9 11.94l3.44-3.44a.75.75 0 011.06 1.06z"/>';
+      badgeText.textContent = 'Passed';
+
+      if (score === 5) {
+        title.textContent = 'A clean sweep.';
+        body.textContent = "You didn't just pass — you nailed every question. The mental model from Module 1 is solid. Time to start building.";
+      } else if (score === 4) {
+        title.textContent = 'Well played.';
+        body.textContent = "Four out of five is a strong pass. Worth a glance at the question you missed, but no reason to wait. On to Module 2.";
+      } else {
+        title.textContent = 'Passed — just.';
+        body.textContent = "You cleared the bar. Before jumping into Module 2, have a quick look at the questions you missed below — they'll help the builds click faster.";
+      }
+
+      cta.href = '#';
+      cta.innerHTML = 'Start Module 2 — Build your first workflow →';
+      unlocked.style.display = 'flex';
+    } else {
+      card.classList.remove('pass');
+      card.classList.add('fail');
+      badge.classList.remove('pass');
+      badge.classList.add('fail');
+      badgeIcon.innerHTML = '<path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11a1 1 0 11-2 0 1 1 0 012 0zM9 5a1 1 0 112 0v4a1 1 0 11-2 0V5z"/>';
+      badgeText.textContent = 'Not yet';
+
+      if (score === 2) {
+        title.textContent = 'So close.';
+        body.textContent = "One answer away from the pass mark. The breakdown below shows which lesson to revisit. Five minutes of review and you'll clear it easily.";
+      } else if (score === 1) {
+        title.textContent = 'Worth another pass.';
+        body.textContent = "The mental model from Module 1 is the base everything builds on. Go back to the lessons below, then retry — it's a ten-minute round trip.";
+      } else {
+        title.textContent = 'Time for a re-read.';
+        body.textContent = "Every Module 2 build assumes this foundation. A proper re-read now saves a week of confusion later. Retry when you're ready.";
+      }
+
+      cta.href = '#';
+      cta.innerHTML = '← Back to Module 1 lessons';
+      unlocked.style.display = 'none';
+    }
+
+    renderBreakdown();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderBreakdown() {
+    const list = document.getElementById('breakdownList');
+    list.innerHTML = '';
+    currentSelection.forEach((q, idx) => {
+      const right = answers[idx] === true;
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span class="mark ${right ? 'right' : 'wrong'}">${right ? '✓' : '✗'}</span>
+        <span><strong>Q${idx + 1}</strong> — ${q.ref}${right ? '' : ' · revisit this lesson'}</span>
+      `;
+      list.appendChild(li);
+    });
+  }
+
+  function resetReview() {
+    attemptCount++;
+    currentQ = 0;
+    answers = new Array(totalQuestions).fill(null);
+    answered = new Array(totalQuestions).fill(false);
+
+    renderQuestions();
+
+    document.getElementById('resultArea').classList.remove('show');
+    document.getElementById('reviewArea').style.display = 'block';
+    document.getElementById('reviewNav').style.display = 'flex';
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Next question →';
+    showQuestion(0);
+  }
+</script>
+
+</body>
+</html>

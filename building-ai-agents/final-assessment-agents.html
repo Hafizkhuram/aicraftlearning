@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Final assessment — Building AI Agents &amp; Workflows | AICraft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --warn:#F59E0B;
+    --warn-bg:#FEF7EC;
+    --warn-border:#F4E0BB;
+    --warn-text:#92400E;
+    --warn-deep:#78350F;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--body);font-size:17px;line-height:1.7;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+
+  header{border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;backdrop-filter:blur(8px);background:rgba(255,255,255,.85)}
+  .header-inner{max-width:1100px;margin:0 auto;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:inline-flex;align-items:center;text-decoration:none;transition:opacity .15s}
+  .brand:hover{opacity:.85}
+  .brand-logo{height:36px;width:auto;display:block}
+  .header-meta{display:flex;align-items:center;gap:20px;font-size:13px;color:var(--text-mute)}
+  .header-meta .sep{opacity:.4}
+  .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--slate);color:#fff;font-weight:600;font-size:12px;letter-spacing:.02em}
+  .badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald)}
+
+  main{max-width:780px;margin:0 auto;padding:48px 28px 80px}
+
+  .intro-meta{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-mute);margin-bottom:20px;font-weight:500}
+  .intro-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.intro-title{font-family:var(--display);font-weight:500;font-size:clamp(36px,5vw,54px);line-height:1.08;letter-spacing:-.02em;color:var(--slate);margin:0 0 20px}
+  h1.intro-title em{font-style:italic;color:var(--forest)}
+
+  .intro-lede{font-family:var(--display);font-size:20px;line-height:1.55;color:var(--text-soft);font-style:italic;padding:0 0 0 20px;border-left:3px solid var(--emerald);margin:28px 0 40px}
+
+  .rules{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:0 0 24px}
+  .rules-label{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute);margin:0 0 14px}
+  .rules-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media (max-width:680px){.rules-grid{grid-template-columns:repeat(2,1fr)}}
+  .rule-cell{padding:12px 14px;background:var(--bg);border-radius:8px}
+  .rule-num{font-family:var(--display);font-weight:500;font-size:26px;line-height:1;color:var(--forest);letter-spacing:-.02em;margin:0 0 4px}
+  .rule-label{font-family:var(--display);font-weight:600;font-size:12.5px;color:var(--slate);margin:0 0 2px}
+  .rule-sub{font-size:11.5px;color:var(--text-mute);line-height:1.4;margin:0}
+
+  .coverage{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin:0 0 24px}
+  .coverage-label{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute);margin:0 0 14px}
+  .coverage-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+  @media (max-width:620px){.coverage-list{grid-template-columns:1fr}}
+  .coverage-list li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:14px;line-height:1.5;color:var(--text)}
+  .coverage-list li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald);flex-shrink:0;margin-top:9px}
+  .coverage-list li strong{color:var(--slate);font-weight:600}
+
+  .cooldown{display:none;margin:0 0 24px;padding:18px 22px;background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:12px;position:relative}
+  .cooldown.show{display:block;animation:fadeIn .3s ease}
+  .cooldown::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;background:var(--warn);border-radius:2px}
+  .cooldown-label{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--warn-text);margin:0 0 6px;padding-left:14px}
+  .cooldown-body{font-size:14.5px;color:var(--warn-deep);margin:0;padding-left:14px;line-height:1.55}
+  .cooldown-body strong{color:var(--warn-deep)}
+  .cooldown-time{font-family:"SFMono-Regular",Consolas,monospace;font-size:14px;color:var(--warn-deep);padding:2px 8px;background:#FEF3C7;border-radius:4px}
+
+  .start-cta{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px}
+  .btn{border:0;cursor:pointer;font-family:var(--body);font-weight:600;font-size:14.5px;padding:12px 22px;border-radius:8px;transition:all .18s;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+  .btn-primary{background:var(--forest);color:#fff}
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{background:var(--border);color:var(--text-mute);cursor:not-allowed;transform:none}
+  .btn-ghost{background:transparent;color:var(--text-mute)}
+  .btn-ghost:hover{color:var(--forest)}
+  .btn-big{padding:15px 30px;font-size:15.5px}
+
+  .assess{padding:34px 36px;background:var(--card);border:1px solid var(--border);border-radius:16px}
+  @media (max-width:600px){.assess{padding:26px 22px}}
+
+  .assess-header-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  .assess-eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--forest);font-weight:700}
+  .assess-rule{font-size:12.5px;color:var(--text-mute);display:inline-flex;align-items:center;gap:6px}
+  .assess-rule strong{color:var(--forest);font-weight:600}
+
+  .assess-progress{display:flex;gap:3px;margin-bottom:28px}
+  .assess-progress span{flex:1;height:4px;border-radius:2px;background:var(--border);transition:background .3s}
+  .assess-progress span.done{background:var(--emerald)}
+  .assess-progress span.active{background:var(--forest)}
+
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .q-number{font-family:var(--display);font-size:13px;color:var(--text-mute);font-weight:500;letter-spacing:.04em;margin-bottom:8px}
+  .q-text{font-family:var(--display);font-weight:500;font-size:21px;line-height:1.4;color:var(--slate);margin:0 0 24px;letter-spacing:-.005em}
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{display:flex;align-items:flex-start;gap:14px;padding:15px 18px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .18s;background:var(--card);font-size:15.5px;line-height:1.5}
+  .option:hover:not(.disabled){border-color:var(--emerald);background:var(--mint-soft)}
+  .option.disabled{cursor:default}
+  .option-letter{width:26px;height:26px;border-radius:7px;background:var(--border-soft);color:var(--text-soft);display:grid;place-items:center;font-weight:700;font-size:13px;flex-shrink:0;transition:all .2s;font-family:var(--display)}
+  .option:hover:not(.disabled) .option-letter{background:var(--emerald);color:#fff}
+  .option.correct{border-color:var(--success);background:#F0FDF4}
+  .option.correct .option-letter{background:var(--success);color:#fff}
+  .option.incorrect{border-color:var(--error);background:#FEF2F2}
+  .option.incorrect .option-letter{background:var(--error);color:#fff}
+  .option-check{margin-left:auto;opacity:0;transition:opacity .2s;font-size:20px;line-height:1}
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+
+  .explanation{display:none;margin-top:20px;padding:16px 20px;border-radius:10px;background:var(--mint-soft);border-left:3px solid var(--emerald);font-size:14.5px;line-height:1.6;color:var(--forest)}
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{display:block;font-family:var(--display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--forest);margin-bottom:6px}
+  .explanation.wrong{background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D}
+  .explanation.wrong strong{color:#7F1D1D}
+  .explanation .ref{font-family:var(--body);font-size:12px;letter-spacing:0;color:var(--text-mute);text-transform:none;font-weight:500;margin-top:6px;display:block}
+
+  .assess-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px;flex-wrap:wrap}
+  .assess-running-score{font-size:13px;color:var(--text-mute);font-family:var(--display);font-weight:500}
+  .assess-running-score strong{color:var(--forest);font-weight:700}
+
+  .result-screen{display:none}
+  .result-screen.show{display:block;animation:fadeIn .4s ease}
+
+  .result-hero{padding:44px 40px 36px;border-radius:16px;margin-bottom:28px;position:relative;overflow:hidden}
+  .result-hero.pass{background:linear-gradient(135deg,#065F46 0%,#0F172A 100%);color:#fff}
+  .result-hero.pass::before{content:"";position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.3),transparent 65%);pointer-events:none}
+  .result-hero.fail{background:var(--card);border:1px solid var(--border);color:var(--text)}
+  .result-hero-inner{position:relative;z-index:2;text-align:center}
+
+  .result-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px}
+  .result-hero.pass .result-pill{background:rgba(16,185,129,.2);color:#A7F3D0}
+  .result-hero.pass .result-pill::before{content:"✓";font-size:13px;color:var(--emerald)}
+  .result-hero.fail .result-pill{background:var(--warn-bg);color:var(--warn-deep)}
+  .result-hero.fail .result-pill::before{content:"—";font-size:13px;color:var(--warn)}
+
+  .result-score-big{font-family:var(--display);font-weight:500;font-size:clamp(64px,9vw,96px);line-height:1;letter-spacing:-.03em;margin:0 0 4px}
+  .result-hero.pass .result-score-big{color:#fff}
+  .result-hero.fail .result-score-big{color:var(--slate)}
+  .result-score-big span{color:rgba(255,255,255,.4);font-size:.45em;font-weight:500}
+  .result-hero.fail .result-score-big span{color:var(--text-mute)}
+
+  .result-pct{font-family:var(--body);font-size:14.5px;margin:0 0 22px}
+  .result-hero.pass .result-pct{color:#CBD5E1}
+  .result-hero.fail .result-pct{color:var(--text-mute)}
+
+  .result-title{font-family:var(--display);font-weight:500;font-size:clamp(26px,4vw,34px);line-height:1.2;margin:0 0 12px;letter-spacing:-.01em}
+  .result-hero.pass .result-title{color:#fff}
+  .result-hero.fail .result-title{color:var(--slate)}
+  .result-title em{font-style:italic}
+  .result-hero.pass .result-title em{color:#A7F3D0}
+  .result-hero.fail .result-title em{color:var(--forest)}
+
+  .result-body{margin:0 auto;max-width:520px;font-size:15.5px;line-height:1.65}
+  .result-hero.pass .result-body{color:#CBD5E1}
+  .result-hero.fail .result-body{color:var(--text-soft)}
+
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .result-hero.pass .btn-primary{background:var(--emerald);color:var(--slate)}
+  .result-hero.pass .btn-primary:hover{background:#A7F3D0}
+  .result-hero.pass .btn-ghost{color:#A7F3D0}
+  .result-hero.pass .btn-ghost:hover{color:#fff}
+
+  .module-breakdown{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin:0 0 24px}
+  .module-breakdown-head{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute);padding:16px 22px;border-bottom:1px solid var(--border);background:var(--bg)}
+  .module-row{display:grid;grid-template-columns:auto 1fr auto auto;gap:16px;align-items:center;padding:14px 22px;border-top:1px solid var(--border-soft);font-size:14px}
+  .module-row:first-of-type{border-top:0}
+  .module-row-num{font-family:var(--display);font-weight:600;color:var(--text-mute);font-size:12px;letter-spacing:.06em}
+  .module-row-name{color:var(--slate);font-weight:500;font-family:var(--display)}
+  .module-row-bar{width:100px;height:6px;border-radius:3px;background:var(--border-soft);overflow:hidden;justify-self:end}
+  @media (max-width:540px){.module-row-bar{display:none}}
+  .module-row-bar-inner{height:100%;background:linear-gradient(90deg,var(--emerald),var(--forest));transition:width .4s ease}
+  .module-row-score{font-family:var(--display);font-weight:600;color:var(--slate);font-size:14px;min-width:42px;text-align:right}
+
+  .qb-toggle{width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 20px;cursor:pointer;font-family:var(--body);font-weight:600;font-size:14px;color:var(--text);display:flex;justify-content:space-between;align-items:center;transition:all .18s}
+  .qb-toggle:hover{border-color:var(--forest)}
+  .qb-toggle-arrow{transition:transform .2s;color:var(--text-mute);font-size:12px}
+  .qb-toggle.expanded .qb-toggle-arrow{transform:rotate(180deg)}
+  .qb-list{display:none;margin-top:10px;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .qb-list.show{display:block;animation:fadeIn .3s ease}
+  .qb-row{display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;padding:11px 20px;border-top:1px solid var(--border-soft);font-size:13.5px}
+  .qb-row:first-of-type{border-top:0}
+  .qb-row-num{font-family:var(--display);font-weight:600;color:var(--text-mute);font-size:12px;min-width:30px}
+  .qb-row-text{color:var(--text);line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .qb-row-mod{font-family:"SFMono-Regular",Consolas,monospace;font-size:11px;color:var(--text-mute);padding:2px 6px;background:var(--bg);border-radius:4px}
+  .qb-row-status{font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:4px;min-width:70px;justify-content:flex-end}
+  .qb-row-status.ok{color:var(--success)}
+  .qb-row-status.no{color:var(--error)}
+
+  .bottom-nav{margin-top:32px;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+  .nav-back{display:inline-flex;align-items:center;gap:8px;color:var(--text-mute);font-size:14px;text-decoration:none}
+  .nav-back:hover{color:var(--forest)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AICraft Learning — home">
+      <svg class="brand-logo" viewBox="0 0 420 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="badge">Final assessment</span>
+      <span class="sep">·</span>
+      <span>20 questions</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ================= INTRO SCREEN ================= -->
+  <div id="introScreen">
+    <div class="intro-meta">
+      <span>Building AI Agents &amp; Workflows</span>
+      <span class="dot"></span>
+      <span>One step to certification</span>
+    </div>
+
+    <h1 class="intro-title">Final <em>assessment</em></h1>
+    <p class="intro-lede">Twenty questions drawn from the whole course. Pass with 70% (14 of 20) to earn your AICraft Learning — Building AI Agents &amp; Workflows Certified certificate.</p>
+
+    <div class="cooldown" id="cooldownNotice">
+      <p class="cooldown-label">Recommended — take a breath</p>
+      <p class="cooldown-body">You finished an attempt less than 24 hours ago. We suggest waiting <span class="cooldown-time" id="cooldownRemaining">~24h</span> before trying again — a short gap helps you notice what to revise. But if you'd rather go again now, the button's still there.</p>
+    </div>
+
+    <div class="rules">
+      <p class="rules-label">How it works</p>
+      <div class="rules-grid">
+        <div class="rule-cell">
+          <p class="rule-num">20</p>
+          <p class="rule-label">Questions</p>
+          <p class="rule-sub">Drawn from a bank of 30</p>
+        </div>
+        <div class="rule-cell">
+          <p class="rule-num">70%</p>
+          <p class="rule-label">Pass mark</p>
+          <p class="rule-sub">14 out of 20 correct</p>
+        </div>
+        <div class="rule-cell">
+          <p class="rule-num">~14</p>
+          <p class="rule-label">Minutes</p>
+          <p class="rule-sub">At a comfortable pace</p>
+        </div>
+        <div class="rule-cell">
+          <p class="rule-num">24h</p>
+          <p class="rule-label">Recommended gap</p>
+          <p class="rule-sub">Before retrying if you fail</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="coverage">
+      <p class="coverage-label">What it covers</p>
+      <ul class="coverage-list">
+        <li><strong>Module 1 —</strong> workflows vs agents, n8n setup, Claude API, first Gmail-to-Sheet build</li>
+        <li><strong>Module 2 —</strong> Build #1: email triage, drafts-only safety, hardening a workflow for production</li>
+        <li><strong>Module 3 —</strong> Build #2: the competitive intelligence agent, memory, four-layer guardrails</li>
+        <li><strong>Module 4 —</strong> Build #3, the four-stage pattern, multi-agent reality, maintenance, the 30-day plan</li>
+      </ul>
+    </div>
+
+    <div class="start-cta">
+      <button class="btn btn-primary btn-big" onclick="startAssessment()">Start the assessment →</button>
+      <a href="module-4-review-agents.html" class="btn btn-ghost">← Back to Module 4 review</a>
+    </div>
+  </div>
+
+  <!-- ================= ASSESSMENT SCREEN ================= -->
+  <section class="assess" id="assessScreen" style="display:none">
+    <div class="assess-header-row">
+      <span class="assess-eyebrow">Final assessment</span>
+      <span class="assess-rule">Pass mark · <strong>70% (14 of 20)</strong></span>
+    </div>
+
+    <div class="assess-progress" id="assessProgress"></div>
+
+    <div id="assessQuestions"></div>
+
+    <div class="assess-nav" id="assessNav">
+      <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+      <span class="assess-running-score" id="runningScore">Question <strong>1</strong> of 20</span>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+    </div>
+  </section>
+
+  <!-- ================= RESULTS SCREEN ================= -->
+  <section class="result-screen" id="resultScreen">
+    <div class="result-hero" id="resultHero">
+      <div class="result-hero-inner">
+        <div class="result-pill" id="resultPill">Certified</div>
+        <p class="result-score-big" id="resultScoreBig">0<span>/20</span></p>
+        <p class="result-pct" id="resultPct">0%</p>
+        <h2 class="result-title" id="resultTitle">Certified</h2>
+        <p class="result-body" id="resultBody"></p>
+        <div class="result-actions" id="resultActions"></div>
+      </div>
+    </div>
+
+    <div class="module-breakdown">
+      <div class="module-breakdown-head">How you did, by module</div>
+      <div id="moduleRows"></div>
+    </div>
+
+    <button class="qb-toggle" id="qbToggle" onclick="toggleBreakdown()">
+      <span>See every question and how you answered it</span>
+      <span class="qb-toggle-arrow">▼</span>
+    </button>
+    <div class="qb-list" id="qbList"></div>
+  </section>
+
+  <div class="bottom-nav">
+    <a href="module-4-review-agents.html" class="nav-back">← Back to Module 4 review</a>
+    <span style="font-size:13px;color:var(--text-mute)">Final · 20 questions · 70% to pass</span>
+  </div>
+</main>
+
+<script>
+  const PASS_THRESHOLD = 0.7;
+  const totalQuestions = 20;
+  const COOLDOWN_MS = 24 * 60 * 60 * 1000;
+
+  let currentQ = 0;
+  let answers = [];
+  let answered = [];
+  let selectedQuestions = [];
+
+  // ------------------ QUESTION BANK (30) ------------------
+  // Each question tagged with its primary source module(s).
+  // Heavy on scenarios — "what should you do if…" — rather than pure recall,
+  // because the course is applied: building three real systems in n8n with Claude.
+  const questionBank = [
+    // ---- Module 1 : Foundations (Lessons 1.1-1.4) ----
+    {
+      id: 1, mod: 'M1',
+      text: 'Which statement best captures the difference between a workflow and an agent, as taught in the course?',
+      options: [
+        { text: 'A workflow uses AI; an agent does not.', correct: false },
+        { text: 'A workflow follows a fixed sequence of steps you decide in advance; an agent decides its own sequence at run-time, using tools you gave it. The sticky-note test: if you can write every step in advance, it is a workflow. If the path depends on what each step reveals, it is an agent.', correct: true },
+        { text: 'Workflows run on schedules; agents run on demand.', correct: false },
+        { text: 'There is no meaningful difference — both are just marketing terms.', correct: false }
+      ],
+      explanation: "The core mental model from Lesson 1.1. A workflow is a deterministic pipeline; an agent is a loop that reasons about what to do next. Everything else in the course — when to build which, how to harden each — flows from that single distinction."
+    },
+    {
+      id: 2, mod: 'M1',
+      text: 'The course recommends starting with n8n Cloud on the Starter plan ($24/month). Why that path rather than the free self-hosted version?',
+      options: [
+        { text: 'Self-hosted n8n is an inferior product.', correct: false },
+        { text: 'For a non-technical business owner, self-hosting adds server setup, security, and uptime as your problems. Cloud removes those entirely — you get HTTPS, backups, execution history, and upgrades you do not have to think about. The $24/month is the cheapest way to stop those being your problems.', correct: true },
+        { text: 'Self-hosted n8n cannot run Claude API calls.', correct: false },
+        { text: 'n8n Cloud gives unlimited executions on all plans.', correct: false }
+      ],
+      explanation: "The pragmatic call from Lesson 1.2. Self-hosting is legitimate for technical teams; for a solo operator learning the tool, it adds problems without adding value. Starter covers 1,000 executions per month — plenty of room for the three course builds."
+    },
+    {
+      id: 3, mod: 'M1',
+      text: 'Before running any real workflow on live data, the course recommends setting a monthly spending cap in the Anthropic Console. Why specifically there, not just a per-workflow check in n8n?',
+      options: [
+        { text: 'The Anthropic cap is optional; n8n checks are sufficient.', correct: false },
+        { text: 'The provider-level cap is a hard stop at the API billing layer — outside n8n entirely. If a workflow has a bug and enters a tight loop of tool calls, it can burn through tokens faster than n8n can evaluate its own IF conditions. The provider cap hard-stops the billing; it is the last line of defence.', correct: true },
+        { text: 'n8n does not support spending caps at all.', correct: false },
+        { text: 'Anthropic requires a cap before allowing API access.', correct: false }
+      ],
+      explanation: "Defence in depth. Lesson 1.3 introduces the cap and Lesson 3.4 revisits it with real-world failure stories (including the $47K multi-agent loop). A two-minute setting in the Anthropic Console has prevented several production incidents for real teams."
+    },
+    {
+      id: 4, mod: 'M1',
+      text: 'The course recommends Claude Sonnet 4.6 as the default model for most workflow work. Why that model rather than the cheaper Haiku or the more expensive Opus?',
+      options: [
+        { text: 'Sonnet is the only Anthropic model that supports tool use.', correct: false },
+        { text: 'Sonnet 4.6 is the honest sweet spot for most small-business tasks: capable enough for real extraction, classification, drafting, and agentic reasoning, cheap enough to run hundreds of executions a month without the bill being a problem. Haiku is better for very simple high-volume classification; Opus is worth the cost only for genuinely difficult reasoning.', correct: true },
+        { text: 'Sonnet is a legacy model — use Opus whenever possible.', correct: false },
+        { text: 'Sonnet is the only model available via the n8n Anthropic node.', correct: false }
+      ],
+      explanation: "The defaults matter. Lesson 1.3 makes the case: pick Sonnet unless you have a specific reason not to. Use Haiku only for high-volume, simple classification where latency matters. Reach for Opus only when Sonnet demonstrably fails on the task. Most builds never need anything else."
+    },
+    {
+      id: 5, mod: 'M1',
+      text: 'The course\'s first hands-on build (Lesson 1.4) is a Gmail-Trigger → Claude → Google Sheets workflow. What is it designed to teach?',
+      options: [
+        { text: 'How to replace your email client with an AI-generated alternative.', correct: false },
+        { text: 'The complete shape of an n8n workflow in miniature: a trigger (Gmail), a processing node (Claude), and a destination (Sheets). The task is deliberately simple so the mechanics — OAuth, node wiring, prompt basics, testing — are what you actually absorb. Everything in Module 2 onwards is this pattern with more detail.', correct: true },
+        { text: 'How to build a customer-facing chatbot.', correct: false },
+        { text: 'How to write Python code for custom n8n nodes.', correct: false }
+      ],
+      explanation: "The shape-first approach of Lesson 1.4. You learn three nodes, three OAuth connections, and the run-log habit — which sets you up for the Build #1 (email triage) in Module 2 without having to learn the mechanics at the same time as the prompt design."
+    },
+    {
+      id: 6, mod: 'M1',
+      text: 'You have just finished setting up Claude API access and added your API key to n8n. The key is tied to your Anthropic console and billed to your card. What should you do BEFORE running your first workflow, based on Module 1?',
+      options: [
+        { text: 'Nothing — the key is already secure; Anthropic handles everything.', correct: false },
+        { text: 'Set a monthly spending cap in the Anthropic Console (Settings → Billing), confirm temperature and max-tokens defaults on your Anthropic credentials in n8n, and test the connection with a single low-cost completion before wiring it into anything substantive.', correct: true },
+        { text: 'Immediately start building the largest workflow you can think of — testing happens later.', correct: false },
+        { text: 'Share the API key with any team members who might need it.', correct: false }
+      ],
+      explanation: "Three non-negotiables from Module 1. Cap at the API level so runaway loops cannot empty your bank account. Test the single-call path works before trusting any multi-step build. Never share the key — each person gets their own. All three prevent problems that have cost real businesses real money."
+    },
+    {
+      id: 7, mod: 'M1',
+      text: 'The course is explicit that for most business use cases, you should default to workflows over agents. Which reasoning captures the "craft-first" case?',
+      options: [
+        { text: 'Agents are a passing trend that will disappear.', correct: false },
+        { text: 'Agent architectures cost roughly 10× more than equivalent workflows in tokens, debug time, and maintenance. That premium is worth paying when the path genuinely cannot be scripted — but for the 80% of tasks where it can, a workflow is cheaper, more reliable, and easier to fix when it breaks. Use agents where you have to, workflows where you can.', correct: true },
+        { text: 'Workflows are better for everything; agents have no real use.', correct: false },
+        { text: 'Agents are banned under most business software licences.', correct: false }
+      ],
+      explanation: "The craft-first principle that threads through the whole course. Agents are a legitimate and sometimes essential tool — but they come with a real cost. Lesson 1.1 plants the flag; Module 3 shows you when the cost is worth paying."
+    },
+
+    // ---- Module 2 : Build #1 — Email triage (Lessons 2.1-2.4) ----
+    {
+      id: 8, mod: 'M2',
+      text: 'Build #1 uses a two-model pattern: one Claude call to classify the email, then a second Claude call to draft a response. Why not do both in a single call?',
+      options: [
+        { text: 'A single call would exceed the Anthropic token limit.', correct: false },
+        { text: 'Two single-purpose calls outperform one multi-purpose call. Each call has a tighter prompt, lower temperature, clearer success criteria, and easier debugging — you can see exactly which step failed. If the classifier is wrong, the drafter never runs. This is the general "small, focused calls" pattern that scales across every build in the course.', correct: true },
+        { text: 'It is twice as fast to make two calls than one.', correct: false },
+        { text: 'Single-call prompts are only possible in the paid Enterprise tier.', correct: false }
+      ],
+      explanation: "A load-bearing pattern from Lesson 2.2. The multi-step single-prompt approach — 'classify this AND draft AND tag AND summarise' — looks efficient but produces fuzzy results and near-impossible debugging. Two focused prompts, chained, wins on every axis that matters."
+    },
+    {
+      id: 9, mod: 'M2',
+      text: 'The course insists that Build #1 operates in drafts-only mode (Gmail "Create Draft") rather than auto-sending replies, at least for the first two weeks. Why?',
+      options: [
+        { text: 'Auto-sending is a premium Gmail feature that requires an upgrade.', correct: false },
+        { text: 'Drafts-only is the safety net: every AI-generated reply lands in your drafts folder for human review before it goes out. LLMs make mistakes, sometimes with confident-sounding fluency. A mistake in a draft is a 10-second edit; a mistake in a sent email can be a damaged client relationship. Two weeks of draft review is enough to calibrate trust.', correct: true },
+        { text: 'Drafts take less time to produce than sent emails.', correct: false },
+        { text: 'Gmail requires manual sending of all AI-drafted messages.', correct: false }
+      ],
+      explanation: "The drafts-only pattern from Lesson 2.3 is the single most important safety primitive in the course, and it reappears in Build #3 and in the 30-day plan. Reversibility is what separates low-stakes automation from career-limiting incidents (the Cursor and SaaStr 2025 failures from Lesson 3.4 are the lessons in what happens when this boundary is not respected)."
+    },
+    {
+      id: 10, mod: 'M2',
+      text: 'Lesson 2.4 "hardens" Build #1 with the Retry on Fail setting, an Error Trigger workflow, a Google Sheets run log, and a kill-switch. Why not just rely on Retry on Fail — surely that handles most transient failures?',
+      options: [
+        { text: 'Retry on Fail is unreliable — disable it and handle failures manually.', correct: false },
+        { text: 'Retry on Fail only catches transient failures within a single run (network blips, rate limits). The Error Trigger catches failures that exceed retries and notifies you. The run log catches SILENT failures — the workflow ran, but the output was wrong. The kill-switch lets you stop everything in one click if something is seriously off. Four different kinds of failure, four tools — each one catches a different category.', correct: true },
+        { text: 'Retries slow down the workflow to the point of being unusable.', correct: false },
+        { text: 'Error handling is a nice-to-have for hobby projects.', correct: false }
+      ],
+      explanation: "The hardening pattern from Lesson 2.4 shows that 'production readiness' is not one setting — it is a stack of four different responses to four different kinds of failure. Retries handle the common ones. Error triggers catch the loud ones. Run logs surface the quiet ones. Kill-switches let you stop the loud ones fast."
+    },
+    {
+      id: 11, mod: 'M2',
+      text: 'You have added a Gmail Trigger to Build #1 and pointed it at your live inbox. Based on the course, what should be set on this node before going further?',
+      options: [
+        { text: 'Accept the default polling and label settings — Gmail Trigger works out of the box.', correct: false },
+        { text: 'Tighten the scope with label or search filters (not "all inbox") so only the intended category triggers runs; confirm the 60-second polling interval suits your use case; add the "mark as read" option only once you trust the downstream workflow. Every one of these prevents the workflow from firing on emails you did not mean to process.', correct: true },
+        { text: 'Remove all filters — Claude can figure out which emails to respond to.', correct: false },
+        { text: 'Set the trigger to poll every 5 seconds for faster response.', correct: false }
+      ],
+      explanation: "Scope discipline at the trigger layer is the cheapest and most effective safety measure. Lesson 2.1 is blunt about this: 'all inbox' is almost always wrong; a narrower label is almost always right. Polling every 5 seconds burns executions for no real benefit — 60 seconds is plenty for any realistic email-triage use case."
+    },
+    {
+      id: 12, mod: 'M2',
+      text: 'You are reviewing AI-generated email drafts produced by Build #1. The classifier got the urgency right, the draft is well-structured, but the tone is wrong for your business — too formal, too "corporate-speak." Based on Module 2, what is the right fix?',
+      options: [
+        { text: 'Accept the tone — AI-generated text always has a corporate feel.', correct: false },
+        { text: 'Switch from Claude to a different provider entirely.', correct: false },
+        { text: 'Refine the drafter\'s prompt to include your actual tone rules and, ideally, 2-3 real examples of emails you have sent in the desired voice. Voice comes from examples more than from descriptions ("friendly, direct, British English"). Plus, tune the temperature — 0.3 for drafts, not 0.7.', correct: true },
+        { text: 'Accept the drafts and rewrite every one before sending.', correct: false }
+      ],
+      explanation: "Voice is a craft problem with a craft solution from Lesson 2.2. Descriptions like 'warm but professional' are weak signals. Real examples of your writing are strong signals. Combine that with a lower temperature (0.3 for reliable outputs, not 0.7 which is creative-writing territory) and the drafts start sounding like you in a week rather than never."
+    },
+    {
+      id: 13, mod: 'M2',
+      text: 'Build #1 went live two weeks ago. The drafts are good, you have been sending them after light edits. Based on Module 2, what is the right next step — NOT the step you should skip to?',
+      options: [
+        { text: 'Switch to auto-send immediately — the drafts are reliable enough.', correct: false },
+        { text: 'Expand to cover every possible email category across all your inboxes in one go.', correct: false },
+        { text: 'Review the run-log sheet for any patterns of drafts you consistently edit. Those edits are the signal — they tell you which prompt rules to adjust. Tighten the prompt, redeploy, stay in drafts mode for another fortnight. Do not move to auto-send until editing rate is below ~10%.', correct: true },
+        { text: 'Delete the workflow and start from scratch — it has outlived its usefulness.', correct: false }
+      ],
+      explanation: "The hardening pattern from Lesson 2.4 includes a patient ramp-up. Drafts-mode is not a two-week phase; it is a default state you leave only when the edit rate has fallen to near-zero. Most teams that rushed to auto-send in 2024-2025 are the ones that generated the 'AI horror story' headlines."
+    },
+    {
+      id: 14, mod: 'M2',
+      text: 'You have been running Build #1 for a month and realise that ONE specific category of email (say, accounting queries about invoices) consistently gets poor drafts. Everything else is fine. Based on Module 2, what is the most likely cause?',
+      options: [
+        { text: 'The Claude model version — upgrade to Opus.', correct: false },
+        { text: 'The classifier prompt is fine, but the drafter prompt lacks examples and context for this specific category. The general instruction works for common categories; the unusual ones need their own mini-prompt or (better) a case-statement in the drafter with the rules for each category. Do not make one prompt try to do everything.', correct: true },
+        { text: 'Gmail\'s API is broken for accounting-related emails.', correct: false },
+        { text: 'You need a second AI model running in parallel.', correct: false }
+      ],
+      explanation: "A classic Module 2 diagnostic. 'Most things work, one thing does not' is rarely a model problem — it is almost always a prompt-coverage problem. Adding a branch (with a Switch node in n8n) and a dedicated prompt for the edge category tends to fix it without disturbing the parts that already work."
+    },
+
+    // ---- Module 3 : Build #2 — Competitive intelligence agent (Lessons 3.1-3.4) ----
+    {
+      id: 15, mod: 'M3',
+      text: 'Lesson 3.1 introduces the three ingredients that make something an "agent" rather than a workflow. Which set is correct?',
+      options: [
+        { text: 'Python, JavaScript, and SQL.', correct: false },
+        { text: 'A decision loop (model deciding what to do next), tools (things it can call), and memory (something persisting across steps). Remove any one and you have something simpler than an agent. All three together unlock flexible investigation — and the 10× cost and debug-time premium that goes with it.', correct: true },
+        { text: 'Cloud hosting, multi-threading, and a vector database.', correct: false },
+        { text: 'A chatbot UI, a knowledge base, and a dashboard.', correct: false }
+      ],
+      explanation: "The mental model from Lesson 3.1 you will use for every agent decision: loop + tools + memory. When you see 'agent' in marketing material, check whether all three are actually present. Most 'agents' in 2025-2026 products are actually workflows with LLM calls; only real loops with real tools qualify."
+    },
+    {
+      id: 16, mod: 'M3',
+      text: 'Build #2 uses a hybrid architecture: a workflow that contains one agent step. Schedule Trigger, Edit Fields (competitor list), and final Gmail Send are deterministic; only the research step is an agent. Based on Module 3, why this design?',
+      options: [
+        { text: 'n8n requires every workflow to start with a non-agent node.', correct: false },
+        { text: 'The deterministic parts (schedule, competitor list, final email) are predictable — they do not need agent reasoning, and adding one would burn tokens and debug time for no benefit. The research step genuinely needs flexibility — which pages matter depends on what each page reveals. Workflow for the predictable edges, agent for the fuzzy middle. Use agents ONLY where the path cannot be scripted.', correct: true },
+        { text: 'It is impossible to build a pure-agent workflow in n8n.', correct: false },
+        { text: 'Hybrid architectures have higher reliability than pure agents for all use cases.', correct: false }
+      ],
+      explanation: "The craft-first principle from 3.1 made concrete in 3.2. You pay the agent premium only where you need it; everything else stays deterministic. This pattern recurs throughout the course and in any serious production agent system you will ever see."
+    },
+    {
+      id: 17, mod: 'M3',
+      text: 'Your research agent reads each tool\'s description to decide when to use it. Based on Lesson 3.2, what happens when a tool description is vague ("This tool searches the web for information")?',
+      options: [
+        { text: 'The agent refuses to run.', correct: false },
+        { text: 'The agent is more likely to skip that tool, use it at the wrong moment, or loop back to it redundantly. Tool descriptions do the same job for the agent that the system prompt does — they tell it WHEN to act. Rewrite the description to be concrete ("Use this when you need current information about a company not available in your training data. Call this BEFORE reading specific URLs...") and tool-use quality jumps immediately.', correct: true },
+        { text: 'The agent automatically infers a better description.', correct: false },
+        { text: 'Vague descriptions have no effect on agent behaviour.', correct: false }
+      ],
+      explanation: "Tool descriptions are prompt engineering in disguise. Lesson 3.2's rule: if an agent is ignoring a tool or misusing one, the first thing to fix is almost always the description. A clear description of when to use a tool and when NOT to use it fixes 80% of 'my agent is doing something weird' problems."
+    },
+    {
+      id: 18, mod: 'M3',
+      text: 'Your research agent keeps reporting the same findings each week — the "Widget Pro 3 launch" from four weeks ago shows up in every briefing. Based on Lesson 3.3, what is the right fix?',
+      options: [
+        { text: 'Increase the model\'s temperature to encourage creativity.', correct: false },
+        { text: 'Add long-term memory: at the start of each run, read last week\'s findings from a Google Sheet into the agent\'s context with an instruction like "Do not report anything already listed here." The agent had session memory (within one run) but no long-term memory (across runs). Retrieval-before-reasoning is the pattern.', correct: true },
+        { text: 'Switch to a different LLM provider.', correct: false },
+        { text: 'Re-run the agent twice per week instead of once.', correct: false }
+      ],
+      explanation: "Session memory vs long-term memory is the concept distinction in Lesson 3.3. Session memory (Window Buffer) lets the agent reason multi-step within one run; long-term memory, stored outside the agent and read back as input, lets it not repeat itself across runs. They solve different problems; production agents usually need both."
+    },
+    {
+      id: 19, mod: 'M3',
+      text: 'Lesson 3.4 introduces a four-layer guardrail approach: budget, action, monitoring, kill-switch. In a single agent build, where does the "budget" layer live, specifically?',
+      options: [
+        { text: 'Only in the Anthropic Console monthly cap.', correct: false },
+        { text: 'In three places working together: the provider-level monthly cap (Anthropic Console), the per-run cost check as an IF node in the workflow (stop if this run exceeds £2), and the "Max Iterations" setting on the AI Agent node (around 20 for a typical task). Each catches a different category of runaway behaviour at a different layer.', correct: true },
+        { text: 'In a single IF node that checks the token count.', correct: false },
+        { text: 'Budget control is not possible with Anthropic\'s API.', correct: false }
+      ],
+      explanation: "Defence in depth, applied to cost. The provider cap catches the absolute worst-case runaway. The IF check catches individual expensive runs. Max iterations catches loops the LLM could not escape. Any one of them alone could be defeated; all three together close the gap. The $47K multi-agent loop incident from 3.4 is what happens when all three are missing."
+    },
+    {
+      id: 20, mod: 'M3',
+      text: 'The AI Agent node has a "Max Iterations" option. The course recommends 20 for Build #2. Based on Module 3, what is the reasoning behind that specific number?',
+      options: [
+        { text: 'n8n does not support values higher than 20.', correct: false },
+        { text: 'Healthy agent runs for typical research tasks complete in 10-15 iterations. A cap of 20 leaves margin for harder cases but small enough that runaway loops stop fast. Hitting 20 is itself a signal that something is wrong — the right response is to tighten the system prompt, not raise the cap.', correct: true },
+        { text: '20 is the maximum number of tools an agent can have.', correct: false },
+        { text: 'Higher numbers make agents more intelligent; 20 is a conservative compromise.', correct: false }
+      ],
+      explanation: "Max Iterations is a budget-level guardrail from 3.4. 20 is the craft call: enough for margin, small enough to stop bleeding. If the agent keeps hitting it, investigate — vague prompt, unreachable resource, or a reasoning loop. Raising the cap without investigation is papering over a design problem with a bigger budget."
+    },
+    {
+      id: 21, mod: 'M3',
+      text: 'Lesson 3.1 said "agents do not really think — they predict." Lesson 3.4 showed three 2025 incidents where agents caused real harm. What is the practical lesson these framings, together, point to?',
+      options: [
+        { text: 'Agents are too unreliable to use in business contexts at all.', correct: false },
+        { text: 'Because agents are prediction wrapped in a loop, the quality of their behaviour depends entirely on what you give them to predict from — system prompts, tool descriptions, and the context in their input. Guardrails, approvals, and budgets are not compensating for bad agents; they are compensating for the fact that prediction has no reliable ceiling on its own.', correct: true },
+        { text: 'Always use the largest available LLM for best results.', correct: false },
+        { text: 'Always use workflows; agents have no legitimate use.', correct: false }
+      ],
+      explanation: "The two framings reinforce each other. An agent does what it predicts the instructions and tools suggest — no more, no less. Crisp instructions and tight guardrails bound the space in which prediction happens. This is why Module 3 spends equal time on prompts and on guardrails: neither is optional."
+    },
+    {
+      id: 22, mod: 'M3',
+      text: 'Your research agent has been running fine for three months. This week a single run took 40% longer than usual and cost 60% more. The outputs still look right. Based on Module 3 and Module 4 together, what is the most likely cause?',
+      options: [
+        { text: 'Your targets have changed — rewrite the competitor list.', correct: false },
+        { text: 'The LLM provider pushed a silent model update, or the specific version you were pinning has been deprecated. This is model drift. Run your existing prompts on 3-5 known inputs side-by-side with the previous version if you can, decide whether to stay, switch versions, or retune — do not migrate in panic after one slow run, but a pattern of them is a signal.', correct: true },
+        { text: 'n8n is updating overnight and slowing every workflow down.', correct: false },
+        { text: 'Costs rise naturally over time and there is nothing to do.', correct: false }
+      ],
+      explanation: "Sudden latency and cost change on stable output is the classic fingerprint of model drift from Lesson 4.3. The Tursio 95.1% regression example is the warning. Side-by-side testing on 3-5 real inputs before any migration decision is the defensible process; panicked migrations have introduced more problems than they solved in the past two years."
+    },
+
+    // ---- Module 4 : Beyond building (Lessons 4.1-4.4) ----
+    {
+      id: 23, mod: 'M4',
+      text: 'Lesson 4.1 introduces the trigger-extract-route-notify pattern used in Build #3 (meeting-to-Notion). What is the point of teaching it as four distinct boxes?',
+      options: [
+        { text: 'n8n requires exactly four nodes per workflow.', correct: false },
+        { text: 'Four boxes = a reusable template. Once you can see a task as trigger + extract + route + notify, the implementation almost writes itself — each box has canonical n8n nodes that fill it. This is why your fourth and fifth systems in the 30-day plan take half the time of the first: you are not inventing architecture, you are filling in a known shape.', correct: true },
+        { text: 'Because every system must have exactly those four components to work.', correct: false },
+        { text: 'The pattern only applies to meeting-related workflows.', correct: false }
+      ],
+      explanation: "The pattern from 4.1 is the reusable scaffolding for 80% of the automation work a small business will ever build. Trigger, extract, route, notify. Five minutes of scoping in those four boxes saves hours of blank-page engineering. If you cannot fill in all four cleanly, the task is under-scoped."
+    },
+    {
+      id: 24, mod: 'M4',
+      text: 'A client asks you to build "a research assistant with five specialist agents — one for web search, one for pricing, one for customer reviews, one for competitor analysis, one for writing the report." Based on Lesson 4.2, what is the right response?',
+      options: [
+        { text: 'Yes, multi-agent is modern best practice — build it.', correct: false },
+        { text: 'Almost certainly build one agent with five tools instead. Compounding reliability: five agents at 95% each gives ~77% end-to-end; a single agent deciding which tool to use stays at 95%. Karpathy\'s 2026 line applies: tools are more powerful than models are reliable. If the "agents" are really just prompt variants using shared tools, they are tools, not agents.', correct: true },
+        { text: 'Five is too few — scale to 10-15 for production quality.', correct: false },
+        { text: 'Build two agents — the sweet spot.', correct: false }
+      ],
+      explanation: "The argument of Lesson 4.2 in one question. Multi-agent is usually an illusion; each 'agent' reads like a prompt variant that could be a tool on one agent. Genuine multi-agent cases exist (truly independent domains, sequential output-feeding) but they are narrow and worth graduating to after five shipped single-agent builds, not before."
+    },
+    {
+      id: 25, mod: 'M4',
+      text: 'Lesson 4.3 teaches three kinds of drift: model, tool, and business. Which statement pairs each with its typical symptom and right cadence?',
+      options: [
+        { text: 'All three drift types can be handled in a single weekly review.', correct: false },
+        { text: 'Model drift — sudden cost/latency change on stable outputs, handled quarterly with side-by-side version testing. Tool drift — auth tokens expire, API endpoints change, catch monthly. Business drift — the workflow still works but no longer matches what the business needs, catch quarterly with the retirement test. Three speeds, three cadences.', correct: true },
+        { text: 'All drift is model drift; the other two are not real.', correct: false },
+        { text: 'Drift is managed automatically by n8n — no reviews are needed.', correct: false }
+      ],
+      explanation: "The three cadences from Lesson 4.3 exist because the three kinds of drift move at different speeds. Weekly catches fast stuff (OAuth token about to expire, bad draft patterns). Monthly catches medium stuff (provider announcements, API changes). Quarterly catches slow stuff (the workflow you built for a client no longer serves). One cadence cannot cover all three."
+    },
+    {
+      id: 26, mod: 'M4',
+      text: 'You have five systems running three months after finishing the course. You apply the retirement test: "if I were starting from scratch today, would I build this?" For one of them, the honest answer is no. Based on Module 4, what should you do?',
+      options: [
+        { text: 'Leave it running — it might be useful later.', correct: false },
+        { text: 'Delete it entirely to keep the system clean.', correct: false },
+        { text: 'Archive the workflow (do not just leave it dormant). A portfolio is defined as much by what you remove as by what you add. Dormant things break quietly — silent OAuth failures, quiet token burn, noise in the Executions tab that makes real failures harder to spot. Archiving is an act of discipline; keep the record, retire the system.', correct: true },
+        { text: 'Move it to a different n8n instance so it does not count.', correct: false }
+      ],
+      explanation: "Lesson 4.3 and 4.4 both emphasise retirement because it is the discipline most portfolios lack. A workflow that solved a real problem six months ago may now solve no problem at all; running it on inertia costs attention, money, and risk. Archiving (not deleting) keeps the context; retiring the system is the honest move."
+    },
+    {
+      id: 27, mod: 'M4',
+      text: 'The 30-day plan\'s core recommendation is 15 minutes a day for a month. Based on Lesson 4.4, why that specific shape rather than longer sessions?',
+      options: [
+        { text: '15 minutes is the maximum session length n8n allows.', correct: false },
+        { text: '15 minutes is small enough to fit almost any day, including bad ones — which is the whole reason the plan survives real working life. Longer sessions do not. A month is long enough to compound into real systems and a real habit but short enough to feel finishable from Day 1. "Small, bounded, daily" is the shape that actually gets done; "open-ended, big, aspirational" is the shape of things people mean to do and never do.', correct: true },
+        { text: 'Longer daily commitments would be better but require a paid course upgrade.', correct: false },
+        { text: 'The 15-minute figure is arbitrary and any length works.', correct: false }
+      ],
+      explanation: "Lesson 4.4's argument. Most people who finish a course like this close the browser and never apply it — not through laziness, but because 'starting to use a new tool in real work' is a separate problem courses do not usually solve. The specific 15-minutes-a-day-for-a-month shape is designed to close exactly that gap."
+    },
+    {
+      id: 28, mod: 'M4',
+      text: 'You start the 30-day plan enthusiastically. A bad week means you miss Days 9, 10, and 11. You feel behind. Based on Lesson 4.4, what is the right move?',
+      options: [
+        { text: 'Work a solid four hours this weekend to catch up to where the calendar says you should be.', correct: false },
+        { text: 'Cancel the plan and restart on Day 1 next month — a clean slate.', correct: false },
+        { text: 'Drop to the minimum viable action: open n8n, glance at the Executions tab, close. Tomorrow, pick up where you left off (Week 2 Day 4), NOT where the calendar says. The plan moves, not you. Missed days are normal; recovery without drama is what separates people who build habits from people who do not.', correct: true },
+        { text: 'Create a Slack accountability group with other course graduates.', correct: false }
+      ],
+      explanation: "The bad-day protocol from Lesson 4.4 is the part that keeps the habit alive past week two. Shame and catch-up-binge cycles are the most reliable way to kill a new habit. The 60-second minimum restores momentum at zero emotional cost; the plan moving with you (rather than you trying to catch up to a fixed calendar) is what makes it survive a real working year."
+    },
+
+    // ---- Synthesis across modules ----
+    {
+      id: 29, mod: 'All',
+      text: 'Which of these best describes the full arc of the course — the progression you have just completed?',
+      options: [
+        { text: 'Install n8n, use AI for everything, hope for the best.', correct: false },
+        { text: 'Understand the mental model and set up safely (Module 1), ship a real hardened workflow end-to-end (Module 2 / Build #1), step up to agents with the three ingredients, sub-node architecture, memory, and four-layer guardrails (Module 3 / Build #2), then graduate to the reusable pattern, multi-agent judgement, maintenance, and the habit that keeps it running (Module 4 / Build #3). One disciplined progression, not a pile of features.', correct: true },
+        { text: 'Memorise every n8n node.', correct: false },
+        { text: 'Replace all human work with AI.', correct: false }
+      ],
+      explanation: "Module 1 was the setup and the mental model. Module 2 was the first complete build (a workflow, hardened for production). Module 3 was the conceptual pivot — from systems that follow instructions to systems that make choices. Module 4 was the mastery — reusable patterns, maintenance, and the discipline to keep it running past the moment of building. One arc, not a stack."
+    },
+    {
+      id: 30, mod: 'All',
+      text: 'A month after finishing this course, what does a "user" look like — as opposed to someone who merely "took a course on AI agents and workflows"?',
+      options: [
+        { text: 'They have watched every video twice and have strong opinions about multi-agent orchestration.', correct: false },
+        { text: 'They have three to five systems running on real work — including the three course builds, plus at least one original built on the four-stage pattern — with kill-switches, run logs, and weekly review rhythm. They can reach for a workflow when the path is scripted, reach for an agent when it is not, and they know when neither is the right answer. That reflex is the actual outcome.', correct: true },
+        { text: 'They tell everyone at dinner parties they have built AI agents.', correct: false },
+        { text: 'They have passed every quiz.', correct: false }
+      ],
+      explanation: "The whole course is measured in this single outcome — actual working use, not course completion. The 30-day plan from Lesson 4.4 is specifically designed to bridge 'I know how this works' and 'this is running in my week.' If that transformation happened, the course did its job. Certificate is a record of the learning; the muscle memory is the real thing."
+    }
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function pickQuestions() {
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  let lastFailTimestamp = null;
+
+  function checkCooldown() {
+    if (!lastFailTimestamp) return;
+    const elapsed = Date.now() - lastFailTimestamp;
+    if (elapsed < COOLDOWN_MS) {
+      const remaining = COOLDOWN_MS - elapsed;
+      const hours = Math.floor(remaining / (60 * 60 * 1000));
+      const mins = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+      document.getElementById('cooldownRemaining').textContent =
+        hours > 0 ? `~${hours}h ${mins}m` : `~${mins}m`;
+      document.getElementById('cooldownNotice').classList.add('show');
+    } else {
+      document.getElementById('cooldownNotice').classList.remove('show');
+    }
+  }
+
+  function renderProgressSegments() {
+    const container = document.getElementById('assessProgress');
+    container.innerHTML = '';
+    for (let i = 0; i < totalQuestions; i++) {
+      const span = document.createElement('span');
+      if (i === 0) span.classList.add('active');
+      container.appendChild(span);
+    }
+  }
+
+  function renderQuestions() {
+    selectedQuestions = pickQuestions();
+    answers = new Array(totalQuestions).fill(null);
+    answered = new Array(totalQuestions).fill(false);
+    currentQ = 0;
+
+    const container = document.getElementById('assessQuestions');
+    container.innerHTML = '';
+
+    selectedQuestions.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+          <span class="ref">Covered in ${q.mod === 'All' ? 'the whole course' : q.mod}</span>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const progressDots = () => document.querySelectorAll('#assessProgress span');
+  const runningScore = document.getElementById('runningScore');
+
+  function startAssessment() {
+    document.getElementById('introScreen').style.display = 'none';
+    document.getElementById('assessScreen').style.display = 'block';
+    renderProgressSegments();
+    renderQuestions();
+    updateProgressUI();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function getCards() { return document.querySelectorAll('.q-card'); }
+
+  function updateProgressUI() {
+    progressDots().forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < currentQ) d.classList.add('done');
+      else if (idx === currentQ) d.classList.add('active');
+    });
+    runningScore.innerHTML = `Question <strong>${currentQ + 1}</strong> of ${totalQuestions}`;
+  }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    updateProgressUI();
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('assessScreen').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) { currentQ++; showQuestion(currentQ); }
+    else { showResults(); }
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) { currentQ--; showQuestion(currentQ); }
+  }
+
+  function showResults() {
+    const score = answers.filter(a => a === true).length;
+    const pct = Math.round((score / totalQuestions) * 100);
+    const passed = (score / totalQuestions) >= PASS_THRESHOLD;
+
+    document.getElementById('assessScreen').style.display = 'none';
+    document.getElementById('resultScreen').classList.add('show');
+
+    const hero = document.getElementById('resultHero');
+    hero.className = 'result-hero ' + (passed ? 'pass' : 'fail');
+    document.getElementById('resultScoreBig').innerHTML = `${score}<span>/20</span>`;
+    document.getElementById('resultPct').textContent = `${pct}% · pass mark 70%`;
+    document.getElementById('resultPill').textContent = passed ? 'Certified' : 'Not this time';
+
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+
+    if (passed && score === 20) {
+      title.innerHTML = 'Full marks. <em>Properly certified.</em>';
+      body.textContent = "Twenty for twenty. The whole course tested and locked in — from mental models to hardened production builds to the habit that keeps it all running. Your certificate is ready, and you have earned it cleanly.";
+    } else if (passed) {
+      title.innerHTML = 'You are <em>certified</em>.';
+      body.textContent = `You scored ${score} out of 20. That is above the 70% pass mark — well done. Your certificate is ready to download. The module breakdown below shows where you were strongest and where a light revisit might be worth the time.`;
+    } else if (score >= 12) {
+      title.innerHTML = 'So close.';
+      body.textContent = `You scored ${score} out of 20 — just under the 14 needed. Glance at the module breakdown below, revisit the lessons that let you down, and take another run when you are ready. You are nearly there.`;
+    } else {
+      title.innerHTML = 'Worth another pass.';
+      body.textContent = `You scored ${score} out of 20. The module breakdown below shows where to focus — spend half an hour with the lessons flagged, then retry. You have got this.`;
+    }
+
+    renderModuleBreakdown();
+    renderQuestionBreakdown();
+
+    const actions = document.getElementById('resultActions');
+    if (passed) {
+      actions.innerHTML = `
+        <a href="certificate.html" class="btn btn-primary btn-big">View your certificate →</a>
+        <button class="btn btn-ghost" onclick="retakeNow()">↻ Retake for a higher score</button>
+      `;
+      lastFailTimestamp = null;
+    } else {
+      lastFailTimestamp = Date.now();
+      actions.innerHTML = `
+        <button class="btn btn-primary btn-big" onclick="retakeNow()">↻ Retake the assessment</button>
+        <a href="lesson-1-1-agents.html" class="btn btn-ghost">Revisit modules</a>
+      `;
+    }
+
+    document.getElementById('resultScreen').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function renderModuleBreakdown() {
+    const modBuckets = {
+      'M1': { name: 'Module 1 — Foundations', correct: 0, total: 0 },
+      'M2': { name: 'Module 2 — Build #1: Email triage', correct: 0, total: 0 },
+      'M3': { name: 'Module 3 — Build #2: The competitive intelligence agent', correct: 0, total: 0 },
+      'M4': { name: 'Module 4 — Beyond building', correct: 0, total: 0 },
+      'Synthesis': { name: 'Cross-module synthesis', correct: 0, total: 0 }
+    };
+    selectedQuestions.forEach((q, i) => {
+      let key;
+      if (q.mod === 'M1' || q.mod === 'M2' || q.mod === 'M3' || q.mod === 'M4') key = q.mod;
+      else key = 'Synthesis';
+      modBuckets[key].total += 1;
+      if (answers[i] === true) modBuckets[key].correct += 1;
+    });
+    const rows = document.getElementById('moduleRows');
+    rows.innerHTML = '';
+    Object.keys(modBuckets).forEach((k, idx) => {
+      const b = modBuckets[k];
+      if (b.total === 0) return;
+      const pct = Math.round((b.correct / b.total) * 100);
+      const row = document.createElement('div');
+      row.className = 'module-row';
+      row.innerHTML = `
+        <span class="module-row-num">0${idx+1}</span>
+        <span class="module-row-name">${b.name}</span>
+        <span class="module-row-bar"><span class="module-row-bar-inner" style="width:${pct}%"></span></span>
+        <span class="module-row-score">${b.correct}/${b.total}</span>
+      `;
+      rows.appendChild(row);
+    });
+  }
+
+  function renderQuestionBreakdown() {
+    const list = document.getElementById('qbList');
+    list.innerHTML = '';
+    selectedQuestions.forEach((q, i) => {
+      const row = document.createElement('div');
+      row.className = 'qb-row';
+      const ok = answers[i] === true;
+      const short = q.text.length > 60 ? q.text.slice(0, 58) + '…' : q.text;
+      row.innerHTML = `
+        <span class="qb-row-num">Q${String(i+1).padStart(2,'0')}</span>
+        <span class="qb-row-text" title="${q.text.replace(/"/g,'&quot;')}">${short}</span>
+        <span class="qb-row-mod">${q.mod}</span>
+        <span class="qb-row-status ${ok ? 'ok' : 'no'}">${ok ? '✓ Correct' : '✕ Missed'}</span>
+      `;
+      list.appendChild(row);
+    });
+  }
+
+  function toggleBreakdown() {
+    const toggle = document.getElementById('qbToggle');
+    const list = document.getElementById('qbList');
+    toggle.classList.toggle('expanded');
+    list.classList.toggle('show');
+  }
+
+  function retakeNow() {
+    document.getElementById('resultScreen').classList.remove('show');
+    document.getElementById('introScreen').style.display = 'block';
+    checkCooldown();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  checkCooldown();
+</script>
+
+</body>
+</html>

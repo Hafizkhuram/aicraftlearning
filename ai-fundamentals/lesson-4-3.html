@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lesson 4.3 — How to spot AI hype and misinformation | AICraft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --warn:#F59E0B;
+    --warn-bg:#FEF7EC;
+    --warn-border:#F4E0BB;
+    --warn-text:#92400E;
+    --warn-deep:#78350F;
+    /* Red/green flag colours */
+    --red:#DC2626;
+    --red-bg:#FEF2F2;
+    --red-border:#FECACA;
+    --green:#10B981;
+    --green-bg:#ECFDF5;
+    --green-border:#A7F3D0;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:var(--body);
+    font-size:17px;line-height:1.7;
+    color:var(--text);background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .progress-track{position:fixed;top:0;left:0;right:0;height:3px;z-index:100}
+  .progress-bar{height:100%;width:0%;
+    background:linear-gradient(90deg,var(--emerald),var(--forest));
+    transition:width .15s ease-out;
+  }
+
+  header{
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(8px);background:rgba(255,255,255,.85);
+  }
+  .header-inner{
+    max-width:1100px;margin:0 auto;padding:18px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .brand{
+    display:flex;align-items:center;gap:10px;
+    text-decoration:none;
+  }
+  .brand-logo{
+    height:32px;width:auto;
+    display:block;
+  }
+  .header-meta{display:flex;align-items:center;gap:20px;font-size:13px;color:var(--text-mute)}
+  .header-meta .sep{opacity:.4}
+  .lesson-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 10px;border-radius:999px;
+    background:var(--mint);color:var(--forest);
+    font-weight:600;font-size:12px;letter-spacing:.02em;
+  }
+  .lesson-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald)}
+
+  main{
+    max-width:1100px;margin:0 auto;padding:0 28px 80px;
+    display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:56px;
+  }
+  @media (max-width:900px){
+    main{grid-template-columns:1fr;gap:0;padding-bottom:48px}
+    aside.toc{display:none}
+  }
+
+  article{max-width:680px;padding-top:48px}
+
+  .lesson-meta{
+    display:flex;align-items:center;gap:10px;
+    font-size:13px;color:var(--text-mute);
+    margin-bottom:20px;font-weight:500;
+  }
+  .lesson-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.lesson-title{
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(34px,4.8vw,52px);line-height:1.08;
+    letter-spacing:-.02em;color:var(--slate);margin:0 0 20px;
+  }
+  h1.lesson-title em{font-style:italic;color:var(--forest)}
+
+  .hook{
+    font-family:var(--display);font-size:21px;line-height:1.5;
+    color:var(--text-soft);font-style:italic;font-weight:400;
+    padding:0 0 0 20px;border-left:3px solid var(--emerald);
+    margin:28px 0 48px;
+  }
+
+  article h2{
+    font-family:var(--display);font-weight:600;font-size:28px;
+    line-height:1.25;letter-spacing:-.015em;color:var(--forest);
+    margin:56px 0 16px;position:relative;padding-left:18px;
+  }
+  article h2::before{
+    content:"";position:absolute;left:0;top:10px;bottom:10px;
+    width:3px;border-radius:2px;background:var(--emerald);
+  }
+  article h3{
+    font-family:var(--display);font-weight:600;font-size:20px;
+    color:var(--slate);margin:32px 0 10px;letter-spacing:-.005em;
+  }
+  article p{margin:0 0 18px}
+  article p strong{color:var(--slate);font-weight:600}
+  article code{
+    font-family:"SFMono-Regular",Consolas,monospace;
+    background:var(--mint-soft);color:var(--forest);
+    padding:1px 6px;border-radius:4px;font-size:.92em;
+  }
+
+  .misconception{
+    display:grid;grid-template-columns:auto 1fr;gap:16px;
+    padding:20px 22px;background:var(--warn-bg);
+    border:1px solid var(--warn-border);border-radius:10px;margin:28px 0;
+  }
+  .misconception-icon{
+    width:32px;height:32px;border-radius:8px;
+    background:var(--warn);color:#fff;
+    display:grid;place-items:center;
+    font-family:var(--display);font-weight:700;font-size:18px;flex-shrink:0;
+  }
+  .misconception-label{
+    font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--warn-text);font-weight:700;margin-bottom:4px;
+  }
+  .misconception-text{margin:0;color:var(--warn-deep);font-size:15.5px;line-height:1.6}
+
+  .takeaway{
+    margin:40px 0;padding:28px 32px;
+    background:linear-gradient(135deg,var(--mint-soft) 0%,var(--mint) 100%);
+    border:1px solid #A7F3D0;border-radius:14px;
+    position:relative;overflow:hidden;
+  }
+  .takeaway::before{
+    content:"";position:absolute;top:0;bottom:0;left:0;
+    width:4px;background:var(--emerald);
+  }
+  .takeaway-label{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);font-weight:700;margin-bottom:12px;
+  }
+  .takeaway-label svg{width:14px;height:14px}
+  .takeaway-main{
+    font-family:var(--display);font-size:22px;line-height:1.4;
+    color:var(--slate);font-weight:600;margin:0 0 10px;letter-spacing:-.01em;
+  }
+  .takeaway-sub{font-size:15.5px;color:var(--forest);margin:0;line-height:1.6}
+
+  /* Red / green flags side-by-side */
+  .flags{
+    display:grid;grid-template-columns:1fr 1fr;gap:14px;
+    margin:24px 0;
+  }
+  @media (max-width:620px){.flags{grid-template-columns:1fr}}
+  .flag-card{
+    padding:22px 24px;border-radius:12px;
+    border:1.5px solid;
+  }
+  .flag-card.red{background:var(--red-bg);border-color:var(--red-border)}
+  .flag-card.green{background:var(--green-bg);border-color:var(--green-border)}
+  .flag-head{
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:14px;
+  }
+  .flag-icon{
+    width:30px;height:30px;border-radius:8px;
+    display:grid;place-items:center;
+    font-family:var(--display);font-weight:700;font-size:16px;
+    color:#fff;flex-shrink:0;
+  }
+  .flag-card.red .flag-icon{background:var(--red)}
+  .flag-card.green .flag-icon{background:var(--green)}
+  .flag-title{
+    font-family:var(--display);font-weight:600;
+    font-size:16px;letter-spacing:.02em;margin:0;
+  }
+  .flag-card.red .flag-title{color:#7F1D1D}
+  .flag-card.green .flag-title{color:var(--forest)}
+  .flag-list{
+    list-style:none;padding:0;margin:0;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .flag-list li{
+    padding:6px 0 6px 22px;
+    position:relative;
+    font-size:14px;line-height:1.5;color:var(--text);
+    border-top:1px solid rgba(0,0,0,.04);
+  }
+  .flag-list li:first-child{border-top:0}
+  .flag-list li::before{
+    content:"";position:absolute;left:0;top:12px;
+    width:12px;height:12px;border-radius:3px;
+  }
+  .flag-card.red .flag-list li::before{
+    background:var(--red);
+    -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M4 4l8 8M12 4l-8 8' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round'/></svg>") no-repeat center/contain;
+            mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M4 4l8 8M12 4l-8 8' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round'/></svg>") no-repeat center/contain;
+  }
+  .flag-card.green .flag-list li::before{
+    background:var(--green);
+    -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M3 8l3 3 7-7' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat center/contain;
+            mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M3 8l3 3 7-7' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat center/contain;
+  }
+
+  /* The one question callout */
+  .oneq{
+    margin:28px 0;
+    padding:28px 32px;
+    background:var(--slate);color:#fff;
+    border-radius:16px;
+    position:relative;overflow:hidden;
+  }
+  .oneq::before{
+    content:"";position:absolute;left:0;top:22px;bottom:22px;
+    width:4px;background:var(--emerald);border-radius:2px;
+  }
+  .oneq-label{
+    font-family:var(--display);font-weight:700;
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--emerald);margin:0 0 10px;
+  }
+  .oneq-text{
+    font-family:var(--display);font-weight:500;
+    font-size:24px;line-height:1.35;
+    color:#fff;margin:0 0 10px;letter-spacing:-.01em;
+    font-style:italic;
+  }
+  .oneq-sub{
+    font-size:14.5px;color:#CBD5E1;
+    margin:0;line-height:1.55;
+  }
+
+  /* Hype detector */
+  .detector{
+    margin:32px 0;
+    padding:26px 28px 22px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+  }
+  .detector-head{
+    display:flex;justify-content:space-between;align-items:baseline;
+    flex-wrap:wrap;gap:8px;margin-bottom:6px;
+  }
+  .detector-label{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--text-mute);
+  }
+  .detector-score{font-size:13px;color:var(--text-mute);font-weight:500}
+  .detector-sub{color:var(--text-soft);font-size:14.5px;margin:0 0 20px}
+
+  .hd-item{
+    padding:18px 20px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    margin-bottom:12px;
+    background:var(--bg);
+    transition:all .3s;
+  }
+  .hd-item.answered{background:var(--card)}
+  .hd-source{
+    font-size:13px;color:var(--text-mute);
+    margin:0 0 8px;font-weight:500;
+  }
+  .hd-claim{
+    font-family:var(--display);font-weight:500;
+    font-size:16.5px;color:var(--slate);
+    margin:0 0 16px;line-height:1.45;letter-spacing:-.005em;
+    padding:14px 16px;
+    background:var(--card);
+    border-left:3px solid var(--border);
+    border-radius:0 6px 6px 0;
+    font-style:italic;
+  }
+  .hd-item.answered .hd-claim{background:var(--bg)}
+
+  .hd-buttons{
+    display:flex;gap:8px;flex-wrap:wrap;
+  }
+  .hd-btn{
+    flex:1;min-width:140px;
+    padding:11px 14px;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    background:var(--card);
+    cursor:pointer;
+    font-family:var(--body);font-weight:600;font-size:13.5px;
+    color:var(--text-soft);
+    transition:all .18s;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .hd-btn:hover:not(:disabled){transform:translateY(-1px)}
+  .hd-btn.hype:hover:not(:disabled){border-color:var(--red);color:var(--red)}
+  .hd-btn.real:hover:not(:disabled){border-color:var(--green);color:var(--green)}
+  .hd-btn:disabled{cursor:default;opacity:.5;transform:none}
+  .hd-btn-dot{
+    width:10px;height:10px;border-radius:50%;flex-shrink:0;
+  }
+  .hd-btn.hype .hd-btn-dot{background:var(--red)}
+  .hd-btn.real .hd-btn-dot{background:var(--green)}
+  .hd-btn.picked.correct{
+    background:var(--green-bg);border-color:var(--green);color:var(--green);
+  }
+  .hd-btn.picked.wrong{
+    background:var(--red-bg);border-color:var(--red);color:var(--red);
+  }
+  .hd-btn.reveal{opacity:1 !important}
+  .hd-btn.reveal.hype{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+  .hd-btn.reveal.real{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+
+  .hd-feedback{
+    display:none;
+    margin-top:12px;padding:12px 14px;
+    border-radius:8px;font-size:13.5px;line-height:1.55;
+  }
+  .hd-feedback.show{display:block;animation:fadeIn .3s ease}
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(4px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .hd-feedback.hype{background:var(--red-bg);border-left:3px solid var(--red);color:#7F1D1D}
+  .hd-feedback.real{background:var(--green-bg);border-left:3px solid var(--green);color:var(--forest)}
+  .hd-feedback-label{
+    font-family:var(--display);font-weight:600;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    margin-bottom:4px;display:block;
+  }
+
+  /* Action box */
+  .action-box{
+    margin:48px 0 0;padding:32px;
+    background:var(--slate);border-radius:16px;color:#fff;
+    position:relative;overflow:hidden;
+  }
+  .action-box::after{
+    content:"";position:absolute;right:-60px;bottom:-60px;
+    width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(16,185,129,.18),transparent 70%);
+    pointer-events:none;
+  }
+  .action-eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    color:var(--emerald);font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;font-weight:700;margin-bottom:14px;
+  }
+  .action-title{
+    font-family:var(--display);font-weight:500;font-size:26px;
+    line-height:1.25;margin:0 0 12px;color:#fff;letter-spacing:-.01em;
+  }
+  .action-body{color:#CBD5E1;font-size:16px;line-height:1.65;margin:0 0 20px}
+  .action-prompt{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:8px;padding:14px 16px;
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:13.5px;color:#E2E8F0;margin:0 0 20px;line-height:1.7;
+  }
+  .action-check{
+    display:flex;align-items:center;gap:10px;
+    cursor:pointer;user-select:none;padding:10px 0;
+    color:#CBD5E1;font-size:15px;position:relative;z-index:2;
+  }
+  .action-check input{display:none}
+  .action-check .box{
+    width:20px;height:20px;border-radius:5px;
+    border:1.5px solid #475569;
+    display:grid;place-items:center;transition:all .2s;flex-shrink:0;
+  }
+  .action-check input:checked + .box{background:var(--emerald);border-color:var(--emerald)}
+  .action-check input:checked + .box::after{
+    content:"✓";color:#fff;font-size:13px;font-weight:700;
+  }
+  .action-check input:checked ~ span:last-child{
+    color:#fff;text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3);
+  }
+
+  /* Quiz */
+  .quiz{
+    margin-top:72px;padding:40px 36px;
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+  }
+  .quiz-header{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .quiz-eyebrow{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);font-weight:700;
+  }
+  .quiz-title{
+    font-family:var(--display);font-weight:600;font-size:26px;
+    line-height:1.2;color:var(--slate);margin:4px 0 8px;letter-spacing:-.01em;
+  }
+  .quiz-sub{color:var(--text-mute);margin:0 0 28px;font-size:15px}
+  .quiz-progress{display:flex;gap:6px;margin-bottom:28px}
+  .quiz-progress span{
+    flex:1;height:4px;border-radius:2px;
+    background:var(--border);transition:background .3s;
+  }
+  .quiz-progress span.done{background:var(--emerald)}
+  .quiz-progress span.active{background:var(--forest)}
+
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  .q-number{
+    font-family:var(--display);font-size:13px;color:var(--text-mute);
+    font-weight:500;letter-spacing:.04em;margin-bottom:8px;
+  }
+  .q-text{
+    font-family:var(--display);font-weight:500;font-size:21px;
+    line-height:1.4;color:var(--slate);margin:0 0 24px;letter-spacing:-.005em;
+  }
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:16px 18px;border:1.5px solid var(--border);border-radius:10px;
+    cursor:pointer;transition:all .2s;background:var(--card);
+    font-size:15.5px;line-height:1.5;
+  }
+  .option:hover:not(.disabled){border-color:var(--emerald);background:var(--mint-soft)}
+  .option.disabled{cursor:default}
+  .option-letter{
+    width:26px;height:26px;border-radius:7px;
+    background:var(--border-soft);color:var(--text-soft);
+    display:grid;place-items:center;font-weight:700;font-size:13px;
+    flex-shrink:0;transition:all .2s;font-family:var(--display);
+  }
+  .option:hover:not(.disabled) .option-letter{background:var(--emerald);color:#fff}
+  .option.correct{border-color:var(--success);background:#F0FDF4}
+  .option.correct .option-letter{background:var(--success);color:#fff}
+  .option.incorrect{border-color:var(--error);background:#FEF2F2}
+  .option.incorrect .option-letter{background:var(--error);color:#fff}
+  .option-check{
+    margin-left:auto;opacity:0;transition:opacity .2s;
+    font-size:20px;line-height:1;
+  }
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+
+  .explanation{
+    display:none;margin-top:20px;padding:18px 20px;border-radius:10px;
+    background:var(--mint-soft);border-left:3px solid var(--emerald);
+    font-size:15px;line-height:1.6;color:var(--forest);
+  }
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{
+    display:block;font-family:var(--display);font-size:13px;
+    letter-spacing:.1em;text-transform:uppercase;
+    color:var(--forest);margin-bottom:6px;
+  }
+  .explanation.wrong{background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D}
+  .explanation.wrong strong{color:#7F1D1D}
+
+  .quiz-nav{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:24px;gap:12px;
+  }
+  .btn{
+    border:0;cursor:pointer;font-family:var(--body);
+    font-weight:600;font-size:14.5px;padding:11px 22px;border-radius:8px;
+    transition:all .18s;display:inline-flex;align-items:center;gap:8px;
+    text-decoration:none;
+  }
+  .btn-primary{background:var(--forest);color:#fff}
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{
+    background:var(--border);color:var(--text-mute);
+    cursor:not-allowed;transform:none;
+  }
+  .btn-ghost{background:transparent;color:var(--text-mute)}
+  .btn-ghost:hover{color:var(--forest)}
+  .btn-big{padding:14px 28px;font-size:15px}
+
+  .quiz-result{display:none;text-align:center;padding:20px 0}
+  .quiz-result.show{display:block;animation:fadeIn .4s ease}
+  .quiz-score{
+    font-family:var(--display);font-weight:500;font-size:72px;
+    line-height:1;color:var(--forest);margin:0 0 8px;letter-spacing:-.03em;
+  }
+  .quiz-score span{color:var(--text-mute);font-size:32px}
+  .quiz-result-title{
+    font-family:var(--display);font-weight:600;font-size:24px;
+    color:var(--slate);margin:0 0 8px;
+  }
+  .quiz-result-body{
+    color:var(--text-mute);margin:0 auto 24px;max-width:420px;
+    font-size:15.5px;line-height:1.6;
+  }
+
+  aside.toc{
+    padding-top:56px;position:sticky;top:80px;
+    align-self:start;max-height:calc(100vh - 100px);overflow-y:auto;
+  }
+  .toc-label{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--text-mute);font-weight:700;margin-bottom:14px;
+  }
+  .toc ul{list-style:none;padding:0;margin:0;border-left:1px solid var(--border)}
+  .toc li{margin:0}
+  .toc a{
+    display:block;padding:7px 16px;font-size:13.5px;color:var(--text-mute);
+    text-decoration:none;border-left:2px solid transparent;margin-left:-1px;
+    transition:all .15s;line-height:1.4;
+  }
+  .toc a:hover{color:var(--forest)}
+  .toc a.active{color:var(--forest);font-weight:600;border-left-color:var(--emerald)}
+
+  /* ====== COURSE FINALE BLOCK ====== */
+  .finale{
+    margin:64px 0 0;
+    padding:44px 44px 40px;
+    background:linear-gradient(135deg,#0F172A 0%,#065F46 100%);
+    border-radius:20px;
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+  }
+  .finale::before{
+    content:"";position:absolute;
+    top:-80px;right:-80px;
+    width:320px;height:320px;border-radius:50%;
+    background:radial-gradient(circle,rgba(16,185,129,.25),transparent 65%);
+    pointer-events:none;
+  }
+  .finale::after{
+    content:"";position:absolute;
+    bottom:-100px;left:-100px;
+    width:340px;height:340px;border-radius:50%;
+    background:radial-gradient(circle,rgba(16,185,129,.15),transparent 70%);
+    pointer-events:none;
+  }
+  .finale-inner{position:relative;z-index:2}
+  .finale-mark{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 14px;border-radius:999px;
+    background:rgba(16,185,129,.2);
+    color:#A7F3D0;
+    font-family:var(--display);font-weight:700;
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .finale-mark::before{
+    content:"✓";font-size:13px;color:var(--emerald);font-weight:700;
+  }
+  .finale-title{
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(30px,4.5vw,42px);line-height:1.1;
+    margin:0 0 16px;letter-spacing:-.02em;color:#fff;
+  }
+  .finale-title em{font-style:italic;color:#A7F3D0}
+  .finale-body{
+    font-size:16.5px;line-height:1.65;color:#CBD5E1;
+    margin:0 0 24px;max-width:540px;
+  }
+  .finale-body strong{color:#fff}
+  .finale-summary{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+    margin:24px 0 28px;
+  }
+  @media (max-width:680px){.finale-summary{grid-template-columns:repeat(2,1fr)}}
+  .finale-stat{
+    padding:14px 16px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:10px;
+  }
+  .finale-stat-num{
+    font-family:var(--display);font-weight:500;
+    font-size:26px;line-height:1;color:#fff;letter-spacing:-.02em;
+    margin:0 0 4px;
+  }
+  .finale-stat-label{
+    font-family:var(--body);font-size:12px;
+    color:#94A3B8;line-height:1.4;
+    letter-spacing:.02em;
+  }
+  .finale-cta-row{
+    display:flex;gap:12px;flex-wrap:wrap;
+    margin-top:8px;
+  }
+  .finale-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:14px 24px;border-radius:10px;
+    font-family:var(--body);font-weight:600;font-size:15px;
+    text-decoration:none;
+    transition:all .2s;
+  }
+  .finale-btn.primary{
+    background:var(--emerald);color:#0F172A;
+  }
+  .finale-btn.primary:hover{
+    background:#A7F3D0;transform:translateY(-1px);
+  }
+  .finale-btn.secondary{
+    background:rgba(255,255,255,.1);
+    color:#fff;
+    border:1px solid rgba(255,255,255,.2);
+  }
+  .finale-btn.secondary:hover{
+    background:rgba(255,255,255,.15);
+    border-color:rgba(255,255,255,.3);
+  }
+
+  /* Next step cards */
+  .nextstep{
+    margin:40px 0 0;
+    padding:0;
+  }
+  .nextstep-label{
+    font-family:var(--display);font-weight:600;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--text-mute);
+    margin:0 0 16px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .nextstep-label::before,.nextstep-label::after{
+    content:"";flex:1;height:1px;background:var(--border);
+  }
+  .nextstep-cards{
+    display:grid;grid-template-columns:1fr 1fr;gap:14px;
+  }
+  @media (max-width:620px){.nextstep-cards{grid-template-columns:1fr}}
+  .nextstep-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:22px 24px;
+    text-decoration:none;
+    transition:all .2s;
+    display:flex;flex-direction:column;
+  }
+  .nextstep-card:hover{
+    border-color:var(--emerald);
+    transform:translateY(-2px);
+    box-shadow:0 8px 24px rgba(6,95,70,.08);
+  }
+  .nextstep-tag{
+    font-family:var(--display);font-weight:700;
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--emerald);margin:0 0 8px;
+  }
+  .nextstep-title{
+    font-family:var(--display);font-weight:600;
+    font-size:19px;color:var(--slate);
+    margin:0 0 8px;letter-spacing:-.01em;line-height:1.3;
+  }
+  .nextstep-body{
+    font-size:14px;color:var(--text-soft);
+    margin:0 0 14px;line-height:1.55;flex:1;
+  }
+  .nextstep-link{
+    font-family:var(--body);font-weight:600;font-size:13.5px;
+    color:var(--forest);
+    display:inline-flex;align-items:center;gap:4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AICraft Learning">
+      <svg class="brand-logo" viewBox="0 0 420 80" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="lesson-badge">Module 4 · Lesson 3</span>
+      <span class="sep">·</span>
+      <span>6 min read</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article>
+    <div class="lesson-meta">
+      <span>AI Fundamentals: From Zero to Confident</span>
+      <span class="dot"></span>
+      <span>Making smart AI decisions</span>
+    </div>
+
+    <h1 class="lesson-title">How to spot <em>AI hype</em> and misinformation</h1>
+
+    <p class="hook">There are more AI-powered products advertised than actually exist. Here's how to tell them apart.</p>
+
+    <p>You've made it to the final lesson. You now know how AI works, what it's good at, how to prompt it properly, and what not to paste into it. This lesson does the opposite: it trains you to spot the nonsense so you can walk past it with confidence.</p>
+
+    <p>The AI space is saturated with marketing. Some of it describes genuinely useful products. A lot of it describes nothing at all. After this lesson, you'll be able to tell the difference in about fifteen seconds.</p>
+
+    <div class="misconception">
+      <div class="misconception-icon">!</div>
+      <div>
+        <div class="misconception-label">The common misconception</div>
+        <p class="misconception-text"><strong>"If a product mentions AI, it must do something new."</strong> It might. Or it might be a 2018 rules engine with a lick of paint. Every CRM, inbox, analytics dashboard, and scheduling app on earth now claims to be AI-powered. The label tells you almost nothing.</p>
+      </div>
+    </div>
+
+    <h2 id="section-1">The language of AI hype</h2>
+
+    <p>Marketing language has patterns, like everything else. Once you've seen them a few times, they jump out. Most AI hype leans on a small set of words and phrases that feel impressive but describe nothing concrete.</p>
+
+    <div class="flags">
+      <div class="flag-card red">
+        <div class="flag-head">
+          <div class="flag-icon">✕</div>
+          <h4 class="flag-title">Red flags — walk past</h4>
+        </div>
+        <ul class="flag-list">
+          <li>"Autonomous" — does what, exactly?</li>
+          <li>"Revolutionary" or "game-changing"</li>
+          <li>"AGI-powered" or "superintelligent"</li>
+          <li>"No human needed" / "replaces your entire team"</li>
+          <li>"Unlock 10x productivity" (or any specific multiplier)</li>
+          <li>Vague phrases like "leverages advanced AI"</li>
+          <li>Testimonials that don't describe what happened</li>
+        </ul>
+      </div>
+      <div class="flag-card green">
+        <div class="flag-head">
+          <div class="flag-icon">✓</div>
+          <h4 class="flag-title">Green flags — pay attention</h4>
+        </div>
+        <ul class="flag-list">
+          <li>A specific, concrete use case</li>
+          <li>Honest statements about what it can't do</li>
+          <li>Realistic pricing with clear tiers</li>
+          <li>Before/after examples with actual output</li>
+          <li>Names the underlying model (e.g. Claude or GPT-4o)</li>
+          <li>Time savings expressed as a range, not a promise</li>
+          <li>Humans still visible in the workflow</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>The rule of thumb: <strong>if a vendor can't tell you what their product actually does, neither can you.</strong> And if you can't describe it to a colleague in one concrete sentence, you probably shouldn't be paying for it.</p>
+
+    <h2 id="section-2">The single question that cuts through it all</h2>
+
+    <p>You don't need a checklist for most AI marketing. You need one question, applied consistently. It's this.</p>
+
+    <div class="oneq">
+      <p class="oneq-label">The one question</p>
+      <p class="oneq-text">"What exactly would this do on Monday morning?"</p>
+      <p class="oneq-sub">Ask it of any AI product, pitch, or tool. If the answer is vague, you've got a hype product. If the answer is a specific task someone would actually do, you've got a real one.</p>
+    </div>
+
+    <p>Notice how the question forces specificity. "Revolutionary sales AI" doesn't survive it — what does it do on Monday morning? "Drafts follow-up emails to cold leads based on last call's transcript" does survive it. One is a product. The other is a pitch deck.</p>
+
+    <p>The question also keeps you honest about what <em>you'd</em> actually use. A Monday-morning task you'd never do anyway is still a bad fit — however real the product is. The filter works in both directions.</p>
+
+    <h2 id="section-3">Run some real-looking ones through the filter</h2>
+
+    <p>Six AI marketing claims, all written to sound current and professional. For each, decide: hype, or real?</p>
+
+    <div class="detector" id="detector">
+      <div class="detector-head">
+        <span class="detector-label">Hype detector · 6 claims</span>
+        <span class="detector-score" id="detectorScore">0 of 6 checked</span>
+      </div>
+      <p class="detector-sub">Click "hype" or "real" for each. Feedback appears straight away.</p>
+
+      <!-- Claim 1 -->
+      <div class="hd-item" data-correct="hype">
+        <p class="hd-source">Seen on LinkedIn, sponsored post</p>
+        <p class="hd-claim">"Our AI-powered platform leverages cutting-edge neural intelligence to revolutionise your entire go-to-market motion and unlock 10x productivity."</p>
+        <div class="hd-buttons">
+          <button class="hd-btn hype" data-pick="hype"><span class="hd-btn-dot"></span>Hype</button>
+          <button class="hd-btn real" data-pick="real"><span class="hd-btn-dot"></span>Real</button>
+        </div>
+        <div class="hd-feedback">
+          <span class="hd-feedback-label">Hype — four red flags in one sentence</span>
+          "Leverages," "cutting-edge," "revolutionise," "10x productivity" — and no mention of what the product actually does on any given Monday. This is the pure form of AI hype: dense with promise, empty of specifics.
+        </div>
+      </div>
+
+      <!-- Claim 2 -->
+      <div class="hd-item" data-correct="real">
+        <p class="hd-source">SaaS landing page, pricing section</p>
+        <p class="hd-claim">"Drafts personalised follow-up emails for your sales team, using the last call transcript plus the contact's history from your CRM. Claude 3.5 Sonnet under the hood. £29/user/month. Saves most teams 2–5 hours per rep per week."</p>
+        <div class="hd-buttons">
+          <button class="hd-btn hype" data-pick="hype"><span class="hd-btn-dot"></span>Hype</button>
+          <button class="hd-btn real" data-pick="real"><span class="hd-btn-dot"></span>Real</button>
+        </div>
+        <div class="hd-feedback">
+          <span class="hd-feedback-label">Real — everything a real product looks like</span>
+          Concrete Monday-morning task (drafts follow-up emails). Names the model. Realistic pricing. Time savings as a range, not a promise. You know exactly what you're buying in a sentence.
+        </div>
+      </div>
+
+      <!-- Claim 3 -->
+      <div class="hd-item" data-correct="hype">
+        <p class="hd-source">Press release</p>
+        <p class="hd-claim">"Industry-first autonomous AI employee that replaces your entire operations team. Zero human oversight required. Deploys in minutes."</p>
+        <div class="hd-buttons">
+          <button class="hd-btn hype" data-pick="hype"><span class="hd-btn-dot"></span>Hype</button>
+          <button class="hd-btn real" data-pick="real"><span class="hd-btn-dot"></span>Real</button>
+        </div>
+        <div class="hd-feedback">
+          <span class="hd-feedback-label">Hype — and probably a liability</span>
+          "Autonomous," "replaces your entire team," "zero human oversight" — hype flag triple-stack. Worth remembering Lesson 3.2: AI is your fastest intern, not your advisor. Anyone selling zero-oversight AI is either confused, exaggerating, or about to get someone into serious trouble.
+        </div>
+      </div>
+
+      <!-- Claim 4 -->
+      <div class="hd-item" data-correct="real">
+        <p class="hd-source">Product docs, new feature announcement</p>
+        <p class="hd-claim">"New feature: Meeting summariser. Paste a meeting transcript, get a structured summary with decisions made, action items with owners, and open questions. Does not replace proper minutes for regulated industries — we recommend a human reviewer.</p>
+        <div class="hd-buttons">
+          <button class="hd-btn hype" data-pick="hype"><span class="hd-btn-dot"></span>Hype</button>
+          <button class="hd-btn real" data-pick="real"><span class="hd-btn-dot"></span>Real</button>
+        </div>
+        <div class="hd-feedback">
+          <span class="hd-feedback-label">Real — and unusually honest</span>
+          Very specific Monday-morning task. Named inputs, named outputs. Explicit limitation ("does not replace proper minutes for regulated industries"). Honest caveats are a strong trust signal — a vendor willing to say what their tool isn't usually has a clearer view of what it is.
+        </div>
+      </div>
+
+      <!-- Claim 5 -->
+      <div class="hd-item" data-correct="hype">
+        <p class="hd-source">Conference keynote</p>
+        <p class="hd-claim">"By 2026, AGI will transform every job on Earth. Those who don't adopt our AGI-native workflow today will be left behind in 18 months."</p>
+        <div class="hd-buttons">
+          <button class="hd-btn hype" data-pick="hype"><span class="hd-btn-dot"></span>Hype</button>
+          <button class="hd-btn real" data-pick="real"><span class="hd-btn-dot"></span>Real</button>
+        </div>
+        <div class="hd-feedback">
+          <span class="hd-feedback-label">Hype — and using fear as the close</span>
+          "AGI," vague timelines, "left behind" urgency. No product description at all, just a threat. When the pitch is fear rather than function, the question "what does it do on Monday morning?" hits empty — which tells you exactly what it's worth.
+        </div>
+      </div>
+
+      <!-- Claim 6 -->
+      <div class="hd-item" data-correct="hype">
+        <p class="hd-source">Instagram ad</p>
+        <p class="hd-claim">"I made £34,000 in my first month using this AI side-hustle. Anyone can do it. DM me for the full system."</p>
+        <div class="hd-buttons">
+          <button class="hd-btn hype" data-pick="hype"><span class="hd-btn-dot"></span>Hype</button>
+          <button class="hd-btn real" data-pick="real"><span class="hd-btn-dot"></span>Real</button>
+        </div>
+        <div class="hd-feedback">
+          <span class="hd-feedback-label">Hype — the oldest trick, AI-branded</span>
+          Specific impressive number, impossible to verify. "Anyone can do it" is a classic unfalsifiable claim. "DM for the system" means no product page, no pricing, no specifics. This is pyramid-scheme marketing with AI as the new gloss.
+        </div>
+      </div>
+    </div>
+
+    <h2 id="section-4">How to spot AI-generated content too</h2>
+
+    <p>A small note before the takeaway. The same filter that catches AI hype also catches a lot of AI-generated content masquerading as human writing. The signs are familiar once you know them.</p>
+
+    <p>Overused phrases like <em>"in today's rapidly evolving landscape"</em> or <em>"it's crucial to remember that…"</em> Heavy use of tricolons — <em>"empowering, enabling, and enriching."</em> Sentences that average around the same length. A general absence of specifics, names, or concrete examples. Smooth, confident, and somehow saying nothing.</p>
+
+    <p>None of these are proof. Humans write this way too, especially tired ones. But a piece of writing that hits three or four of those patterns, with no specific details of any kind, is probably AI output someone didn't bother to edit. Applying the same "what does this actually say on Monday morning?" question usually sorts it out.</p>
+
+    <div class="takeaway">
+      <div class="takeaway-label">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.5 7.5l-4 4a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06L9 11.94l3.44-3.44a.75.75 0 011.06 1.06z"/></svg>
+        The one thing to remember
+      </div>
+      <p class="takeaway-main">If you can't describe what the tool does in one concrete sentence, neither can the vendor. Move on.</p>
+      <p class="takeaway-sub">The AI hype industry runs on vague promises. A single specific question — "what does this do on Monday morning?" — defeats almost all of it.</p>
+    </div>
+
+    <div class="action-box">
+      <div class="action-eyebrow">
+        ◆ Try this right now
+      </div>
+      <h3 class="action-title">Apply the filter to one real ad</h3>
+      <p class="action-body">Open LinkedIn, X, or your inbox. Find any AI-related ad or sponsored post. Read it once, then answer the two questions below in writing.</p>
+      <div class="action-prompt">
+        The product / pitch: ____________________<br><br>
+        1. What would this actually do on Monday morning?<br>
+        _________________________________________<br><br>
+        2. Any specific red flags I noticed?<br>
+        _________________________________________
+      </div>
+      <p class="action-body" style="margin-bottom:8px">If you can't answer question 1 concretely, you've just confirmed the filter works. Do this two or three times over the next week and it becomes an automatic reflex — you'll scan AI marketing the way a newspaper editor scans a press release.</p>
+      <label class="action-check">
+        <input type="checkbox" id="actionDone" />
+        <span class="box"></span>
+        <span>I've done this — mark as complete</span>
+      </label>
+    </div>
+
+    <!-- QUIZ -->
+    <section class="quiz" id="quiz">
+      <div class="quiz-header">
+        <span class="quiz-eyebrow">Lesson check · 3 questions</span>
+      </div>
+      <h2 class="quiz-title" style="color:var(--slate);padding:0;margin-top:0">Did it stick?</h2>
+      <p class="quiz-sub">Takes about 30 seconds. Answers and explanations appear right away.</p>
+
+      <div class="quiz-progress" id="quizProgress">
+        <span class="active"></span><span></span><span></span>
+      </div>
+
+      <div id="quizQuestions"></div>
+
+      <div class="quiz-result" id="quizResult">
+        <div class="quiz-score"><span id="scoreNum">0</span><span>/3</span></div>
+        <h3 class="quiz-result-title" id="resultTitle">Nicely done</h3>
+        <p class="quiz-result-body" id="resultBody">That's every lesson done. Scroll down — something to celebrate, and what's next.</p>
+        <button class="btn btn-ghost" onclick="resetQuiz()">↻ Retry questions</button>
+      </div>
+
+      <div class="quiz-nav" id="quizNav">
+        <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- COURSE FINALE BLOCK -->
+    <!-- ============================================ -->
+    <section class="finale" id="finale">
+      <div class="finale-inner">
+        <span class="finale-mark">All lessons complete</span>
+        <h2 class="finale-title">That's every lesson done. <em>Well done.</em></h2>
+        <p class="finale-body">You started this course as someone unsure what AI actually is. You're finishing it as someone who can pick a tool, write a proper prompt, judge what to trust, and walk past the hype without flinching. <strong>That puts you ahead of most people in any room you'll walk into.</strong></p>
+
+        <div class="finale-summary">
+          <div class="finale-stat">
+            <p class="finale-stat-num">4</p>
+            <p class="finale-stat-label">Modules finished</p>
+          </div>
+          <div class="finale-stat">
+            <p class="finale-stat-num">12</p>
+            <p class="finale-stat-label">Lessons read</p>
+          </div>
+          <div class="finale-stat">
+            <p class="finale-stat-num">36+</p>
+            <p class="finale-stat-label">Quiz questions done</p>
+          </div>
+          <div class="finale-stat">
+            <p class="finale-stat-num">1</p>
+            <p class="finale-stat-label">Certificate to earn</p>
+          </div>
+        </div>
+
+        <p class="finale-body" style="margin-bottom:16px"><strong>Two steps left.</strong> First, the Module 4 review — 5 questions to lock in what you learned about tool choice, privacy, and spotting hype. Then the final assessment: twenty questions across all four modules, with 70% to earn your certificate.</p>
+
+        <div class="finale-cta-row">
+          <a href="module-4-review.html" class="finale-btn primary">Module 4 review — 5 questions →</a>
+          <a href="#nextstep" class="finale-btn secondary">See what's next</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Next step invitation -->
+    <section class="nextstep" id="nextstep">
+      <p class="nextstep-label">Where to go from here</p>
+      <div class="nextstep-cards">
+        <a href="#" class="nextstep-card">
+          <p class="nextstep-tag">Course 2 · Next up</p>
+          <h3 class="nextstep-title">Claude Code — AI that builds for you</h3>
+          <p class="nextstep-body">A practical, non-technical introduction to Claude Code. Build small tools, automate weekly jobs, and stop waiting on developers. No prior coding assumed.</p>
+          <span class="nextstep-link">Learn more →</span>
+        </a>
+        <a href="#" class="nextstep-card">
+          <p class="nextstep-tag">Full Program</p>
+          <h3 class="nextstep-title">AIOS — running your work with AI</h3>
+          <p class="nextstep-body">The deeper AI Craft programme for business owners who want AI running through their week — writing, research, ops, and customer work — with a coherent system behind it.</p>
+          <span class="nextstep-link">Explore AIOS →</span>
+        </a>
+      </div>
+    </section>
+  </article>
+
+  <aside class="toc">
+    <div class="toc-label">In this lesson</div>
+    <ul>
+      <li><a href="#section-1" class="active">The language of hype</a></li>
+      <li><a href="#section-2">The one question</a></li>
+      <li><a href="#section-3">Run some through the filter</a></li>
+      <li><a href="#section-4">Spotting AI-generated content</a></li>
+      <li><a href="#quiz">Lesson check</a></li>
+      <li><a href="#finale" style="color:var(--emerald);font-weight:600">Course complete</a></li>
+    </ul>
+  </aside>
+</main>
+
+<script>
+  // Progress bar
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+    progressBar.style.width = Math.min(100, Math.max(0, scrolled * 100)) + '%';
+  });
+
+  // TOC active state
+  const tocLinks = document.querySelectorAll('.toc a');
+  const sections = [...tocLinks].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY + 140;
+    let activeIdx = 0;
+    sections.forEach((s, i) => { if (s.offsetTop <= y) activeIdx = i; });
+    tocLinks.forEach((a,i) => a.classList.toggle('active', i === activeIdx));
+  });
+
+  // -------- Hype detector --------
+  let detectorAnswered = 0;
+  const detectorTotal = 6;
+
+  document.querySelectorAll('.hd-item').forEach(item => {
+    const correct = item.dataset.correct;
+    const buttons = item.querySelectorAll('.hd-btn');
+    const feedback = item.querySelector('.hd-feedback');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (item.classList.contains('answered')) return;
+        item.classList.add('answered');
+
+        const picked = btn.dataset.pick;
+        buttons.forEach(b => b.disabled = true);
+        btn.classList.add('picked');
+
+        if (picked === correct) {
+          btn.classList.add('correct');
+        } else {
+          btn.classList.add('wrong');
+          buttons.forEach(b => {
+            if (b.dataset.pick === correct) b.classList.add('reveal', correct);
+          });
+        }
+        feedback.classList.add('show', correct);
+        detectorAnswered++;
+        document.getElementById('detectorScore').textContent =
+          `${detectorAnswered} of ${detectorTotal} checked`;
+      });
+    });
+  });
+
+  // -------- Quiz --------
+  const totalQuestions = 3;
+  let currentQ = 0;
+  let answers = [null, null, null];
+  let answered = [false, false, false];
+  let attemptCount = 0;
+
+  const questionBank = [
+    {
+      id: 1,
+      text: "According to this lesson, what's the single question that cuts through most AI marketing?",
+      options: [
+        { text: "\"How much does it cost per month?\"", correct: false },
+        { text: "\"What exactly would this do on Monday morning?\"", correct: true },
+        { text: "\"Is this AGI-powered?\"", correct: false },
+        { text: "\"Which celebrity endorsed it?\"", correct: false }
+      ],
+      explanation: "The Monday-morning question forces specificity. Real products survive it with a concrete task description; hype products collapse into vague promises. One question, applied consistently, defeats most of the noise."
+    },
+    {
+      id: 2,
+      text: "Which of these is a classic red flag for AI marketing hype?",
+      options: [
+        { text: "\"Drafts follow-up emails using your CRM notes. £29/user/month.\"", correct: false },
+        { text: "\"Revolutionary autonomous AI that replaces your entire team — no human needed, 10x productivity guaranteed.\"", correct: true },
+        { text: "\"New feature: meeting summariser. Paste a transcript, get action items — not suitable for regulated minutes.\"", correct: false },
+        { text: "\"Uses GPT-4o. Saves most teams 2–5 hours per week.\"", correct: false }
+      ],
+      explanation: "Multiple red flags stacked: \"revolutionary,\" \"autonomous,\" \"replaces your entire team,\" \"10x productivity,\" \"no human needed.\" When four warning phrases arrive in one sentence, it's almost never a real product — and often a genuine liability."
+    },
+    {
+      id: 3,
+      text: "Based on this lesson, which of these describes a green flag — a sign of a genuinely real AI product?",
+      options: [
+        { text: "The vendor can't describe what it does without using the word \"leverage.\"", correct: false },
+        { text: "A specific use case, named underlying model, realistic pricing, and honest statements about what it can't do.", correct: true },
+        { text: "The pitch deck emphasises AGI and talks about being \"left behind.\"", correct: false },
+        { text: "Testimonials using phrases like \"game-changer\" and \"unlocked my potential.\"", correct: false }
+      ],
+      explanation: "Real products name specifics, name their limitations, and name their model. Each of those signals that the vendor has a clear view of what they've built and who it's for. If they know what it isn't, they usually know what it is."
+    },
+    {
+      id: 4,
+      text: "A colleague shows you an ad: \"Next-generation AGI assistant. Leverages cutting-edge neural intelligence to revolutionise productivity.\" Based on this lesson, what should you do?",
+      options: [
+        { text: "Buy it immediately — AGI is a serious advantage.", correct: false },
+        { text: "Apply the one question: \"What would this do on Monday morning?\" If the answer is vague, walk past.", correct: true },
+        { text: "Compare it against three other AI tools in detail.", correct: false },
+        { text: "Trust it — anything using \"neural intelligence\" is technically sophisticated.", correct: false }
+      ],
+      explanation: "The ad ticks four red flags in one sentence: \"AGI,\" \"leverages,\" \"cutting-edge,\" \"revolutionise.\" The Monday-morning question hits empty — which tells you everything you need to know. Walk past, save the money."
+    },
+    {
+      id: 5,
+      text: "Which statement best reflects this lesson's position on \"AI-powered\" product marketing?",
+      options: [
+        { text: "If a product says it's AI-powered, it must use sophisticated AI.", correct: false },
+        { text: "The \"AI\" label tells you almost nothing on its own — it could be GPT-4o, a 2015 machine learning model, or a rules engine relabelled for the marketing push.", correct: true },
+        { text: "\"AI-powered\" is legally defined; products must meet a standard.", correct: false },
+        { text: "Only enterprise products genuinely use AI; consumer products are fake.", correct: false }
+      ],
+      explanation: "This ties back to Lesson 1.2's family-tree idea. \"AI\" is an umbrella covering everything from hand-coded rules to the latest LLMs. Without specifics about which kind and what it does, the label is marketing gloss."
+    },
+    {
+      id: 6,
+      text: "You see a sponsored Instagram post: \"Made £34,000 in my first month with this AI side-hustle. Anyone can do it. DM me for the system.\" Based on this lesson, what's the most accurate read?",
+      options: [
+        { text: "It's worth investigating — the income is specific.", correct: false },
+        { text: "Classic hype — unverifiable number, unfalsifiable claim, no product or pricing visible, \"DM me\" shortcut. Pyramid-scheme marketing with an AI sticker on it.", correct: true },
+        { text: "Probably legitimate if they show screenshots.", correct: false },
+        { text: "It's fine as long as the AI tool they use is real.", correct: false }
+      ],
+      explanation: "The impressive number, the \"anyone can do it,\" the DM-for-the-system — these are the oldest tricks in marketing. AI didn't invent this pattern, it's just the latest badge. The one question (what do they do on Monday?) never gets a real answer."
+    },
+    {
+      id: 7,
+      text: "The lesson describes overused phrases like \"in today's rapidly evolving landscape\" and \"it's crucial to remember that.\" In the context of content, what do these typically suggest?",
+      options: [
+        { text: "The author is highly qualified.", correct: false },
+        { text: "Possibly AI-generated content that wasn't edited — confident phrasing but no real specifics, names, or examples.", correct: true },
+        { text: "The content is about AI.", correct: false },
+        { text: "The content is premium, paid material.", correct: false }
+      ],
+      explanation: "Not proof on their own — humans write this way too. But combined with an absence of specifics, names, or concrete examples, these are the fingerprints of AI output someone didn't edit. Apply the Monday-morning question to the content itself and you'll usually find it says nothing."
+    },
+    {
+      id: 8,
+      text: "Which of these best summarises the overall approach this lesson teaches?",
+      options: [
+        { text: "Avoid AI products entirely — most are fake.", correct: false },
+        { text: "Use one concrete question — \"what does this do on Monday morning?\" — to separate real products from marketing noise.", correct: true },
+        { text: "Only trust enterprise AI; ignore consumer tools.", correct: false },
+        { text: "Always wait six months before trying any new AI product.", correct: false }
+      ],
+      explanation: "One question beats any checklist. Real products describe a Monday-morning task in a sentence; hype products collapse under the pressure. Applied regularly, it becomes a reflex — you scan AI marketing the way a newspaper editor reads a press release."
+    }
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function pickQuestions() {
+    if (attemptCount === 0) {
+      const canonical = [1, 2, 3].map(id => questionBank.find(q => q.id === id));
+      return canonical.map(q => ({ ...q, options: q.options.slice() }));
+    }
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  function renderQuestions() {
+    const selected = pickQuestions();
+    const container = document.getElementById('quizQuestions');
+    container.innerHTML = '';
+
+    selected.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  const progressDots = document.querySelectorAll('#quizProgress span');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+
+  renderQuestions();
+
+  function getCards() { return document.querySelectorAll('.q-card'); }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    progressDots.forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < i) d.classList.add('done');
+      else if (idx === i) d.classList.add('active');
+    });
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('quiz').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) { currentQ++; showQuestion(currentQ); }
+    else { showResults(); }
+  }
+  function prevQuestion() {
+    if (currentQ > 0) { currentQ--; showQuestion(currentQ); }
+  }
+
+  function showResults() {
+    getCards().forEach(c => c.classList.remove('active'));
+    document.getElementById('quizNav').style.display = 'none';
+    progressDots.forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+
+    const score = answers.filter(a => a === true).length;
+    document.getElementById('scoreNum').textContent = score;
+
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+    if (score === 3) {
+      title.textContent = 'All three. Last lesson, cleanly.';
+      body.textContent = attemptCount === 0
+        ? "That's every lesson done. Scroll on — a moment to acknowledge it, then the Module 4 review to keep moving."
+        : "Clean sweep on the retry. You've got this.";
+    } else if (score === 2) {
+      title.textContent = 'Close — one to revisit.';
+      body.textContent = "Scroll back to the hype detector for thirty seconds. Apply the one question to any claim you're unsure about.";
+    } else {
+      title.textContent = 'Worth another pass.';
+      body.textContent = "This is the lesson that protects your time and money. Scroll up, replay the hype detector, and retry when you're ready.";
+    }
+
+    document.getElementById('quizResult').classList.add('show');
+  }
+
+  function resetQuiz() {
+    attemptCount++;
+    currentQ = 0;
+    answers = [null, null, null];
+    answered = [false, false, false];
+    renderQuestions();
+    document.getElementById('quizResult').classList.remove('show');
+    document.getElementById('quizNav').style.display = 'flex';
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Next question →';
+    showQuestion(0);
+  }
+
+  // Action checkbox — no completion status footer on this lesson, replaced by finale
+  const actionCheck = document.getElementById('actionDone');
+  actionCheck.addEventListener('change', () => { /* no-op, finale carries the weight */ });
+</script>
+
+</body>
+</html>

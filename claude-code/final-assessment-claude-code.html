@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Final assessment — Claude Code | AI Craft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --warn:#F59E0B;
+    --warn-bg:#FEF7EC;
+    --warn-border:#F4E0BB;
+    --warn-text:#92400E;
+    --warn-deep:#78350F;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:var(--body);
+    font-size:17px;line-height:1.7;
+    color:var(--text);background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  header{
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(8px);background:rgba(255,255,255,.85);
+  }
+  .header-inner{
+    max-width:1100px;margin:0 auto;padding:18px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .brand{
+    display:flex;align-items:center;
+    text-decoration:none;
+  }
+  .brand svg{
+    display:block;
+    height:34px;width:auto;
+  }
+  .header-meta{display:flex;align-items:center;gap:20px;font-size:13px;color:var(--text-mute)}
+  .header-meta .sep{opacity:.4}
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 10px;border-radius:999px;
+    background:var(--slate);color:#fff;
+    font-weight:600;font-size:12px;letter-spacing:.02em;
+  }
+  .badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald)}
+
+  main{
+    max-width:780px;margin:0 auto;
+    padding:48px 28px 80px;
+  }
+
+  /* -------- Intro screen -------- */
+  .intro-meta{
+    display:flex;align-items:center;gap:10px;
+    font-size:13px;color:var(--text-mute);
+    margin-bottom:20px;font-weight:500;
+  }
+  .intro-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.intro-title{
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(36px,5vw,54px);line-height:1.08;
+    letter-spacing:-.02em;color:var(--slate);margin:0 0 20px;
+  }
+  h1.intro-title em{font-style:italic;color:var(--forest)}
+
+  .intro-lede{
+    font-family:var(--display);font-size:20px;line-height:1.55;
+    color:var(--text-soft);font-style:italic;
+    padding:0 0 0 20px;border-left:3px solid var(--emerald);
+    margin:28px 0 40px;
+  }
+
+  /* Rules panel */
+  .rules{
+    background:var(--card);
+    border:1px solid var(--border);border-radius:14px;
+    padding:24px 28px;
+    margin:0 0 24px;
+  }
+  .rules-label{
+    font-family:var(--display);font-weight:700;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--text-mute);margin:0 0 14px;
+  }
+  .rules-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+  }
+  @media (max-width:680px){.rules-grid{grid-template-columns:repeat(2,1fr)}}
+  .rule-cell{
+    padding:12px 14px;
+    background:var(--bg);
+    border-radius:8px;
+  }
+  .rule-num{
+    font-family:var(--display);font-weight:500;
+    font-size:26px;line-height:1;color:var(--forest);
+    letter-spacing:-.02em;margin:0 0 4px;
+  }
+  .rule-label{
+    font-family:var(--display);font-weight:600;
+    font-size:12.5px;color:var(--slate);margin:0 0 2px;
+  }
+  .rule-sub{
+    font-size:11.5px;color:var(--text-mute);
+    line-height:1.4;margin:0;
+  }
+
+  /* Module coverage preview */
+  .coverage{
+    background:var(--card);
+    border:1px solid var(--border);border-radius:14px;
+    padding:24px 28px;
+    margin:0 0 24px;
+  }
+  .coverage-label{
+    font-family:var(--display);font-weight:700;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--text-mute);margin:0 0 14px;
+  }
+  .coverage-list{
+    list-style:none;padding:0;margin:0;
+    display:grid;grid-template-columns:repeat(2,1fr);gap:8px;
+  }
+  @media (max-width:620px){.coverage-list{grid-template-columns:1fr}}
+  .coverage-list li{
+    display:flex;gap:10px;align-items:flex-start;
+    padding:8px 0;font-size:14px;line-height:1.5;
+    color:var(--text);
+  }
+  .coverage-list li::before{
+    content:"";width:6px;height:6px;border-radius:50%;
+    background:var(--emerald);flex-shrink:0;margin-top:9px;
+  }
+  .coverage-list li strong{color:var(--slate);font-weight:600}
+
+  /* Soft cooldown banner */
+  .cooldown{
+    display:none;
+    margin:0 0 24px;
+    padding:18px 22px;
+    background:var(--warn-bg);
+    border:1px solid var(--warn-border);border-radius:12px;
+    position:relative;
+  }
+  .cooldown.show{display:block;animation:fadeIn .3s ease}
+  .cooldown::before{
+    content:"";position:absolute;left:0;top:14px;bottom:14px;
+    width:3px;background:var(--warn);border-radius:2px;
+  }
+  .cooldown-label{
+    font-family:var(--display);font-weight:700;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--warn-text);margin:0 0 6px;padding-left:14px;
+  }
+  .cooldown-body{
+    font-size:14.5px;color:var(--warn-deep);
+    margin:0;padding-left:14px;line-height:1.55;
+  }
+  .cooldown-body strong{color:var(--warn-deep)}
+  .cooldown-time{
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:14px;color:var(--warn-deep);
+    padding:2px 8px;background:#FEF3C7;border-radius:4px;
+  }
+
+  .start-cta{
+    display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+    margin-top:8px;
+  }
+  .btn{
+    border:0;cursor:pointer;font-family:var(--body);
+    font-weight:600;font-size:14.5px;padding:12px 22px;border-radius:8px;
+    transition:all .18s;display:inline-flex;align-items:center;gap:8px;
+    text-decoration:none;
+  }
+  .btn-primary{background:var(--forest);color:#fff}
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{
+    background:var(--border);color:var(--text-mute);
+    cursor:not-allowed;transform:none;
+  }
+  .btn-ghost{background:transparent;color:var(--text-mute)}
+  .btn-ghost:hover{color:var(--forest)}
+  .btn-big{padding:15px 30px;font-size:15.5px}
+
+  /* -------- Assessment screen -------- */
+  .assess{
+    padding:34px 36px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+  }
+  @media (max-width:600px){.assess{padding:26px 22px}}
+
+  .assess-header-row{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  .assess-eyebrow{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);font-weight:700;
+  }
+  .assess-rule{
+    font-size:12.5px;color:var(--text-mute);
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .assess-rule strong{color:var(--forest);font-weight:600}
+
+  /* 20-segment progress bar */
+  .assess-progress{
+    display:flex;gap:3px;margin-bottom:28px;
+  }
+  .assess-progress span{
+    flex:1;height:4px;border-radius:2px;
+    background:var(--border);transition:background .3s;
+  }
+  .assess-progress span.done{background:var(--emerald)}
+  .assess-progress span.active{background:var(--forest)}
+
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(6px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .q-number{
+    font-family:var(--display);font-size:13px;color:var(--text-mute);
+    font-weight:500;letter-spacing:.04em;margin-bottom:8px;
+  }
+  .q-text{
+    font-family:var(--display);font-weight:500;font-size:21px;
+    line-height:1.4;color:var(--slate);margin:0 0 24px;letter-spacing:-.005em;
+  }
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:15px 18px;border:1.5px solid var(--border);border-radius:10px;
+    cursor:pointer;transition:all .18s;background:var(--card);
+    font-size:15.5px;line-height:1.5;
+  }
+  .option:hover:not(.disabled){border-color:var(--emerald);background:var(--mint-soft)}
+  .option.disabled{cursor:default}
+  .option-letter{
+    width:26px;height:26px;border-radius:7px;
+    background:var(--border-soft);color:var(--text-soft);
+    display:grid;place-items:center;font-weight:700;font-size:13px;
+    flex-shrink:0;transition:all .2s;font-family:var(--display);
+  }
+  .option:hover:not(.disabled) .option-letter{background:var(--emerald);color:#fff}
+  .option.correct{border-color:var(--success);background:#F0FDF4}
+  .option.correct .option-letter{background:var(--success);color:#fff}
+  .option.incorrect{border-color:var(--error);background:#FEF2F2}
+  .option.incorrect .option-letter{background:var(--error);color:#fff}
+  .option-check{
+    margin-left:auto;opacity:0;transition:opacity .2s;
+    font-size:20px;line-height:1;
+  }
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+
+  .explanation{
+    display:none;margin-top:20px;padding:16px 20px;border-radius:10px;
+    background:var(--mint-soft);border-left:3px solid var(--emerald);
+    font-size:14.5px;line-height:1.6;color:var(--forest);
+  }
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{
+    display:block;font-family:var(--display);font-size:12px;
+    letter-spacing:.1em;text-transform:uppercase;
+    color:var(--forest);margin-bottom:6px;
+  }
+  .explanation.wrong{background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D}
+  .explanation.wrong strong{color:#7F1D1D}
+  .explanation .ref{
+    font-family:var(--body);font-size:12px;letter-spacing:0;
+    color:var(--text-mute);text-transform:none;font-weight:500;
+    margin-top:6px;display:block;
+  }
+
+  .assess-nav{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:24px;gap:12px;flex-wrap:wrap;
+  }
+  .assess-running-score{
+    font-size:13px;color:var(--text-mute);
+    font-family:var(--display);font-weight:500;
+  }
+  .assess-running-score strong{
+    color:var(--forest);font-weight:700;
+  }
+
+  /* -------- Results -------- */
+  .result-screen{display:none}
+  .result-screen.show{display:block;animation:fadeIn .4s ease}
+
+  .result-hero{
+    padding:44px 40px 36px;border-radius:16px;
+    margin-bottom:28px;
+    position:relative;overflow:hidden;
+  }
+  .result-hero.pass{
+    background:linear-gradient(135deg,#065F46 0%,#0F172A 100%);
+    color:#fff;
+  }
+  .result-hero.pass::before{
+    content:"";position:absolute;
+    top:-80px;right:-80px;
+    width:280px;height:280px;border-radius:50%;
+    background:radial-gradient(circle,rgba(16,185,129,.3),transparent 65%);
+    pointer-events:none;
+  }
+  .result-hero.fail{
+    background:var(--card);
+    border:1px solid var(--border);color:var(--text);
+  }
+  .result-hero-inner{position:relative;z-index:2;text-align:center}
+
+  .result-pill{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 14px;border-radius:999px;
+    font-family:var(--display);font-weight:700;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .result-hero.pass .result-pill{
+    background:rgba(16,185,129,.2);
+    color:#A7F3D0;
+  }
+  .result-hero.pass .result-pill::before{
+    content:"✓";font-size:13px;color:var(--emerald);
+  }
+  .result-hero.fail .result-pill{
+    background:var(--warn-bg);color:var(--warn-deep);
+  }
+  .result-hero.fail .result-pill::before{
+    content:"—";font-size:13px;color:var(--warn);
+  }
+
+  .result-score-big{
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(64px,9vw,96px);line-height:1;
+    letter-spacing:-.03em;margin:0 0 4px;
+  }
+  .result-hero.pass .result-score-big{color:#fff}
+  .result-hero.fail .result-score-big{color:var(--slate)}
+  .result-score-big span{
+    color:rgba(255,255,255,.4);font-size:.45em;
+    font-weight:500;
+  }
+  .result-hero.fail .result-score-big span{color:var(--text-mute)}
+
+  .result-pct{
+    font-family:var(--body);font-size:14.5px;
+    margin:0 0 22px;
+  }
+  .result-hero.pass .result-pct{color:#CBD5E1}
+  .result-hero.fail .result-pct{color:var(--text-mute)}
+
+  .result-title{
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(26px,4vw,34px);line-height:1.2;
+    margin:0 0 12px;letter-spacing:-.01em;
+  }
+  .result-hero.pass .result-title{color:#fff}
+  .result-hero.fail .result-title{color:var(--slate)}
+  .result-title em{font-style:italic}
+  .result-hero.pass .result-title em{color:#A7F3D0}
+  .result-hero.fail .result-title em{color:var(--forest)}
+
+  .result-body{
+    margin:0 auto;max-width:520px;
+    font-size:15.5px;line-height:1.65;
+  }
+  .result-hero.pass .result-body{color:#CBD5E1}
+  .result-hero.fail .result-body{color:var(--text-soft)}
+
+  .result-actions{
+    display:flex;gap:10px;justify-content:center;
+    flex-wrap:wrap;margin-top:24px;
+  }
+  .result-hero.pass .btn-primary{
+    background:var(--emerald);color:var(--slate);
+  }
+  .result-hero.pass .btn-primary:hover{background:#A7F3D0}
+  .result-hero.pass .btn-ghost{color:#A7F3D0}
+  .result-hero.pass .btn-ghost:hover{color:#fff}
+
+  /* Module breakdown */
+  .module-breakdown{
+    background:var(--card);
+    border:1px solid var(--border);border-radius:14px;
+    overflow:hidden;margin:0 0 24px;
+  }
+  .module-breakdown-head{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);
+    padding:16px 22px;
+    border-bottom:1px solid var(--border);
+    background:var(--bg);
+  }
+  .module-row{
+    display:grid;
+    grid-template-columns:auto 1fr auto auto;
+    gap:16px;align-items:center;
+    padding:14px 22px;
+    border-top:1px solid var(--border-soft);
+    font-size:14px;
+  }
+  .module-row:first-of-type{border-top:0}
+  .module-row-num{
+    font-family:var(--display);font-weight:600;
+    color:var(--text-mute);font-size:12px;
+    letter-spacing:.06em;
+  }
+  .module-row-name{
+    color:var(--slate);font-weight:500;
+    font-family:var(--display);
+  }
+  .module-row-bar{
+    width:100px;height:6px;border-radius:3px;
+    background:var(--border-soft);overflow:hidden;
+    justify-self:end;
+  }
+  @media (max-width:540px){.module-row-bar{display:none}}
+  .module-row-bar-inner{
+    height:100%;
+    background:linear-gradient(90deg,var(--emerald),var(--forest));
+    transition:width .4s ease;
+  }
+  .module-row-score{
+    font-family:var(--display);font-weight:600;
+    color:var(--slate);font-size:14px;
+    min-width:42px;text-align:right;
+  }
+
+  /* Per-question breakdown (collapsible) */
+  .qb-toggle{
+    width:100%;
+    background:var(--card);
+    border:1px solid var(--border);border-radius:12px;
+    padding:14px 20px;cursor:pointer;
+    font-family:var(--body);font-weight:600;font-size:14px;
+    color:var(--text);
+    display:flex;justify-content:space-between;align-items:center;
+    transition:all .18s;
+  }
+  .qb-toggle:hover{border-color:var(--forest)}
+  .qb-toggle-arrow{
+    transition:transform .2s;
+    color:var(--text-mute);font-size:12px;
+  }
+  .qb-toggle.expanded .qb-toggle-arrow{transform:rotate(180deg)}
+  .qb-list{
+    display:none;
+    margin-top:10px;
+    background:var(--card);
+    border:1px solid var(--border);border-radius:12px;
+    overflow:hidden;
+  }
+  .qb-list.show{display:block;animation:fadeIn .3s ease}
+  .qb-row{
+    display:grid;
+    grid-template-columns:auto 1fr auto auto;
+    gap:12px;align-items:center;
+    padding:11px 20px;
+    border-top:1px solid var(--border-soft);
+    font-size:13.5px;
+  }
+  .qb-row:first-of-type{border-top:0}
+  .qb-row-num{
+    font-family:var(--display);font-weight:600;
+    color:var(--text-mute);font-size:12px;min-width:30px;
+  }
+  .qb-row-text{
+    color:var(--text);line-height:1.4;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .qb-row-mod{
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:11px;color:var(--text-mute);
+    padding:2px 6px;background:var(--bg);border-radius:4px;
+  }
+  .qb-row-status{
+    font-size:13px;font-weight:600;
+    display:inline-flex;align-items:center;gap:4px;
+    min-width:70px;justify-content:flex-end;
+  }
+  .qb-row-status.ok{color:var(--success)}
+  .qb-row-status.no{color:var(--error)}
+
+  .bottom-nav{
+    margin-top:32px;
+    padding-top:24px;border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:center;
+    gap:16px;flex-wrap:wrap;
+  }
+  .nav-back{
+    display:inline-flex;align-items:center;gap:8px;
+    color:var(--text-mute);font-size:14px;
+    text-decoration:none;
+  }
+  .nav-back:hover{color:var(--forest)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AI Craft Learning">
+      <svg viewBox="-10 0 430 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="badge">Final assessment</span>
+      <span class="sep">·</span>
+      <span>20 questions</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ================= INTRO SCREEN ================= -->
+  <div id="introScreen">
+    <div class="intro-meta">
+      <span>Claude Code: Setup, Workflow &amp; Mastery</span>
+      <span class="dot"></span>
+      <span>One step to certification</span>
+    </div>
+
+    <h1 class="intro-title">Final <em>assessment</em></h1>
+    <p class="intro-lede">Twenty questions drawn from the whole course. Pass with 70% (14 of 20) to earn your AI Craft Learning — Claude Code Certified certificate.</p>
+
+    <!-- Soft cooldown notice (shown on retry within 24h) -->
+    <div class="cooldown" id="cooldownNotice">
+      <p class="cooldown-label">Recommended — take a breath</p>
+      <p class="cooldown-body">You finished an attempt less than 24 hours ago. We suggest waiting <span class="cooldown-time" id="cooldownRemaining">~24h</span> before trying again — a short gap helps you notice what to revise. But if you'd rather go again now, the button's still there.</p>
+    </div>
+
+    <div class="rules">
+      <p class="rules-label">How it works</p>
+      <div class="rules-grid">
+        <div class="rule-cell">
+          <p class="rule-num">20</p>
+          <p class="rule-label">Questions</p>
+          <p class="rule-sub">Drawn from a bank of 30</p>
+        </div>
+        <div class="rule-cell">
+          <p class="rule-num">70%</p>
+          <p class="rule-label">Pass mark</p>
+          <p class="rule-sub">14 out of 20 correct</p>
+        </div>
+        <div class="rule-cell">
+          <p class="rule-num">~12</p>
+          <p class="rule-label">Minutes</p>
+          <p class="rule-sub">At a comfortable pace</p>
+        </div>
+        <div class="rule-cell">
+          <p class="rule-num">24h</p>
+          <p class="rule-label">Recommended gap</p>
+          <p class="rule-sub">Before retrying if you fail</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="coverage">
+      <p class="coverage-label">What it covers</p>
+      <ul class="coverage-list">
+        <li><strong>Module 1 —</strong> what Claude Code is, installation, first workflows, the four safety rules</li>
+        <li><strong>Module 2 —</strong> project folders, CLAUDE.md, the IWO prompt pattern, iteration</li>
+        <li><strong>Module 3 —</strong> the four workflow shapes: extraction, cleanup, research, voice-matched drafting</li>
+        <li><strong>Module 4 —</strong> skills, scheduling, wrong-tool recognition, the 30-day plan</li>
+      </ul>
+    </div>
+
+    <div class="start-cta">
+      <button class="btn btn-primary btn-big" onclick="startAssessment()">Start the assessment →</button>
+      <a href="module-4-review-claude-code.html" class="btn btn-ghost">← Back to Module 4 review</a>
+    </div>
+  </div>
+
+  <!-- ================= ASSESSMENT SCREEN ================= -->
+  <section class="assess" id="assessScreen" style="display:none">
+    <div class="assess-header-row">
+      <span class="assess-eyebrow">Final assessment</span>
+      <span class="assess-rule">Pass mark · <strong>70% (14 of 20)</strong></span>
+    </div>
+
+    <div class="assess-progress" id="assessProgress"></div>
+
+    <div id="assessQuestions"></div>
+
+    <div class="assess-nav" id="assessNav">
+      <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+      <span class="assess-running-score" id="runningScore">Question <strong>1</strong> of 20</span>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+    </div>
+  </section>
+
+  <!-- ================= RESULTS SCREEN ================= -->
+  <section class="result-screen" id="resultScreen">
+    <div class="result-hero" id="resultHero">
+      <div class="result-hero-inner">
+        <div class="result-pill" id="resultPill">Certified</div>
+        <p class="result-score-big" id="resultScoreBig">0<span>/20</span></p>
+        <p class="result-pct" id="resultPct">0%</p>
+        <h2 class="result-title" id="resultTitle">Certified</h2>
+        <p class="result-body" id="resultBody"></p>
+        <div class="result-actions" id="resultActions"></div>
+      </div>
+    </div>
+
+    <!-- Module-by-module breakdown -->
+    <div class="module-breakdown">
+      <div class="module-breakdown-head">How you did, by module</div>
+      <div id="moduleRows"></div>
+    </div>
+
+    <!-- Per-question breakdown (collapsible) -->
+    <button class="qb-toggle" id="qbToggle" onclick="toggleBreakdown()">
+      <span>See every question and how you answered it</span>
+      <span class="qb-toggle-arrow">▼</span>
+    </button>
+    <div class="qb-list" id="qbList"></div>
+  </section>
+
+  <div class="bottom-nav">
+    <a href="module-4-review-claude-code.html" class="nav-back">← Back to Module 4 review</a>
+    <span style="font-size:13px;color:var(--text-mute)">Final · 20 questions · 70% to pass</span>
+  </div>
+</main>
+
+<script>
+  // ------------------ CONFIG ------------------
+  const PASS_THRESHOLD = 0.7; // 70%
+  const totalQuestions = 20;
+  const COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+  let currentQ = 0;
+  let answers = [];
+  let answered = [];
+  let selectedQuestions = [];
+
+  // ------------------ QUESTION BANK (30) ------------------
+  // Each question tagged with its primary source module(s).
+  // The Claude Code course is applied rather than conceptual, so questions lean heavily on
+  // scenarios and judgement — "what should you do if…" rather than "what is…"
+  const questionBank = [
+    // ---- Module 1 : Getting Claude Code installed ----
+    {
+      id: 1, mod: 'M1',
+      text: 'Which statement best describes what Claude Code actually is?',
+      options: [
+        { text: 'A chat interface inside Claude.ai for casual questions.', correct: false },
+        { text: 'A tool that runs on your computer, can read and write files in a folder you point it at, and can do real multi-step work on those files — not just answer questions about them.', correct: true },
+        { text: 'A cloud service you have to upload files to for every task.', correct: false },
+        { text: 'A mobile app for taking notes with AI.', correct: false }
+      ],
+      explanation: "The key distinction: Claude Code works on your actual files, locally. That's what turns \"AI that talks\" into \"AI that gets work done for you.\" Everything else in the course flows from that one fact."
+    },
+    {
+      id: 2, mod: 'M1',
+      text: 'For a non-technical business owner getting started, which path is the course\'s recommended way to install Claude Code?',
+      options: [
+        { text: 'Install Python 3.11 from source, configure a venv, and invoke Claude via the command line.', correct: false },
+        { text: 'Install the VS Code extension (or similar IDE integration) plus a Claude Pro subscription — gives you a proper visual interface and enough monthly usage to actually work.', correct: true },
+        { text: 'Use only the web version at Claude.ai.', correct: false },
+        { text: 'Wait until Claude Code is pre-installed on your computer.', correct: false }
+      ],
+      explanation: "The VS Code extension route is the friendliest for non-developers — it gives you a visual file view, proper integration with your folders, and avoids pure-terminal intimidation. Claude Pro (not the free tier) is the sensible starting subscription."
+    },
+    {
+      id: 3, mod: 'M1',
+      text: 'The course introduces four safety rules for working with Claude Code. Which of these is one of them?',
+      options: [
+        { text: 'Never give Claude Code access to the internet under any circumstances.', correct: false },
+        { text: 'Work in a project folder you\'ve deliberately chosen, so Claude only touches files you\'ve explicitly put there — never point it at your whole Desktop or Documents folder.', correct: true },
+        { text: 'Only run Claude Code between 9am and 5pm.', correct: false },
+        { text: 'Use a different password for Claude every week.', correct: false }
+      ],
+      explanation: "Scoping Claude to a specific project folder is the foundation of safe use. The project folder is the sandbox — everything that can happen, happens inside it. Pointing Claude at broad locations like Desktop or Documents is how accidents happen."
+    },
+    {
+      id: 4, mod: 'M1',
+      text: 'Before your very first real project, the course recommends starting with a "safe practice folder." Why?',
+      options: [
+        { text: 'It\'s legally required by Anthropic.', correct: false },
+        { text: 'It lets you build confidence and make mistakes without risk to anything that matters — you can delete the whole folder if things go sideways and you\'ve lost nothing.', correct: true },
+        { text: 'It makes Claude Code run faster.', correct: false },
+        { text: 'It disables all AI features while you learn.', correct: false }
+      ],
+      explanation: "Lesson 1.3's core idea. A throwaway folder with copies of unimportant files is the gym where you learn Claude Code safely. Once you've built muscle memory, you promote to a real project folder for real work."
+    },
+    {
+      id: 5, mod: 'M1',
+      text: 'Claude Code has several permission modes for how much autonomy it gets. Which approach does the course recommend for most everyday work?',
+      options: [
+        { text: 'Full auto-approve everything — fastest workflow.', correct: false },
+        { text: 'Deny every action manually — safest workflow.', correct: false },
+        { text: 'Review-as-you-go — Claude proposes each meaningful action and you approve, especially for anything that edits or deletes files. As trust builds in specific workflows, you can relax the approvals.', correct: true },
+        { text: 'Randomly toggle between modes for variety.', correct: false }
+      ],
+      explanation: "The middle path is the safe, sensible default. You stay in the loop for anything irreversible, Claude still does the work, and your confidence earns you looser approvals over time. Full auto-approve removes the safety net before it's earned; blanket denial defeats the point of the tool."
+    },
+    {
+      id: 6, mod: 'M1',
+      text: 'On your very first day with Claude Code, what kind of task does the course suggest you try?',
+      options: [
+        { text: 'Rewrite your entire website backend.', correct: false },
+        { text: 'A small, low-stakes organising task in a practice folder — tidy up some files, rename some documents, produce a simple summary. Something you\'d benefit from regardless of whether Claude does it well.', correct: true },
+        { text: 'Encrypt all your company data.', correct: false },
+        { text: 'Build a custom AI agent from scratch.', correct: false }
+      ],
+      explanation: "First contact should be boring and safe. The point is not to be impressed, it's to build a confident mental model of 'this is how I interact with this tool' — and that's best done on throwaway work you don't mind seeing Claude fumble."
+    },
+
+    // ---- Module 2 : The core workflow ----
+    {
+      id: 7, mod: 'M2',
+      text: 'The course describes the project folder as "everything" for Claude Code. Why?',
+      options: [
+        { text: 'Because Claude Code charges per folder.', correct: false },
+        { text: 'Because the project folder is both the scope (Claude only touches what\'s inside it) and the context (Claude reads the folder\'s CLAUDE.md, files, and structure to understand your work). Get the folder right and most things follow.', correct: true },
+        { text: 'Because Claude Code can only run inside project folders, never as a standalone tool.', correct: false },
+        { text: 'Because folders are more important than files.', correct: false }
+      ],
+      explanation: "The project folder is the entire container. It defines what Claude can do (safety) and what Claude knows (context). Lesson 2.1 is blunt: most Claude Code problems are actually project-folder problems in disguise."
+    },
+    {
+      id: 8, mod: 'M2',
+      text: 'What is CLAUDE.md for, based on the course?',
+      options: [
+        { text: 'A licence file required by Anthropic.', correct: false },
+        { text: 'Persistent context about who you are and how the project works — loaded automatically at the start of every session in that folder. British English, writing style, conventions, client details, rules for this project.', correct: true },
+        { text: 'A log of every conversation you\'ve ever had with Claude.', correct: false },
+        { text: 'A list of approved files Claude can read.', correct: false }
+      ],
+      explanation: "CLAUDE.md is the load-bearing idea of Module 2. It turns Claude from \"knows nothing about you\" into \"already understands your context\" every session, without you having to type it each time."
+    },
+    {
+      id: 9, mod: 'M2',
+      text: 'The course teaches a three-part prompt pattern called IWO. What does it stand for?',
+      options: [
+        { text: 'Input, Work, Output — describe the files Claude should read, the specific task to do, and the exact form the result should take.', correct: true },
+        { text: 'Internal, Worldwide, Operational.', correct: false },
+        { text: 'Instructions, Warnings, Overview.', correct: false },
+        { text: 'Iteration, Waiting, Observation.', correct: false }
+      ],
+      explanation: "Input-Work-Output is the backbone of every good Claude Code prompt. Name the files to read, describe the task cleanly, specify the output format. Miss any of the three and the results get vague or wrong."
+    },
+    {
+      id: 10, mod: 'M2',
+      text: 'Claude Code produces a result that\'s almost right but not quite. Based on Module 2, what should you do?',
+      options: [
+        { text: 'Start a fresh conversation from scratch.', correct: false },
+        { text: 'Use the checkpoint/rewind pattern — don\'t try to patch the wrong output. Rewind to just before the bad step, refine the prompt, and run again. Fix the prompt, not the output.', correct: true },
+        { text: 'Accept the output as-is and edit it manually.', correct: false },
+        { text: 'Switch to a different AI tool.', correct: false }
+      ],
+      explanation: "Iteration is a core skill. The output isn't what you fix — the prompt is. Checkpoint/rewind lets you step back to the decision point, adjust the instruction, and try again. Patching bad output wastes time and tends to make things worse."
+    },
+    {
+      id: 11, mod: 'M2',
+      text: 'The course is direct about how you should treat the "scratch folder" vs. the "project folder." Which statement is correct?',
+      options: [
+        { text: 'They\'re the same thing — use either interchangeably.', correct: false },
+        { text: 'Scratch folders are for experimenting and throwaway work where mistakes don\'t matter. Project folders are for real work with real files — tidier, better-documented, treated with care. Keep them separate so the scratch folder\'s chaos never contaminates real work.', correct: true },
+        { text: 'Scratch folders must be deleted every hour.', correct: false },
+        { text: 'Project folders can\'t contain subfolders.', correct: false }
+      ],
+      explanation: "A small but important hygiene practice. Scratch folder = your playground, where you test ideas and can safely break things. Project folder = your workspace for actual output. Mixing them is how your CLAUDE.md ends up with test prompts from six months ago."
+    },
+    {
+      id: 12, mod: 'M2',
+      text: 'A good CLAUDE.md for a freelance strategist might include which of these, based on the course template?',
+      options: [
+        { text: 'Only your name and email address.', correct: false },
+        { text: 'A mix: who you are (brand strategist, British English, solo practice), how you write (short paragraphs, direct, no "let\'s unpack"), project context (current client\'s industry, key people, recent decisions), and any explicit don\'ts ("never use exclamation marks").', correct: true },
+        { text: 'A complete diary of your day.', correct: false },
+        { text: 'Source code for the Claude Code system.', correct: false }
+      ],
+      explanation: "Good CLAUDE.md files are a mix of identity, voice, project context, and explicit rules. The more specific and real, the better the output — generic \"write professionally\" descriptions give generic results."
+    },
+    {
+      id: 13, mod: 'M2',
+      text: 'Your prompt says "fix the formatting" and Claude rewrites half the document. Based on Module 2, what went wrong?',
+      options: [
+        { text: 'The prompt was too specific.', correct: false },
+        { text: 'The prompt was too vague — "fix the formatting" is ambiguous. A better prompt names the specific problem and the desired end state: "convert all bullet points to numbered lists. Leave every other formatting choice exactly as-is."', correct: true },
+        { text: 'Claude Code has a bug in version 2.1.', correct: false },
+        { text: 'It\'s impossible to fix formatting properly.', correct: false }
+      ],
+      explanation: "Vague prompts give creative interpretations. When you say \"fix\" without saying what's broken and what \"fixed\" looks like, Claude fills the gap with its own judgement — often more aggressively than you wanted. Specificity is the fix."
+    },
+
+    // ---- Module 3 : Real business workflows ----
+    {
+      id: 14, mod: 'M3',
+      text: 'The course describes FOUR shapes of bulk work in Module 3. Which of these correctly names them?',
+      options: [
+        { text: 'Fast, slow, cheap, expensive.', correct: false },
+        { text: 'Many files → one transformation (extraction), one file → many transformations (cleanup), many files → synthesis (research), and source material → generated content (voice-matched drafting).', correct: true },
+        { text: 'PDFs, CSVs, text files, and emails.', correct: false },
+        { text: 'Morning, afternoon, evening, weekend.', correct: false }
+      ],
+      explanation: "The four shapes are the mental map the whole course gives you. Any workflow you encounter fits one of them, and recognising the shape tells you what kind of prompt to write."
+    },
+    {
+      id: 15, mod: 'M3',
+      text: 'You have 60 supplier invoice PDFs and need a spreadsheet with supplier, amount, date, and due date for each. Based on Module 3, what\'s the strongest approach?',
+      options: [
+        { text: 'Open each PDF and copy the fields into Excel by hand.', correct: false },
+        { text: 'Write a Claude Code bulk extraction prompt: inputs are the 60 PDFs, work is extracting those four fields, outputs are a spreadsheet plus a summary. Add a CLAUDE.md rule: flag missing or ambiguous data rather than guessing.', correct: true },
+        { text: 'Use the voice-matched drafting pattern with a sample voice folder.', correct: false },
+        { text: 'Run research synthesis on the PDFs and ask for a briefing.', correct: false }
+      ],
+      explanation: "This is the Lesson 3.1 shape exactly — many files, one transformation per file. The 'flag, don't guess' rule is the safety net that separates reliable Claude Code work from confident-sounding fabrication."
+    },
+    {
+      id: 16, mod: 'M3',
+      text: 'You\'re about to put twelve industry reports through Claude Code for a strategic briefing. Based on Module 3, which single instruction is NON-NEGOTIABLE in your prompt?',
+      options: [
+        { text: '"Make the briefing at least 5,000 words."', correct: false },
+        { text: '"Use a formal business tone."', correct: false },
+        { text: '"Every factual claim must cite which source it came from (source: filename, page or section)." Without citations, the output is unverifiable and AI synthesis can quietly produce plausible claims no source actually made.', correct: true },
+        { text: '"Format the output as a PowerPoint."', correct: false }
+      ],
+      explanation: "The cardinal rule of research with AI, from Lesson 3.3. Citations are what make the output auditable — you can spot-check a sample of claims against the source files. Never accept research output without them."
+    },
+    {
+      id: 17, mod: 'M3',
+      text: 'You keep generating LinkedIn posts with Claude Code and they sound like a robot — "Let\'s unpack this," "What do you think?", "Here\'s the thing." Based on Module 3, what\'s the actual fix?',
+      options: [
+        { text: 'Write longer, more elaborate voice descriptions in every prompt.', correct: false },
+        { text: 'Build a /reference/voice/ folder with 7-10 pieces of your actual writing, add a CLAUDE.md rule telling Claude to read them before drafting anything, and keep the prompts task-focused — what to write about, not how to write it.', correct: true },
+        { text: 'Upgrade your AI subscription.', correct: false },
+        { text: 'Accept that AI content always sounds like AI content.', correct: false }
+      ],
+      explanation: "Voice comes from samples, not from prompts. Descriptions (\"warm, direct, conversational\") are weak signals. Actual examples of your writing are strong signals Claude can pattern-match against. Set up the voice folder once, and every future drafting session inherits it."
+    },
+    {
+      id: 18, mod: 'M3',
+      text: 'You receive a messy customer CSV from a client every month and spend an hour cleaning it. After your first successful Claude Code cleanup, what\'s the smart move?',
+      options: [
+        { text: 'Manually retype the cleanup prompt every month.', correct: false },
+        { text: 'Bake the cleaning checklist and output structure into the project\'s CLAUDE.md, so next month\'s cleanup becomes a one-line prompt: "Clean the file in /inputs/ using the standard rules." First run took 10 minutes; every run after is ten seconds.', correct: true },
+        { text: 'Switch to a different CSV tool.', correct: false },
+        { text: 'Send the file back to the client and ask them to clean it.', correct: false }
+      ],
+      explanation: "The compounding pattern that makes the whole course worthwhile. Reusable knowledge goes in CLAUDE.md — cleaning rules, output structure, edge-case handling. First time you write the prompt carefully; the twelfth time, the prompt is two sentences because the system already knows the rules."
+    },
+    {
+      id: 19, mod: 'M3',
+      text: 'You\'re about to run a Claude Code cleanup on a CSV with 15,000 rows. Based on Module 3, what should you do BEFORE running your checklist on the whole file?',
+      options: [
+        { text: 'Run it on all 15,000 rows immediately — more data is always better.', correct: false },
+        { text: 'Run the cleanup prompt on a small slice first (say, 50 rows), verify the rules are being applied the way you want, then scale up to the full file.', correct: true },
+        { text: 'Split the file into fifteen 1,000-row files and run each separately.', correct: false },
+        { text: 'Convert the CSV to JSON before starting.', correct: false }
+      ],
+      explanation: "Small-batch testing is a cross-lesson pattern. Test on a sample, verify the rules behave as you want, then scale. Ten seconds of prevention beats reprocessing 15,000 rows because rule 3 was wrong."
+    },
+    {
+      id: 20, mod: 'M3',
+      text: 'Claude has produced a beautifully-written research briefing with citations on every claim. Based on Module 3, what should you do BEFORE trusting it?',
+      options: [
+        { text: 'Nothing — if it has citations, it\'s verified.', correct: false },
+        { text: 'Manually verify every single citation before using the briefing.', correct: false },
+        { text: 'Pick 3-4 citations at random, open the source files, and confirm the claims are actually there. Ten minutes of spot-checking on a fifteen-minute research task is still a spectacular ratio — and it calibrates your trust over time.', correct: true },
+        { text: 'Re-run the synthesis in a fresh session to compare.', correct: false }
+      ],
+      explanation: "The 10-minute spot-check is the habit that separates good AI research from bad. Not every claim — that defeats the point. Three or four random citations, verified against the sources, tells you whether to trust the rest."
+    },
+
+    // ---- Module 4 : Mastery ----
+    {
+      id: 21, mod: 'M4',
+      text: 'You\'ve been running the same invoice-processing prompt four weeks in a row. Every Friday you scroll back to find last month\'s version. Based on Module 4, what\'s the right next move?',
+      options: [
+        { text: 'Keep doing it — eventually you\'ll memorise the prompt.', correct: false },
+        { text: 'Paste the prompt into a Google Doc for easy copy-paste.', correct: false },
+        { text: 'Promote it to a skill at ~/.claude/skills/process-invoices/SKILL.md. Two-line header, your instructions, save. From now on it runs from /process-invoices or from a natural-language request. Facts go in CLAUDE.md, procedures go in skills.', correct: true },
+        { text: 'Switch to doing it manually — simpler to track.', correct: false }
+      ],
+      explanation: "Classic skill-promotion moment. Three repeats is the graduation threshold from Lesson 4.1; four is past due. Scrolling back to find old prompts is one of the core signals that a workflow has earned its way into a skill."
+    },
+    {
+      id: 22, mod: 'M4',
+      text: 'You\'re thinking of scheduling a Claude Code workflow to run every Monday morning. Based on Module 4, which is the BEST candidate?',
+      options: [
+        { text: 'A task that sends automatic client emails based on project status.', correct: false },
+        { text: 'A /research-sources skill that reads last week\'s customer feedback and produces a weekly-themes.md report in your outputs folder — ready to read with your first coffee.', correct: true },
+        { text: 'A one-off "remind me Thursday at 3pm to call Sarah" reminder.', correct: false },
+        { text: 'A task that writes to a folder you rarely open.', correct: false }
+      ],
+      explanation: "The three-R test, applied. Reversible (produces a report, doesn\'t contact anyone). Reviewable (lands as a file you\'ll see on Monday morning). Recurring (weekly rhythm earns the setup). Automated emails fail reversibility; one-offs belong in a calendar; output nobody checks is digital compost."
+    },
+    {
+      id: 23, mod: 'M4',
+      text: 'A client asks you to write a heartfelt apology for a mistake your team made. You\'ve got a well-tuned voice folder and a /draft-posts skill. Based on Module 4, what should you do?',
+      options: [
+        { text: 'Run the voice-matched drafting skill — it\'ll sound just like you.', correct: false },
+        { text: 'Write it yourself, even if it\'s rougher. Difficult personal messages sit in the "wrong moment" category — the human care in the message is the entire point, and people can tell the difference between words you chose and words an AI chose for you.', correct: true },
+        { text: 'Let the skill write a draft, polish it with Claude, then send.', correct: false },
+        { text: 'Schedule the apology to send when the client is most likely to read it.', correct: false }
+      ],
+      explanation: "Lesson 4.3's \"wrong moment\" category, straight up. The point of an apology isn\'t the prose, it\'s the fact that you wrote it. Even a rougher version in your own words lands better than a polished AI version."
+    },
+    {
+      id: 24, mod: 'M4',
+      text: 'You actually want to USE Claude Code after the course, not just know about it. Based on Module 4\'s 30-day plan, what\'s the recommended daily commitment?',
+      options: [
+        { text: 'A 3-hour session every weekend — serious skills need real time.', correct: false },
+        { text: '15 minutes a day, most days, for four weeks. Week 1 foundations, Week 2 one real workflow, Week 3 scale to 3-4 workflows, Week 4 promote the best to skills and schedule one.', correct: true },
+        { text: 'A 2-hour daily practice until it becomes second nature.', correct: false },
+        { text: 'Whenever inspiration strikes — don\'t force a schedule.', correct: false }
+      ],
+      explanation: "Fifteen minutes repeated twenty-five times beats three hours repeated never. Small and daily is the only shape that survives normal working life. The four-week arc mirrors the course modules — applying what you already know rather than learning new material while finding time to use the tool."
+    },
+    {
+      id: 25, mod: 'M4',
+      text: 'Claude Code offers three separate ways to schedule work: /loop, Desktop scheduled tasks, and Cloud routines. Based on Module 4, which one is the RIGHT default for most non-technical business owners?',
+      options: [
+        { text: '/loop — it\'s the simplest option.', correct: false },
+        { text: 'Desktop scheduled tasks — they fire without an open Claude Code session AND can read your local files, which is the sweet spot for recurring real-world tasks like weekly report generation.', correct: true },
+        { text: 'Cloud routines — they\'re the most reliable.', correct: false },
+        { text: 'None of them; use a calendar reminder instead.', correct: false }
+      ],
+      explanation: "Desktop tasks are the practical default. /loop dies the moment you close Claude Code. Cloud routines run on Anthropic's infrastructure but can't access your local files — which usually rules out working with PDFs, CSVs, and folders. Desktop gives you both machine-independent firing AND local file access."
+    },
+    {
+      id: 26, mod: 'M4',
+      text: 'Your Friday 5pm scheduled task didn\'t fire this week. Based on Module 4, what\'s the most likely reason?',
+      options: [
+        { text: 'Claude Code has silently cancelled it.', correct: false },
+        { text: 'For Desktop scheduled tasks, your machine needs to be on and awake at the fire time. If your laptop was closed at 5pm Friday, the task couldn\'t fire — and Claude Code doesn\'t catch up missed runs automatically.', correct: true },
+        { text: 'Scheduled tasks only run when you\'re signed in to Anthropic\'s website.', correct: false },
+        { text: 'Friday 5pm is a blocked slot for security reasons.', correct: false }
+      ],
+      explanation: "The most common cause of \"my scheduled task didn't run.\" Desktop tasks need the machine on and Claude Code's scheduler active. If the laptop was closed at fire time, the task missed its window — and misses don't catch up. For mission-critical work, keep the machine on, pick earlier times, or move to Cloud routines."
+    },
+    {
+      id: 27, mod: 'M4',
+      text: 'What are the THREE shapes of "wrong tool" situations taught in Module 4 — cases where Claude Code isn\'t the right move?',
+      options: [
+        { text: 'Wrong file format, wrong language, wrong time of day.', correct: false },
+        { text: 'Wrong shape (a specialist tool does it better), wrong stakes (AI being occasionally wrong would cause real harm), wrong moment (your own thinking IS the value of the task).', correct: true },
+        { text: 'Wrong computer, wrong internet, wrong Claude version.', correct: false },
+        { text: 'Too small, too big, too medium.', correct: false }
+      ],
+      explanation: "Three distinct categories with three distinct fixes. Wrong shape = friction, use the specialist tool. Wrong stakes = harm, keep a qualified human in the loop. Wrong moment = abdication, do it yourself."
+    },
+
+    // ---- Synthesis (cross-module) ----
+    {
+      id: 28, mod: 'All',
+      text: 'Which of these best describes the full arc of the course — the progression you\'ve just completed?',
+      options: [
+        { text: 'Install it, use it for everything, hope for the best.', correct: false },
+        { text: 'Install and set up safely (Module 1), learn the core workflow via CLAUDE.md + IWO (Module 2), master four real workflow shapes (Module 3), then graduate into skills + scheduling + knowing when NOT to use it (Module 4).', correct: true },
+        { text: 'Memorise every feature of Claude Code.', correct: false },
+        { text: 'Convert all your work to AI-generated content.', correct: false }
+      ],
+      explanation: "Module 1 was the setup. Module 2 was the foundation — folder, CLAUDE.md, prompt pattern. Module 3 was the craft — the four shapes of real work. Module 4 was the mastery — turning craft into systems and knowing the edges. One disciplined progression, not a pile of features."
+    },
+    {
+      id: 29, mod: 'All',
+      text: 'Looking across the whole course, which of these captures Claude Code\'s genuine sweet spot — the place where it saves you the most time without causing problems?',
+      options: [
+        { text: 'Regulated advice, strategic decisions, personal apologies.', correct: false },
+        { text: 'Repetitive file work, structured first drafts, and low-stakes volume tasks (categorising, summarising, extracting, cleaning) — anything that\'s routine, structured, and where "close enough" is genuinely fine.', correct: true },
+        { text: 'Instant calculations and quick conversions.', correct: false },
+        { text: 'Real-time news lookups.', correct: false }
+      ],
+      explanation: "The green zones from Lesson 4.3. These are the places Claude Code saves real hours without the downsides that come with using it for high-stakes or judgement-heavy work. If a task sits inside all three green-zone conditions, reach for Claude Code confidently."
+    },
+    {
+      id: 30, mod: 'All',
+      text: 'A month after finishing this course, what does the "user" look like — as opposed to someone who merely "took a course on Claude Code"?',
+      options: [
+        { text: 'They\'ve watched every video twice and have strong opinions about the theory.', correct: false },
+        { text: 'They have two or three real project folders with working CLAUDE.md files, a handful of skills they invoke regularly, at least one scheduled task producing output without them thinking about it, and the muscle memory of knowing when to reach for Claude Code AND when not to.', correct: true },
+        { text: 'They tell everyone at dinner parties they\'ve learned Claude Code.', correct: false },
+        { text: 'They\'ve passed every quiz in the course.', correct: false }
+      ],
+      explanation: "The whole course is measured in this single outcome — actual working use, not course completion. The 30-day plan from Lesson 4.4 is specifically designed to bridge the gap between \"I know how this works\" and \"this is running in my week.\" If that transformation happened, the course did its job."
+    }
+  ];
+
+  // ------------------ SHUFFLE ------------------
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // Every attempt draws 20 random questions from the 30, options shuffled too.
+  function pickQuestions() {
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  // ------------------ COOLDOWN CHECK ------------------
+  // Session-only tracking (no browser storage — see note in AI Fundamentals version).
+  // For the prototype, a soft cooldown appears after a failed submission in the same session.
+  let lastFailTimestamp = null;
+
+  function checkCooldown() {
+    if (!lastFailTimestamp) return;
+    const elapsed = Date.now() - lastFailTimestamp;
+    if (elapsed < COOLDOWN_MS) {
+      const remaining = COOLDOWN_MS - elapsed;
+      const hours = Math.floor(remaining / (60 * 60 * 1000));
+      const mins = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+      document.getElementById('cooldownRemaining').textContent =
+        hours > 0 ? `~${hours}h ${mins}m` : `~${mins}m`;
+      document.getElementById('cooldownNotice').classList.add('show');
+    } else {
+      document.getElementById('cooldownNotice').classList.remove('show');
+    }
+  }
+
+  // ------------------ RENDER ------------------
+  function renderProgressSegments() {
+    const container = document.getElementById('assessProgress');
+    container.innerHTML = '';
+    for (let i = 0; i < totalQuestions; i++) {
+      const span = document.createElement('span');
+      if (i === 0) span.classList.add('active');
+      container.appendChild(span);
+    }
+  }
+
+  function renderQuestions() {
+    selectedQuestions = pickQuestions();
+    answers = new Array(totalQuestions).fill(null);
+    answered = new Array(totalQuestions).fill(false);
+    currentQ = 0;
+
+    const container = document.getElementById('assessQuestions');
+    container.innerHTML = '';
+
+    selectedQuestions.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+          <span class="ref">Covered in ${q.mod === 'All' ? 'the whole course' : q.mod}</span>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  // ------------------ NAV ------------------
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const progressDots = () => document.querySelectorAll('#assessProgress span');
+  const runningScore = document.getElementById('runningScore');
+
+  function startAssessment() {
+    document.getElementById('introScreen').style.display = 'none';
+    document.getElementById('assessScreen').style.display = 'block';
+    renderProgressSegments();
+    renderQuestions();
+    updateProgressUI();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function getCards() { return document.querySelectorAll('.q-card'); }
+
+  function updateProgressUI() {
+    progressDots().forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < currentQ) d.classList.add('done');
+      else if (idx === currentQ) d.classList.add('active');
+    });
+    runningScore.innerHTML = `Question <strong>${currentQ + 1}</strong> of ${totalQuestions}`;
+  }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    updateProgressUI();
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('assessScreen').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) {
+      currentQ++;
+      showQuestion(currentQ);
+    } else {
+      showResults();
+    }
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) {
+      currentQ--;
+      showQuestion(currentQ);
+    }
+  }
+
+  // ------------------ RESULTS ------------------
+  function showResults() {
+    const score = answers.filter(a => a === true).length;
+    const pct = Math.round((score / totalQuestions) * 100);
+    const passed = (score / totalQuestions) >= PASS_THRESHOLD;
+
+    document.getElementById('assessScreen').style.display = 'none';
+    document.getElementById('resultScreen').classList.add('show');
+
+    // Hero
+    const hero = document.getElementById('resultHero');
+    hero.className = 'result-hero ' + (passed ? 'pass' : 'fail');
+    document.getElementById('resultScoreBig').innerHTML = `${score}<span>/20</span>`;
+    document.getElementById('resultPct').textContent = `${pct}% · pass mark 70%`;
+
+    document.getElementById('resultPill').textContent =
+      passed ? 'Certified' : 'Not this time';
+
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+
+    if (passed && score === 20) {
+      title.innerHTML = 'Full marks. <em>Properly certified.</em>';
+      body.textContent = "Twenty for twenty. The whole course tested and locked in. Your certificate is ready, and you've earned it cleanly.";
+    } else if (passed) {
+      title.innerHTML = 'You\'re <em>certified</em>.';
+      body.textContent = `You scored ${score} out of 20. That's above the 70% pass mark — well done. Your certificate is ready to download.`;
+    } else if (score >= 12) {
+      title.innerHTML = 'So close.';
+      body.textContent = `You scored ${score} out of 20 — just under the 14 needed. Glance at the module breakdown below, revisit the lesson that let you down, and take another run when you're ready.`;
+    } else {
+      title.innerHTML = 'Worth another pass.';
+      body.textContent = `You scored ${score} out of 20. The module breakdown below shows where to focus — spend half an hour with the lessons, then retry. You've got this.`;
+    }
+
+    // Module breakdown
+    renderModuleBreakdown();
+
+    // Per-question breakdown
+    renderQuestionBreakdown();
+
+    // Actions
+    const actions = document.getElementById('resultActions');
+    if (passed) {
+      actions.innerHTML = `
+        <a href="certificate.html" class="btn btn-primary btn-big">View your certificate →</a>
+        <button class="btn btn-ghost" onclick="retakeNow()">↻ Retake for a higher score</button>
+      `;
+      lastFailTimestamp = null; // clear any cooldown
+    } else {
+      lastFailTimestamp = Date.now();
+      actions.innerHTML = `
+        <button class="btn btn-primary btn-big" onclick="retakeNow()">↻ Retake the assessment</button>
+        <a href="lesson-1-1-claude-code.html" class="btn btn-ghost">Revisit modules</a>
+      `;
+    }
+
+    document.getElementById('resultScreen').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function renderModuleBreakdown() {
+    const modBuckets = {
+      'M1': { name: 'Module 1 — Getting Claude Code installed', correct: 0, total: 0 },
+      'M2': { name: 'Module 2 — The core workflow', correct: 0, total: 0 },
+      'M3': { name: 'Module 3 — Real business workflows', correct: 0, total: 0 },
+      'M4': { name: 'Module 4 — Mastery', correct: 0, total: 0 },
+      'Synthesis': { name: 'Cross-module synthesis', correct: 0, total: 0 }
+    };
+    selectedQuestions.forEach((q, i) => {
+      let key;
+      if (q.mod === 'M1' || q.mod === 'M2' || q.mod === 'M3' || q.mod === 'M4') key = q.mod;
+      else key = 'Synthesis';
+      modBuckets[key].total += 1;
+      if (answers[i] === true) modBuckets[key].correct += 1;
+    });
+    const rows = document.getElementById('moduleRows');
+    rows.innerHTML = '';
+    Object.keys(modBuckets).forEach((k, idx) => {
+      const b = modBuckets[k];
+      if (b.total === 0) return; // skip if not tested in this draw
+      const pct = Math.round((b.correct / b.total) * 100);
+      const row = document.createElement('div');
+      row.className = 'module-row';
+      row.innerHTML = `
+        <span class="module-row-num">0${idx+1}</span>
+        <span class="module-row-name">${b.name}</span>
+        <span class="module-row-bar"><span class="module-row-bar-inner" style="width:${pct}%"></span></span>
+        <span class="module-row-score">${b.correct}/${b.total}</span>
+      `;
+      rows.appendChild(row);
+    });
+  }
+
+  function renderQuestionBreakdown() {
+    const list = document.getElementById('qbList');
+    list.innerHTML = '';
+    selectedQuestions.forEach((q, i) => {
+      const row = document.createElement('div');
+      row.className = 'qb-row';
+      const ok = answers[i] === true;
+      const short = q.text.length > 60 ? q.text.slice(0, 58) + '…' : q.text;
+      row.innerHTML = `
+        <span class="qb-row-num">Q${String(i+1).padStart(2,'0')}</span>
+        <span class="qb-row-text" title="${q.text.replace(/"/g,'&quot;')}">${short}</span>
+        <span class="qb-row-mod">${q.mod}</span>
+        <span class="qb-row-status ${ok ? 'ok' : 'no'}">${ok ? '✓ Correct' : '✕ Missed'}</span>
+      `;
+      list.appendChild(row);
+    });
+  }
+
+  function toggleBreakdown() {
+    const toggle = document.getElementById('qbToggle');
+    const list = document.getElementById('qbList');
+    toggle.classList.toggle('expanded');
+    list.classList.toggle('show');
+  }
+
+  function retakeNow() {
+    document.getElementById('resultScreen').classList.remove('show');
+    document.getElementById('introScreen').style.display = 'block';
+    checkCooldown(); // show soft notice if recently failed
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // Initial cooldown check on load (session-only; no persistence)
+  checkCooldown();
+</script>
+
+</body>
+</html>

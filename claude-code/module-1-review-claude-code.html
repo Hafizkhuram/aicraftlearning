@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Module 1 review — 5 questions to unlock Module 2 | AI Craft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --warn:#F59E0B;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:var(--body);
+    font-size:17px;
+    line-height:1.7;
+    color:var(--text);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* Header */
+  header{
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(8px);
+    background:rgba(255,255,255,.85);
+  }
+  .header-inner{
+    max-width:1100px;margin:0 auto;
+    padding:18px 28px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;
+  }
+  .brand{
+    display:flex;align-items:center;
+    text-decoration:none;
+  }
+  .brand svg{
+    display:block;
+    height:34px;width:auto;
+  }
+  .header-meta{
+    display:flex;align-items:center;gap:20px;
+    font-size:13px;color:var(--text-mute);
+  }
+  .header-meta .sep{opacity:.4}
+  .lesson-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 10px;border-radius:999px;
+    background:var(--mint);color:var(--forest);
+    font-weight:600;font-size:12px;letter-spacing:.02em;
+  }
+  .lesson-badge::before{
+    content:"";width:6px;height:6px;border-radius:50%;
+    background:var(--emerald);
+  }
+
+  main{
+    max-width:760px;margin:0 auto;
+    padding:48px 28px 80px;
+  }
+
+  /* Intro section */
+  .review-meta{
+    display:flex;align-items:center;gap:10px;
+    font-size:13px;color:var(--text-mute);
+    margin-bottom:20px;font-weight:500;
+  }
+  .review-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.review-title{
+    font-family:var(--display);
+    font-weight:500;
+    font-size:clamp(34px,4.8vw,52px);
+    line-height:1.08;
+    letter-spacing:-.02em;
+    color:var(--slate);
+    margin:0 0 20px;
+  }
+  h1.review-title em{font-style:italic;color:var(--forest)}
+  .review-lede{
+    font-family:var(--display);
+    font-size:20px;line-height:1.55;
+    color:var(--text-soft);
+    font-style:italic;
+    padding:0 0 0 20px;
+    border-left:3px solid var(--emerald);
+    margin:28px 0 40px;
+  }
+
+  /* Recap cards */
+  .recap-label{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);margin:0 0 14px;
+  }
+  .recap-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);
+    gap:14px;margin:0 0 44px;
+  }
+  @media (max-width:700px){.recap-grid{grid-template-columns:1fr}}
+  .recap-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px 20px;
+    position:relative;
+  }
+  .recap-num{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;color:var(--emerald);
+    letter-spacing:.04em;margin-bottom:6px;
+  }
+  .recap-title{
+    font-family:var(--display);font-weight:600;
+    font-size:15.5px;color:var(--slate);line-height:1.3;
+    margin:0 0 8px;
+  }
+  .recap-summary{
+    font-size:13.5px;color:var(--text-soft);
+    line-height:1.55;margin:0;
+  }
+
+  /* Quiz shell */
+  .quiz{
+    padding:36px 36px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+  }
+  @media (max-width:600px){.quiz{padding:28px 22px}}
+
+  .quiz-header-row{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  .quiz-eyebrow{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);font-weight:700;
+  }
+  .quiz-rule{
+    font-size:12.5px;color:var(--text-mute);
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .quiz-rule strong{color:var(--forest);font-weight:600}
+  .quiz-title{
+    font-family:var(--display);font-weight:600;
+    font-size:26px;line-height:1.2;
+    color:var(--slate);margin:4px 0 8px;letter-spacing:-.01em;
+  }
+  .quiz-sub{color:var(--text-mute);margin:0 0 24px;font-size:15px}
+
+  .quiz-progress{
+    display:flex;gap:6px;margin-bottom:28px;
+  }
+  .quiz-progress span{
+    flex:1;height:4px;border-radius:2px;
+    background:var(--border);transition:background .3s;
+  }
+  .quiz-progress span.done{background:var(--emerald)}
+  .quiz-progress span.active{background:var(--forest)}
+
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(6px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .q-number{
+    font-family:var(--display);font-size:13px;color:var(--text-mute);
+    font-weight:500;letter-spacing:.04em;margin-bottom:8px;
+  }
+  .q-text{
+    font-family:var(--display);font-weight:500;
+    font-size:21px;line-height:1.4;color:var(--slate);
+    margin:0 0 24px;letter-spacing:-.005em;
+  }
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:16px 18px;
+    border:1.5px solid var(--border);
+    border-radius:10px;
+    cursor:pointer;
+    transition:all .2s;
+    background:var(--card);
+    font-size:15.5px;line-height:1.5;
+  }
+  .option:hover:not(.disabled){
+    border-color:var(--emerald);
+    background:var(--mint-soft);
+  }
+  .option.disabled{cursor:default}
+  .option-letter{
+    width:26px;height:26px;border-radius:7px;
+    background:var(--border-soft);color:var(--text-soft);
+    display:grid;place-items:center;
+    font-weight:700;font-size:13px;flex-shrink:0;
+    transition:all .2s;font-family:var(--display);
+  }
+  .option:hover:not(.disabled) .option-letter{
+    background:var(--emerald);color:#fff;
+  }
+  .option.correct{
+    border-color:var(--success);
+    background:#F0FDF4;
+  }
+  .option.correct .option-letter{
+    background:var(--success);color:#fff;
+  }
+  .option.incorrect{
+    border-color:var(--error);
+    background:#FEF2F2;
+  }
+  .option.incorrect .option-letter{
+    background:var(--error);color:#fff;
+  }
+  .option-check{
+    margin-left:auto;opacity:0;transition:opacity .2s;
+    font-size:20px;line-height:1;
+  }
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+
+  .explanation{
+    display:none;
+    margin-top:20px;padding:18px 20px;
+    border-radius:10px;
+    background:var(--mint-soft);
+    border-left:3px solid var(--emerald);
+    font-size:15px;line-height:1.6;color:var(--forest);
+  }
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{
+    display:block;
+    font-family:var(--display);font-size:13px;
+    letter-spacing:.1em;text-transform:uppercase;
+    color:var(--forest);margin-bottom:6px;
+  }
+  .explanation.wrong{
+    background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D;
+  }
+  .explanation.wrong strong{color:#7F1D1D}
+  .explanation .ref{
+    font-family:var(--body);font-size:12.5px;letter-spacing:0;
+    color:var(--text-mute);text-transform:none;font-weight:500;
+    margin-top:8px;display:block;
+  }
+
+  .quiz-nav{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:24px;gap:12px;
+  }
+  .btn{
+    border:0;cursor:pointer;font-family:var(--body);
+    font-weight:600;font-size:14.5px;
+    padding:11px 22px;border-radius:8px;
+    transition:all .18s;
+    display:inline-flex;align-items:center;gap:8px;
+    text-decoration:none;
+  }
+  .btn-primary{
+    background:var(--forest);color:#fff;
+  }
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{
+    background:var(--border);color:var(--text-mute);
+    cursor:not-allowed;transform:none;
+  }
+  .btn-ghost{
+    background:transparent;color:var(--text-mute);
+  }
+  .btn-ghost:hover{color:var(--forest)}
+  .btn-big{padding:14px 28px;font-size:15px}
+
+  /* Results */
+  .quiz-result{display:none}
+  .quiz-result.show{display:block;animation:fadeIn .4s ease}
+
+  .result-hero{
+    text-align:center;padding:16px 0 8px;
+  }
+  .result-score-wrap{
+    display:inline-flex;align-items:baseline;
+    gap:6px;
+    margin-bottom:10px;
+  }
+  .result-score{
+    font-family:var(--display);font-weight:500;
+    font-size:84px;line-height:1;
+    letter-spacing:-.03em;
+  }
+  .result-score-total{
+    font-family:var(--display);
+    font-size:36px;color:var(--text-mute);
+    font-weight:500;
+  }
+  .result-percent{
+    font-family:var(--body);
+    font-size:14px;color:var(--text-mute);
+    margin:0 0 6px;
+  }
+  .result-status{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 14px;border-radius:999px;
+    font-size:13px;font-weight:600;letter-spacing:.02em;
+    margin-bottom:16px;
+  }
+  .result-status.pass{background:var(--mint);color:var(--forest)}
+  .result-status.fail{background:#FEF2F2;color:var(--error)}
+
+  .result-title{
+    font-family:var(--display);font-weight:600;
+    font-size:26px;color:var(--slate);
+    margin:0 0 10px;letter-spacing:-.01em;
+  }
+  .result-body{
+    color:var(--text-soft);margin:0 auto 28px;max-width:480px;
+    font-size:15.5px;line-height:1.65;
+  }
+
+  .result-score.pass{color:var(--forest)}
+  .result-score.fail{color:var(--error)}
+
+  /* Per-question breakdown */
+  .breakdown{
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    margin:8px 0 28px;
+    background:var(--card);
+  }
+  .breakdown-title{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);
+    padding:14px 20px;
+    border-bottom:1px solid var(--border);
+    background:var(--bg);
+  }
+  .breakdown-row{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    gap:12px;align-items:center;
+    padding:12px 20px;
+    border-top:1px solid var(--border-soft);
+    font-size:14px;
+  }
+  .breakdown-row:first-of-type{border-top:0}
+  .breakdown-num{
+    font-family:var(--display);font-weight:600;
+    color:var(--text-mute);font-size:13px;
+    min-width:22px;
+  }
+  .breakdown-text{
+    color:var(--text);line-height:1.4;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .breakdown-status{
+    font-size:13px;font-weight:600;
+    display:inline-flex;align-items:center;gap:4px;
+  }
+  .breakdown-status.ok{color:var(--success)}
+  .breakdown-status.no{color:var(--error)}
+
+  .result-actions{
+    display:flex;gap:10px;justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  /* Footer nav */
+  .bottom-nav{
+    margin-top:32px;
+    padding-top:24px;border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:center;
+    gap:16px;flex-wrap:wrap;
+  }
+  .nav-back{
+    display:inline-flex;align-items:center;gap:8px;
+    color:var(--text-mute);font-size:14px;
+    text-decoration:none;
+  }
+  .nav-back:hover{color:var(--forest)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AI Craft Learning">
+      <svg viewBox="-10 0 430 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="lesson-badge">Module 1 · Review</span>
+      <span class="sep">·</span>
+      <span>5 questions</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div id="introScreen">
+    <div class="review-meta">
+      <span>Claude Code: Setup, Workflow &amp; Mastery</span>
+      <span class="dot"></span>
+      <span>Module 1 complete</span>
+    </div>
+
+    <h1 class="review-title">Module 1 <em>review</em></h1>
+    <p class="review-lede">Five questions that pull together everything from the four lessons in Module 1. Score 60% or higher — three out of five — to unlock Module 2.</p>
+
+    <p class="recap-label">Quick recap of what you've covered</p>
+    <div class="recap-grid">
+      <div class="recap-card">
+        <div class="recap-num">Lesson 1.1</div>
+        <h3 class="recap-title">What Claude Code actually is</h3>
+        <p class="recap-summary">Not a coding tool. An AI that works on your files, not just your chat window.</p>
+      </div>
+      <div class="recap-card">
+        <div class="recap-num">Lesson 1.2</div>
+        <h3 class="recap-title">Installing Claude Code the easy way</h3>
+        <p class="recap-summary">VS Code extension over pure terminal. Start on Claude Pro, not Max.</p>
+      </div>
+      <div class="recap-card">
+        <div class="recap-num">Lesson 1.3</div>
+        <h3 class="recap-title">Your first useful thing</h3>
+        <p class="recap-summary">Describe the outcome in plain English. Claude Code handles the steps.</p>
+      </div>
+      <div class="recap-card">
+        <div class="recap-num">Lesson 1.4</div>
+        <h3 class="recap-title">Safety first — the four rules</h3>
+        <p class="recap-summary">Backups, outcome-first prompts, sensible permission modes, read before approving.</p>
+      </div>
+    </div>
+
+    <section class="quiz">
+      <div class="quiz-header-row">
+        <span class="quiz-eyebrow">Module 1 quiz</span>
+        <span class="quiz-rule">Pass mark · <strong>60% (3 of 5)</strong> · unlimited retries</span>
+      </div>
+      <h2 class="quiz-title">Ready when you are</h2>
+      <p class="quiz-sub">Takes about two minutes. You'll see your score and explanations at the end.</p>
+      <button class="btn btn-primary btn-big" onclick="startQuiz()">Start the quiz →</button>
+    </section>
+  </div>
+
+  <!-- Quiz screen -->
+  <section class="quiz" id="quizScreen" style="display:none">
+    <div class="quiz-header-row">
+      <span class="quiz-eyebrow" id="quizEyebrow">Module 1 quiz</span>
+      <span class="quiz-rule">Pass mark · <strong>60% (3 of 5)</strong></span>
+    </div>
+
+    <div class="quiz-progress" id="quizProgress">
+      <span class="active"></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div id="quizQuestions"></div>
+
+    <!-- Results area -->
+    <div class="quiz-result" id="quizResult">
+      <div class="result-hero">
+        <div class="result-score-wrap">
+          <span class="result-score" id="scoreNum">0</span>
+          <span class="result-score-total">/5</span>
+        </div>
+        <p class="result-percent" id="scorePercent">0%</p>
+        <div class="result-status pass" id="resultStatus">
+          <span>✓</span><span id="resultStatusText">Passed</span>
+        </div>
+        <h3 class="result-title" id="resultTitle">Module 1 complete</h3>
+        <p class="result-body" id="resultBody">You've got the foundations. Module 2 is where the mental model of how Claude Code works really clicks into place.</p>
+      </div>
+
+      <div class="breakdown" id="breakdown">
+        <div class="breakdown-title">Your answers</div>
+        <!-- populated dynamically -->
+      </div>
+
+      <div class="result-actions" id="resultActions">
+        <!-- populated dynamically based on pass/fail -->
+      </div>
+    </div>
+
+    <div class="quiz-nav" id="quizNav">
+      <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+    </div>
+  </section>
+
+  <div class="bottom-nav">
+    <a href="lesson-1-4-claude-code.html" class="nav-back">← Back to Lesson 1.4</a>
+    <span style="font-size:13px;color:var(--text-mute)">Module 1 of 4</span>
+  </div>
+</main>
+
+<script>
+  const PASS_THRESHOLD = 0.6; // 60%
+  const totalQuestions = 5;
+  let currentQ = 0;
+  let answers = new Array(totalQuestions).fill(null);
+  let answered = new Array(totalQuestions).fill(false);
+  let attemptCount = 0;
+  let selectedQuestions = [];
+
+  // ---------- QUESTION BANK ----------
+  // 8 synthesis questions covering Module 1. Each tagged with its primary source lesson(s).
+  const questionBank = [
+    {
+      id: 1,
+      text: 'A colleague who saw you using Claude Code asks: "So do I need to learn Python before I try it?" Based on Module 1, what\'s the most accurate answer?',
+      ref: 'Lessons 1.1, 1.3',
+      options: [
+        { text: "Yes — a little Python will get you better results.", correct: false },
+        { text: "No — Claude Code is aimed at non-coders. The skill is describing outcomes clearly in plain English, not writing code.", correct: true },
+        { text: "Only if they want to use advanced features like bulk document processing.", correct: false },
+        { text: "Technically no, but most people end up learning some code anyway.", correct: false }
+      ],
+      explanation: "This is the thesis of Module 1. Lesson 1.1 reframed Claude Code away from 'developer tool,' and Lesson 1.3 proved it — a messy folder was organised with one plain-English instruction. The skill is describing outcomes well, not coding."
+    },
+    {
+      id: 2,
+      text: 'You\'re helping someone install Claude Code for the first time. They ask: "Should I get Claude Pro or Claude Max?" Based on Module 1, what\'s the right recommendation?',
+      ref: 'Lesson 1.2',
+      options: [
+        { text: "Claude Max — the extra usage is worth it even for beginners.", correct: false },
+        { text: "Claude Pro — it's enough for this course and most daily use. Upgrade to Max later only if they actually hit the limits.", correct: true },
+        { text: "Either — the subscription tier doesn't really affect how Claude Code behaves.", correct: false },
+        { text: "The Free plan — Claude Code works on all tiers with a few limitations.", correct: false }
+      ],
+      explanation: "Lesson 1.2 takes a firm position here. Pro is the right starting point — most learners on Max spend the first month barely using it. Upgrade when you have real evidence you need to, not on day one. Note the Free plan doesn't include Claude Code at all."
+    },
+    {
+      id: 3,
+      text: 'You\'re about to run a Claude Code workflow that will move files across your real working folders. Combining Module 1\'s guidance, which of these should be true BEFORE you run it?',
+      ref: 'Lessons 1.3, 1.4',
+      options: [
+        { text: "A verified backup is running (Time Machine, File History, iCloud, Dropbox, etc.), and you've opened VS Code on the specific folder you want Claude to see.", correct: true },
+        { text: "You've switched Claude Code to bypass permissions mode so it doesn't interrupt you.", correct: false },
+        { text: "You've rewritten the prompt in technical terms so Claude understands it better.", correct: false },
+        { text: "You've upgraded to Claude Max — Pro isn't recommended for real files.", correct: false }
+      ],
+      explanation: "This question combines two Module 1 safety properties. Lesson 1.3 showed that Claude Code's awareness is scoped to the folder you open — get that wrong and it can't help you, or worse. Lesson 1.4's Rule 1 made the backup non-negotiable. Bypass mode is the one to avoid, not reach for."
+    },
+    {
+      id: 4,
+      text: 'You want Claude Code to tidy up a folder that has some duplicate files. Based on Module 1\'s Rule 2, which prompt is the safer one to send?',
+      ref: 'Lesson 1.4',
+      options: [
+        { text: "'Delete all duplicate files in this folder.'", correct: false },
+        { text: "'Find duplicate files in this folder. For each pair, keep the earlier one and move the others to a _to_review subfolder. Don\\'t delete anything.'", correct: true },
+        { text: "'Aggressively de-duplicate this folder — skip the prompts.'", correct: false },
+        { text: "'Clean up this folder however you think is best.'", correct: false }
+      ],
+      explanation: "Lesson 1.4's Rule 2 in one question. The safer prompt describes the outcome (no active duplicates in the main folder) while keeping deletion out of the picture entirely. Anything moved to _to_review can be checked before it's actually gone."
+    },
+    {
+      id: 5,
+      text: 'You type a request into Claude Code and it replies: "I need more context to work on your files." Based on Module 1, what\'s the most likely cause?',
+      ref: 'Lesson 1.3',
+      options: [
+        { text: "Your Claude subscription has run out.", correct: false },
+        { text: "You opened VS Code without a folder, or on the wrong folder — so Claude Code can't see the files you meant it to.", correct: true },
+        { text: "Your prompt didn't use enough technical language.", correct: false },
+        { text: "Claude Code is offline for maintenance.", correct: false }
+      ],
+      explanation: "Claude Code's awareness is scoped to the folder you opened in VS Code. If it can't see your files, you've either not opened a folder or opened the wrong one. Check the sidebar — the folder name shown at the top is the entire world Claude can see."
+    },
+    {
+      id: 6,
+      text: 'You\'ve been using Claude Code happily on a weekly workflow for a month. The permission prompts are starting to feel repetitive. What\'s the right next step?',
+      ref: 'Lesson 1.4',
+      options: [
+        { text: "Jump to bypass permissions mode — you clearly know the workflow now.", correct: false },
+        { text: "Stay on normal mode forever — changing anything is risky.", correct: false },
+        { text: "Move this trusted workflow to auto-accept mode. Keep normal mode as your default for new workflows you haven't proven yet.", correct: true },
+        { text: "Disable all permission checks globally in the settings.", correct: false }
+      ],
+      explanation: "Auto-accept is designed exactly for this — a workflow you've run often and understand, where the friction of clicking Accept each time has stopped adding value. It still refuses genuinely destructive actions without a check. Bypass is not the next step for real work."
+    },
+    {
+      id: 7,
+      text: 'Someone online describes Claude Code as "just the developer version of Claude" and says non-technical people should stick with the chat Claude. Based on Module 1, what\'s wrong with that advice?',
+      ref: 'Lesson 1.1',
+      options: [
+        { text: "Nothing — that description is essentially correct.", correct: false },
+        { text: "It mixes up the two tools. The chat Claude gives advice; Claude Code acts on your files and is increasingly used by non-coders for real business work.", correct: true },
+        { text: "The chat Claude is actually harder for non-technical users than Claude Code.", correct: false },
+        { text: "Claude Code is developer-only on Mac but open to everyone on Windows.", correct: false }
+      ],
+      explanation: "The whole point of Lesson 1.1 is undoing this misconception. Claude Code isn't a 'developer Claude' — it's the version that can work on your actual files. Recruiters, marketers, consultants and agency owners are quietly using it every day, with zero code involved."
+    },
+    {
+      id: 8,
+      text: 'Which of these tasks best fits the shape of work Claude Code is genuinely built for, based on the demo in Lesson 1.3 and the broader Module 1 framing?',
+      ref: 'Lessons 1.1, 1.3',
+      options: [
+        { text: "Asking a one-off question like 'what is inflation?' — where you just want a quick answer.", correct: false },
+        { text: "Processing 40 PDF invoices in a folder and extracting supplier, amount, and date from each one into a spreadsheet.", correct: true },
+        { text: "Building and publishing a mobile app to the App Store.", correct: false },
+        { text: "Replacing your accountant for your year-end tax return.", correct: false }
+      ],
+      explanation: "The folder-organising demo in Lesson 1.3 showed the core shape: a folder of files, one clear instruction, a structured output. Invoice extraction has exactly that shape — inputs (PDFs), work (extract fields), outputs (spreadsheet). The other options either don't need files or sit outside the course's scope."
+    }
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function pickQuestions() {
+    if (attemptCount === 0) {
+      // First attempt: canonical 5 questions in order
+      const canonical = [1, 2, 3, 4, 5].map(id => questionBank.find(q => q.id === id));
+      return canonical.map(q => ({ ...q, options: q.options.slice() }));
+    }
+    // Retries: shuffle bank, pick 5, shuffle options within each
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  function renderQuestions() {
+    selectedQuestions = pickQuestions();
+    const container = document.getElementById('quizQuestions');
+    container.innerHTML = '';
+
+    selectedQuestions.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+          <span class="ref">Covered in ${q.ref}</span>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  const progressDots = document.querySelectorAll('#quizProgress span');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+
+  function startQuiz() {
+    document.getElementById('introScreen').style.display = 'none';
+    document.getElementById('quizScreen').style.display = 'block';
+    renderQuestions();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function getCards() {
+    return document.querySelectorAll('.q-card');
+  }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    progressDots.forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < i) d.classList.add('done');
+      else if (idx === i) d.classList.add('active');
+    });
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('quizScreen').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) {
+      currentQ++;
+      showQuestion(currentQ);
+    } else {
+      showResults();
+    }
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) {
+      currentQ--;
+      showQuestion(currentQ);
+    }
+  }
+
+  function showResults() {
+    getCards().forEach(c => c.classList.remove('active'));
+    document.getElementById('quizNav').style.display = 'none';
+    progressDots.forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+
+    const score = answers.filter(a => a === true).length;
+    const pct = Math.round((score / totalQuestions) * 100);
+    const passed = (score / totalQuestions) >= PASS_THRESHOLD;
+
+    // Score display
+    const scoreEl = document.getElementById('scoreNum');
+    scoreEl.textContent = score;
+    scoreEl.classList.toggle('pass', passed);
+    scoreEl.classList.toggle('fail', !passed);
+    document.getElementById('scorePercent').textContent = pct + '%';
+
+    // Status pill
+    const statusEl = document.getElementById('resultStatus');
+    const statusText = document.getElementById('resultStatusText');
+    statusEl.classList.toggle('pass', passed);
+    statusEl.classList.toggle('fail', !passed);
+    statusEl.querySelector('span:first-child').textContent = passed ? '✓' : '✕';
+    statusText.textContent = passed ? 'Module 2 unlocked' : 'Not quite there yet';
+
+    // Title + body copy
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+
+    if (passed && score === 5) {
+      title.textContent = 'Five for five. Module 1 mastered.';
+      body.textContent = "You've got the foundations properly locked in. Module 2 is where the mental model deepens — project folders, CLAUDE.md, and the prompting pattern that makes Claude Code feel like a colleague.";
+    } else if (passed) {
+      title.textContent = 'Nicely done — Module 1 complete.';
+      body.textContent = `You scored ${score} out of 5 — above the 60% pass mark. Have a quick look at the questions you missed below, then move on to Module 2.`;
+    } else if (score === 2) {
+      title.textContent = 'Close. One more correct answer and you\'re through.';
+      body.textContent = 'You need 3 out of 5 to unlock Module 2. Review the questions you missed, skim the relevant lessons, and try again when you\'re ready. No limits on retries.';
+    } else {
+      title.textContent = 'Worth another pass through Module 1.';
+      body.textContent = 'You need 3 out of 5 to unlock Module 2. The review below shows which ideas to go back to — the lesson references will point you straight to them.';
+    }
+
+    // Breakdown
+    const breakdown = document.getElementById('breakdown');
+    // Remove any existing rows (for retries)
+    breakdown.querySelectorAll('.breakdown-row').forEach(r => r.remove());
+    selectedQuestions.forEach((q, i) => {
+      const row = document.createElement('div');
+      row.className = 'breakdown-row';
+      const ok = answers[i] === true;
+      const shortText = q.text.length > 70 ? q.text.slice(0, 68) + '…' : q.text;
+      row.innerHTML = `
+        <span class="breakdown-num">Q${i+1}</span>
+        <span class="breakdown-text" title="${q.text.replace(/"/g,'&quot;')}">${shortText}</span>
+        <span class="breakdown-status ${ok ? 'ok' : 'no'}">${ok ? '✓ Correct' : '✕ Missed'}</span>
+      `;
+      breakdown.appendChild(row);
+    });
+
+    // Actions
+    const actions = document.getElementById('resultActions');
+    if (passed) {
+      actions.innerHTML = `
+        <a href="lesson-2-1-claude-code.html" class="btn btn-primary btn-big">Start Module 2 — Lesson 2.1 →</a>
+        <button class="btn btn-ghost" onclick="resetQuiz()">↻ Retake the quiz</button>
+      `;
+    } else {
+      actions.innerHTML = `
+        <button class="btn btn-primary btn-big" onclick="resetQuiz()">↻ Retake the quiz</button>
+        <a href="lesson-1-1-claude-code.html" class="btn btn-ghost">Revisit Lesson 1.1</a>
+        <a href="lesson-1-2-claude-code.html" class="btn btn-ghost">Revisit Lesson 1.2</a>
+        <a href="lesson-1-3-claude-code.html" class="btn btn-ghost">Revisit Lesson 1.3</a>
+        <a href="lesson-1-4-claude-code.html" class="btn btn-ghost">Revisit Lesson 1.4</a>
+      `;
+    }
+
+    document.getElementById('quizResult').classList.add('show');
+    document.getElementById('quizResult').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function resetQuiz() {
+    attemptCount++;
+    currentQ = 0;
+    answers = new Array(totalQuestions).fill(null);
+    answered = new Array(totalQuestions).fill(false);
+
+    renderQuestions();
+
+    document.getElementById('quizResult').classList.remove('show');
+    document.getElementById('quizNav').style.display = 'flex';
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Next question →';
+    showQuestion(0);
+  }
+</script>
+
+</body>
+</html>

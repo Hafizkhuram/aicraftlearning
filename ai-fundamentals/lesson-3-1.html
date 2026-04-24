@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lesson 3.1 — The ROLE / CONTEXT / TASK pattern | AICraft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --warn:#F59E0B;
+    --warn-bg:#FEF7EC;
+    --warn-border:#F4E0BB;
+    --warn-text:#92400E;
+    --warn-deep:#78350F;
+    /* Three distinct colours for the ROLE / CONTEXT / TASK parts */
+    --role:#7C3AED;      /* purple */
+    --role-bg:#F3E8FF;
+    --role-border:#DDD6FE;
+    --ctx:#10B981;       /* emerald */
+    --ctx-bg:#ECFDF5;
+    --ctx-border:#A7F3D0;
+    --task:#F59E0B;      /* amber */
+    --task-bg:#FEF3C7;
+    --task-border:#FDE68A;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:var(--body);
+    font-size:17px;line-height:1.7;
+    color:var(--text);background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .progress-track{position:fixed;top:0;left:0;right:0;height:3px;z-index:100}
+  .progress-bar{height:100%;width:0%;
+    background:linear-gradient(90deg,var(--emerald),var(--forest));
+    transition:width .15s ease-out;
+  }
+
+  header{
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(8px);background:rgba(255,255,255,.85);
+  }
+  .header-inner{
+    max-width:1100px;margin:0 auto;padding:18px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .brand{
+    display:flex;align-items:center;gap:10px;
+    text-decoration:none;
+  }
+  .brand-logo{
+    height:32px;width:auto;
+    display:block;
+  }
+  .header-meta{display:flex;align-items:center;gap:20px;font-size:13px;color:var(--text-mute)}
+  .header-meta .sep{opacity:.4}
+  .lesson-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 10px;border-radius:999px;
+    background:var(--mint);color:var(--forest);
+    font-weight:600;font-size:12px;letter-spacing:.02em;
+  }
+  .lesson-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald)}
+
+  main{
+    max-width:1100px;margin:0 auto;padding:0 28px 80px;
+    display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:56px;
+  }
+  @media (max-width:900px){
+    main{grid-template-columns:1fr;gap:0;padding-bottom:48px}
+    aside.toc{display:none}
+  }
+
+  article{max-width:680px;padding-top:48px}
+
+  .lesson-meta{
+    display:flex;align-items:center;gap:10px;
+    font-size:13px;color:var(--text-mute);
+    margin-bottom:20px;font-weight:500;
+  }
+  .lesson-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.lesson-title{
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(34px,4.8vw,52px);line-height:1.08;
+    letter-spacing:-.02em;color:var(--slate);margin:0 0 20px;
+  }
+  h1.lesson-title em{font-style:italic;color:var(--forest)}
+
+  .hook{
+    font-family:var(--display);font-size:21px;line-height:1.5;
+    color:var(--text-soft);font-style:italic;font-weight:400;
+    padding:0 0 0 20px;border-left:3px solid var(--emerald);
+    margin:28px 0 48px;
+  }
+
+  article h2{
+    font-family:var(--display);font-weight:600;font-size:28px;
+    line-height:1.25;letter-spacing:-.015em;color:var(--forest);
+    margin:56px 0 16px;position:relative;padding-left:18px;
+  }
+  article h2::before{
+    content:"";position:absolute;left:0;top:10px;bottom:10px;
+    width:3px;border-radius:2px;background:var(--emerald);
+  }
+  article h3{
+    font-family:var(--display);font-weight:600;font-size:20px;
+    color:var(--slate);margin:32px 0 10px;letter-spacing:-.005em;
+  }
+  article p{margin:0 0 18px}
+  article p strong{color:var(--slate);font-weight:600}
+  article code{
+    font-family:"SFMono-Regular",Consolas,monospace;
+    background:var(--mint-soft);color:var(--forest);
+    padding:1px 6px;border-radius:4px;font-size:.92em;
+  }
+
+  .misconception{
+    display:grid;grid-template-columns:auto 1fr;gap:16px;
+    padding:20px 22px;background:var(--warn-bg);
+    border:1px solid var(--warn-border);border-radius:10px;margin:28px 0;
+  }
+  .misconception-icon{
+    width:32px;height:32px;border-radius:8px;
+    background:var(--warn);color:#fff;
+    display:grid;place-items:center;
+    font-family:var(--display);font-weight:700;font-size:18px;flex-shrink:0;
+  }
+  .misconception-label{
+    font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--warn-text);font-weight:700;margin-bottom:4px;
+  }
+  .misconception-text{margin:0;color:var(--warn-deep);font-size:15.5px;line-height:1.6}
+
+  .takeaway{
+    margin:40px 0;padding:28px 32px;
+    background:linear-gradient(135deg,var(--mint-soft) 0%,var(--mint) 100%);
+    border:1px solid #A7F3D0;border-radius:14px;
+    position:relative;overflow:hidden;
+  }
+  .takeaway::before{
+    content:"";position:absolute;top:0;bottom:0;left:0;
+    width:4px;background:var(--emerald);
+  }
+  .takeaway-label{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);font-weight:700;margin-bottom:12px;
+  }
+  .takeaway-label svg{width:14px;height:14px}
+  .takeaway-main{
+    font-family:var(--display);font-size:22px;line-height:1.4;
+    color:var(--slate);font-weight:600;margin:0 0 10px;letter-spacing:-.01em;
+  }
+  .takeaway-sub{font-size:15.5px;color:var(--forest);margin:0;line-height:1.6}
+
+  /* Three-part anatomy strip */
+  .anatomy{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;
+    margin:24px 0;
+  }
+  @media (max-width:700px){.anatomy{grid-template-columns:1fr}}
+  .anatomy-card{
+    padding:18px 20px;border-radius:12px;
+    border:1.5px solid;position:relative;
+  }
+  .anatomy-card.role{background:var(--role-bg);border-color:var(--role-border)}
+  .anatomy-card.ctx{background:var(--ctx-bg);border-color:var(--ctx-border)}
+  .anatomy-card.task{background:var(--task-bg);border-color:var(--task-border)}
+  .anatomy-tag{
+    font-family:var(--display);font-weight:700;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    margin:0 0 8px;
+  }
+  .anatomy-card.role .anatomy-tag{color:var(--role)}
+  .anatomy-card.ctx .anatomy-tag{color:var(--forest)}
+  .anatomy-card.task .anatomy-tag{color:var(--warn-deep)}
+  .anatomy-q{
+    font-family:var(--display);font-weight:600;font-size:15.5px;
+    color:var(--slate);margin:0 0 6px;line-height:1.35;
+  }
+  .anatomy-eg{
+    font-size:13.5px;color:var(--text-soft);
+    margin:0;line-height:1.55;font-style:italic;
+  }
+
+  /* Prompt builder */
+  .builder{
+    margin:28px 0;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    overflow:hidden;
+  }
+  .builder-head{
+    display:flex;justify-content:space-between;align-items:baseline;
+    flex-wrap:wrap;gap:8px;
+    padding:22px 26px 18px;
+    border-bottom:1px solid var(--border-soft);
+  }
+  .builder-label{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--text-mute);
+  }
+  .builder-scenario{
+    padding:18px 26px;
+    background:var(--bg);
+    border-bottom:1px solid var(--border-soft);
+    font-size:14.5px;color:var(--text);line-height:1.55;
+  }
+  .builder-scenario-label{
+    font-family:var(--display);font-weight:600;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);margin-bottom:6px;
+  }
+  .builder-scenario p{margin:0}
+  .builder-scenario strong{color:var(--slate)}
+
+  .builder-body{padding:24px 26px}
+
+  .builder-section{margin-bottom:20px}
+  .builder-section-label{
+    display:flex;align-items:center;justify-content:space-between;
+    font-family:var(--display);font-weight:600;
+    font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    margin-bottom:10px;
+    gap:10px;
+  }
+  .builder-section-label .part-tag{
+    padding:3px 8px;border-radius:4px;
+    font-size:10.5px;
+  }
+  .builder-section-label .part-tag.role{background:var(--role-bg);color:var(--role)}
+  .builder-section-label .part-tag.ctx{background:var(--ctx-bg);color:var(--forest)}
+  .builder-section-label .part-tag.task{background:var(--task-bg);color:var(--warn-deep)}
+  .builder-section-label .hint{
+    font-family:var(--body);font-weight:500;font-size:12px;
+    letter-spacing:0;text-transform:none;color:var(--text-mute);
+  }
+
+  .builder-options{
+    display:flex;flex-wrap:wrap;gap:8px;
+  }
+  .builder-option{
+    border:1.5px solid var(--border);
+    background:var(--card);
+    border-radius:8px;
+    padding:10px 14px;
+    cursor:pointer;
+    font-size:13.5px;line-height:1.4;
+    color:var(--text);
+    transition:all .18s;
+    font-family:var(--body);
+    flex:1;min-width:140px;
+    text-align:left;
+  }
+  .builder-option:hover{border-color:var(--text-soft);background:var(--bg)}
+  .builder-option.selected.role{
+    background:var(--role-bg);border-color:var(--role);
+    color:var(--role);font-weight:600;
+  }
+  .builder-option.selected.ctx{
+    background:var(--ctx-bg);border-color:var(--ctx);
+    color:var(--forest);font-weight:600;
+  }
+  .builder-option.selected.task{
+    background:var(--task-bg);border-color:var(--warn);
+    color:var(--warn-deep);font-weight:600;
+  }
+
+  /* Live output panel */
+  .builder-output-wrap{
+    padding:0 26px 26px;
+  }
+  .builder-output-label{
+    display:flex;align-items:center;justify-content:space-between;
+    font-family:var(--display);font-weight:600;
+    font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);margin-bottom:8px;
+    gap:10px;
+  }
+  .builder-output-label .status{
+    font-family:var(--body);font-weight:500;font-size:12px;
+    letter-spacing:0;text-transform:none;color:var(--text-mute);
+  }
+  .builder-output-label .status.complete{color:var(--success);font-weight:600}
+  .builder-output{
+    background:var(--slate);color:#E2E8F0;
+    border-radius:10px;padding:18px 20px;
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:13.5px;line-height:1.7;
+    min-height:120px;
+    white-space:pre-wrap;word-wrap:break-word;
+    transition:background .3s;
+  }
+  .builder-output .seg-role{
+    background:rgba(124,58,237,.3);
+    color:#E9D5FF;
+    padding:1px 4px;border-radius:3px;
+  }
+  .builder-output .seg-ctx{
+    background:rgba(16,185,129,.25);
+    color:#A7F3D0;
+    padding:1px 4px;border-radius:3px;
+  }
+  .builder-output .seg-task{
+    background:rgba(245,158,11,.3);
+    color:#FDE68A;
+    padding:1px 4px;border-radius:3px;
+  }
+  .builder-output .placeholder{
+    color:#64748B;font-style:italic;
+  }
+
+  .builder-footer{
+    display:flex;justify-content:space-between;align-items:center;
+    flex-wrap:wrap;gap:10px;
+    padding:16px 26px;
+    background:var(--bg);
+    border-top:1px solid var(--border-soft);
+    font-size:13px;color:var(--text-mute);
+  }
+  .builder-reset{
+    background:transparent;border:0;
+    color:var(--text-mute);cursor:pointer;
+    font-family:var(--body);font-weight:500;font-size:13px;
+    padding:6px 10px;border-radius:6px;
+    transition:color .18s;
+  }
+  .builder-reset:hover{color:var(--forest)}
+  .builder-score{
+    font-family:var(--display);font-weight:600;color:var(--text);
+  }
+
+  /* When-to-use / when-not table */
+  .usage-table{
+    margin:24px 0;
+    border:1px solid var(--border);border-radius:12px;
+    overflow:hidden;background:var(--card);
+  }
+  .usage-row{
+    display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--border-soft);
+  }
+  .usage-row:first-child{
+    border-top:0;
+    background:var(--bg);
+  }
+  .usage-row > div{
+    padding:14px 18px;font-size:14.5px;line-height:1.5;
+  }
+  .usage-row:first-child > div{
+    font-family:var(--display);font-weight:600;font-size:12px;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--forest);
+  }
+  .usage-row > div:first-child{
+    border-right:1px solid var(--border-soft);color:var(--text-soft);
+  }
+  .usage-row > div:nth-child(2){color:var(--text-soft)}
+  @media (max-width:600px){
+    .usage-row{grid-template-columns:1fr}
+    .usage-row > div:first-child{border-right:0}
+  }
+
+  /* Action box */
+  .action-box{
+    margin:48px 0 0;padding:32px;
+    background:var(--slate);border-radius:16px;color:#fff;
+    position:relative;overflow:hidden;
+  }
+  .action-box::after{
+    content:"";position:absolute;right:-60px;bottom:-60px;
+    width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(16,185,129,.18),transparent 70%);
+    pointer-events:none;
+  }
+  .action-eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    color:var(--emerald);font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;font-weight:700;margin-bottom:14px;
+  }
+  .action-title{
+    font-family:var(--display);font-weight:500;font-size:26px;
+    line-height:1.25;margin:0 0 12px;color:#fff;letter-spacing:-.01em;
+  }
+  .action-body{color:#CBD5E1;font-size:16px;line-height:1.65;margin:0 0 20px}
+  .action-prompt{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:8px;padding:14px 16px;
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:13.5px;color:#E2E8F0;margin:0 0 20px;line-height:1.7;
+  }
+  .action-check{
+    display:flex;align-items:center;gap:10px;
+    cursor:pointer;user-select:none;padding:10px 0;
+    color:#CBD5E1;font-size:15px;position:relative;z-index:2;
+  }
+  .action-check input{display:none}
+  .action-check .box{
+    width:20px;height:20px;border-radius:5px;
+    border:1.5px solid #475569;
+    display:grid;place-items:center;transition:all .2s;flex-shrink:0;
+  }
+  .action-check input:checked + .box{background:var(--emerald);border-color:var(--emerald)}
+  .action-check input:checked + .box::after{
+    content:"✓";color:#fff;font-size:13px;font-weight:700;
+  }
+  .action-check input:checked ~ span:last-child{
+    color:#fff;text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3);
+  }
+
+  /* Quiz */
+  .quiz{
+    margin-top:72px;padding:40px 36px;
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+  }
+  .quiz-header{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .quiz-eyebrow{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);font-weight:700;
+  }
+  .quiz-title{
+    font-family:var(--display);font-weight:600;font-size:26px;
+    line-height:1.2;color:var(--slate);margin:4px 0 8px;letter-spacing:-.01em;
+  }
+  .quiz-sub{color:var(--text-mute);margin:0 0 28px;font-size:15px}
+  .quiz-progress{display:flex;gap:6px;margin-bottom:28px}
+  .quiz-progress span{
+    flex:1;height:4px;border-radius:2px;
+    background:var(--border);transition:background .3s;
+  }
+  .quiz-progress span.done{background:var(--emerald)}
+  .quiz-progress span.active{background:var(--forest)}
+
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(6px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .q-number{
+    font-family:var(--display);font-size:13px;color:var(--text-mute);
+    font-weight:500;letter-spacing:.04em;margin-bottom:8px;
+  }
+  .q-text{
+    font-family:var(--display);font-weight:500;font-size:21px;
+    line-height:1.4;color:var(--slate);margin:0 0 24px;letter-spacing:-.005em;
+  }
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:16px 18px;border:1.5px solid var(--border);border-radius:10px;
+    cursor:pointer;transition:all .2s;background:var(--card);
+    font-size:15.5px;line-height:1.5;
+  }
+  .option:hover:not(.disabled){border-color:var(--emerald);background:var(--mint-soft)}
+  .option.disabled{cursor:default}
+  .option-letter{
+    width:26px;height:26px;border-radius:7px;
+    background:var(--border-soft);color:var(--text-soft);
+    display:grid;place-items:center;font-weight:700;font-size:13px;
+    flex-shrink:0;transition:all .2s;font-family:var(--display);
+  }
+  .option:hover:not(.disabled) .option-letter{background:var(--emerald);color:#fff}
+  .option.correct{border-color:var(--success);background:#F0FDF4}
+  .option.correct .option-letter{background:var(--success);color:#fff}
+  .option.incorrect{border-color:var(--error);background:#FEF2F2}
+  .option.incorrect .option-letter{background:var(--error);color:#fff}
+  .option-check{
+    margin-left:auto;opacity:0;transition:opacity .2s;
+    font-size:20px;line-height:1;
+  }
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+
+  .explanation{
+    display:none;margin-top:20px;padding:18px 20px;border-radius:10px;
+    background:var(--mint-soft);border-left:3px solid var(--emerald);
+    font-size:15px;line-height:1.6;color:var(--forest);
+  }
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{
+    display:block;font-family:var(--display);font-size:13px;
+    letter-spacing:.1em;text-transform:uppercase;
+    color:var(--forest);margin-bottom:6px;
+  }
+  .explanation.wrong{background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D}
+  .explanation.wrong strong{color:#7F1D1D}
+
+  .quiz-nav{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:24px;gap:12px;
+  }
+  .btn{
+    border:0;cursor:pointer;font-family:var(--body);
+    font-weight:600;font-size:14.5px;padding:11px 22px;border-radius:8px;
+    transition:all .18s;display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn-primary{background:var(--forest);color:#fff}
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{
+    background:var(--border);color:var(--text-mute);
+    cursor:not-allowed;transform:none;
+  }
+  .btn-ghost{background:transparent;color:var(--text-mute)}
+  .btn-ghost:hover{color:var(--forest)}
+
+  .quiz-result{display:none;text-align:center;padding:20px 0}
+  .quiz-result.show{display:block;animation:fadeIn .4s ease}
+  .quiz-score{
+    font-family:var(--display);font-weight:500;font-size:72px;
+    line-height:1;color:var(--forest);margin:0 0 8px;letter-spacing:-.03em;
+  }
+  .quiz-score span{color:var(--text-mute);font-size:32px}
+  .quiz-result-title{
+    font-family:var(--display);font-weight:600;font-size:24px;
+    color:var(--slate);margin:0 0 8px;
+  }
+  .quiz-result-body{
+    color:var(--text-mute);margin:0 auto 24px;max-width:420px;
+    font-size:15.5px;line-height:1.6;
+  }
+
+  aside.toc{
+    padding-top:56px;position:sticky;top:80px;
+    align-self:start;max-height:calc(100vh - 100px);overflow-y:auto;
+  }
+  .toc-label{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--text-mute);font-weight:700;margin-bottom:14px;
+  }
+  .toc ul{list-style:none;padding:0;margin:0;border-left:1px solid var(--border)}
+  .toc li{margin:0}
+  .toc a{
+    display:block;padding:7px 16px;font-size:13.5px;color:var(--text-mute);
+    text-decoration:none;border-left:2px solid transparent;margin-left:-1px;
+    transition:all .15s;line-height:1.4;
+  }
+  .toc a:hover{color:var(--forest)}
+  .toc a.active{color:var(--forest);font-weight:600;border-left-color:var(--emerald)}
+
+  .lesson-footer{
+    max-width:680px;margin:56px 0 0;
+    padding-top:32px;border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:center;
+    gap:16px;flex-wrap:wrap;
+  }
+  .next-lesson{
+    display:flex;flex-direction:column;gap:2px;
+    padding:16px 22px;border-radius:10px;
+    background:var(--card);border:1px solid var(--border);
+    text-decoration:none;transition:all .2s;
+  }
+  .next-lesson:hover{
+    border-color:var(--emerald);transform:translateY(-1px);
+    box-shadow:0 4px 14px rgba(6,95,70,.06);
+  }
+  .next-lesson-label{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);font-weight:600;
+  }
+  .next-lesson-title{font-family:var(--display);font-weight:600;font-size:16px;color:var(--forest)}
+  .completion-status{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-mute)}
+  .completion-status.complete{color:var(--success)}
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AICraft Learning">
+      <svg class="brand-logo" viewBox="0 0 420 80" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="lesson-badge">Module 3 · Lesson 1</span>
+      <span class="sep">·</span>
+      <span>6 min read</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article>
+    <div class="lesson-meta">
+      <span>AI Fundamentals: From Zero to Confident</span>
+      <span class="dot"></span>
+      <span>How to work with AI well</span>
+    </div>
+
+    <h1 class="lesson-title">The <em>ROLE / CONTEXT / TASK</em> pattern</h1>
+
+    <p class="hook">If you learn only one prompting pattern, make it this one.</p>
+
+    <p>Module 2 showed you that context is the meal and technique is the sprinkle. This lesson is the best sprinkle money can buy. It's a three-part structure that outperforms 90% of what people type into AI tools — and it costs you about twenty extra seconds a prompt.</p>
+
+    <p>The pattern isn't clever. It's not a secret. It's just a habit of organising what you'd already want to say, in a way that lines up neatly with how LLMs work.</p>
+
+    <div class="misconception">
+      <div class="misconception-icon">!</div>
+      <div>
+        <div class="misconception-label">The common misconception</div>
+        <p class="misconception-text"><strong>"Better prompts need clever phrasing."</strong> Not really. Better prompts need better structure. The three-part ROLE / CONTEXT / TASK pattern isn't about magic words — it's about making sure all three pieces actually arrive.</p>
+      </div>
+    </div>
+
+    <h2 id="section-1">The three parts, at a glance</h2>
+
+    <p>Every good prompt for a language task answers three questions in order. Give the model a role to play, a situation to understand, and a job to do. That's it.</p>
+
+    <div class="anatomy">
+      <div class="anatomy-card role">
+        <p class="anatomy-tag">① Role</p>
+        <p class="anatomy-q">Who is the AI being, for this task?</p>
+        <p class="anatomy-eg">"You are a senior marketing strategist who's worked with UK small businesses for ten years."</p>
+      </div>
+      <div class="anatomy-card ctx">
+        <p class="anatomy-tag">② Context</p>
+        <p class="anatomy-q">What's the situation? Who is this for? What's the tone?</p>
+        <p class="anatomy-eg">"I run a small leather-goods shop in Bristol. Customers are late-30s, design-conscious. Voice: warm, direct."</p>
+      </div>
+      <div class="anatomy-card task">
+        <p class="anatomy-tag">③ Task</p>
+        <p class="anatomy-q">What exactly do you want, with what specifics?</p>
+        <p class="anatomy-eg">"Draft a 50-word product description for the Highbury weekender — full-grain leather, brass hardware, fits three nights."</p>
+      </div>
+    </div>
+
+    <p>Notice the pattern mirrors the four ingredients of context from Lesson 2.3, but with one addition: the <strong>role</strong> line. That line is surprisingly powerful. Telling the model who to be tunes the voice and the assumptions it brings to the whole response. "You are a senior marketing strategist" pulls in a different tone, vocabulary, and default framing than "You are a helpful assistant."</p>
+
+    <h2 id="section-2">Build one, live</h2>
+
+    <p>Here's the scenario. Pick a role, pick a context angle, pick a task framing — and watch a real prompt come together.</p>
+
+    <div class="builder" id="builder">
+      <div class="builder-head">
+        <span class="builder-label">Prompt builder · interactive</span>
+        <span style="font-size:13px;color:var(--text-mute)">Pick one from each row</span>
+      </div>
+
+      <div class="builder-scenario">
+        <p class="builder-scenario-label">The scenario</p>
+        <p><strong>You're helping a friend</strong> who runs a small UK accountancy for hospitality clients. She needs a LinkedIn post about the fact that chasing late invoices is really a leadership problem, not a chasing problem. You want to write a good prompt for her.</p>
+      </div>
+
+      <div class="builder-body">
+        <!-- ROLE -->
+        <div class="builder-section">
+          <div class="builder-section-label">
+            <span>① Role <span class="part-tag role">who is the AI?</span></span>
+            <span class="hint" id="roleHint">Pick one</span>
+          </div>
+          <div class="builder-options" id="roleOptions"></div>
+        </div>
+
+        <!-- CONTEXT -->
+        <div class="builder-section">
+          <div class="builder-section-label">
+            <span>② Context <span class="part-tag ctx">situation · audience · tone</span></span>
+            <span class="hint" id="ctxHint">Pick one</span>
+          </div>
+          <div class="builder-options" id="ctxOptions"></div>
+        </div>
+
+        <!-- TASK -->
+        <div class="builder-section">
+          <div class="builder-section-label">
+            <span>③ Task <span class="part-tag task">what do you want?</span></span>
+            <span class="hint" id="taskHint">Pick one</span>
+          </div>
+          <div class="builder-options" id="taskOptions"></div>
+        </div>
+      </div>
+
+      <div class="builder-output-wrap">
+        <div class="builder-output-label">
+          <span>Your prompt, live</span>
+          <span class="status" id="builderStatus">Pick from each row to build a full prompt</span>
+        </div>
+        <div class="builder-output" id="builderOutput"><span class="placeholder">Your ROLE line appears here…
+Then your CONTEXT line…
+Then your TASK line.</span></div>
+      </div>
+
+      <div class="builder-footer">
+        <span class="builder-score" id="builderScore">0 of 3 parts picked</span>
+        <button class="builder-reset" onclick="resetBuilder()">↺ Start over</button>
+      </div>
+    </div>
+
+    <p>Three separate sentences, each doing a distinct job. The role tunes the voice. The context tells the model who this is for and how it should land. The task gives it the specific thing to produce. Remove any one and the output gets noticeably worse.</p>
+
+    <h2 id="section-3">Why this particular pattern works</h2>
+
+    <p>Think back to how LLMs predict words. They generate based on what's in the context window — and a clearly structured prompt gives every word the model produces more to pin to. ROLE sets the voice patterns. CONTEXT sets the audience and tone patterns. TASK sets the goal and the specifics. Each one narrows the probability space toward <em>your</em> version of the output, not the internet's average.</p>
+
+    <p>Two other things make this pattern stick. First, it's short enough to remember under pressure. You don't need a prompt library; you just need R · C · T. Second, it reads cleanly to the model — LLMs have seen millions of prompts with "You are a…" openings in their training data, so that role line is a strong signal to them.</p>
+
+    <h2 id="section-4">When to use it — and when not to</h2>
+
+    <p>This pattern earns its keep on any serious language task. But it's overkill for quick questions. Here's the rough line.</p>
+
+    <div class="usage-table">
+      <div class="usage-row">
+        <div>Use ROLE / CONTEXT / TASK when</div>
+        <div>Skip it when</div>
+      </div>
+      <div class="usage-row">
+        <div>Drafting anything someone else will read (emails, posts, descriptions, proposals)</div>
+        <div>Asking a quick question ("what's the capital of Peru?")</div>
+      </div>
+      <div class="usage-row">
+        <div>The output needs to sound like <em>you</em> or your business</div>
+        <div>Brainstorming informally, where a clean, unopinionated list is fine</div>
+      </div>
+      <div class="usage-row">
+        <div>Summarising or rewriting with a specific audience in mind</div>
+        <div>Doing casual back-and-forth mid-conversation (the model already has the context)</div>
+      </div>
+    </div>
+
+    <p>The rule of thumb: if the output is a <strong>deliverable</strong>, use the pattern. If the output is a <strong>conversation</strong>, a casual prompt is fine. Most people under-use the pattern because they treat everything like a conversation. Most disappointment comes from treating deliverables like casual questions.</p>
+
+    <div class="takeaway">
+      <div class="takeaway-label">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.5 7.5l-4 4a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06L9 11.94l3.44-3.44a.75.75 0 011.06 1.06z"/></svg>
+        The one thing to remember
+      </div>
+      <p class="takeaway-main">Role. Context. Task. Every time. It's the difference between "okay output" and "actually useful output."</p>
+      <p class="takeaway-sub">Three sentences. Three jobs. Twenty seconds of effort. It's the single highest-leverage habit in the course.</p>
+    </div>
+
+    <h2 id="section-5">A note on stacking this with the personal brief</h2>
+
+    <p>Remember the one-paragraph personal brief from Lesson 2.2? It covers the first half of the CONTEXT line — who you are and your tone — before you've even started typing. So a typical real-world prompt looks like: paste the brief, add a role line, add the situation-specific context, then the task. You're writing less each time, not more, and still hitting all three parts.</p>
+
+    <p>That's what craft looks like in practice. Not cleverer prompts. Reused building blocks that let you move fast without losing quality.</p>
+
+    <div class="action-box">
+      <div class="action-eyebrow">
+        ◆ Try this right now
+      </div>
+      <h3 class="action-title">Rewrite one real task into the pattern</h3>
+      <p class="action-body">Think of one task you'd genuinely send to AI in the next day or two. Write the one-line version first. Then rewrite it using ROLE / CONTEXT / TASK.</p>
+      <div class="action-prompt">
+        ROLE<br>
+        You are ________________________________<br><br>
+        CONTEXT<br>
+        I'm / We're ____________________________<br>
+        The audience is ________________________<br>
+        The tone I need is _____________________<br><br>
+        TASK<br>
+        Please draft __________________________<br>
+        Length / format: _______________________<br>
+        Key details: ___________________________
+      </div>
+      <p class="action-body" style="margin-bottom:8px">If you want the fastest feedback loop: paste the one-line version into ChatGPT, then paste the structured version into a new chat. Compare the two outputs side by side. That's the lesson, proven on your own work.</p>
+      <label class="action-check">
+        <input type="checkbox" id="actionDone" />
+        <span class="box"></span>
+        <span>I've done this — mark as complete</span>
+      </label>
+    </div>
+
+    <!-- QUIZ -->
+    <section class="quiz" id="quiz">
+      <div class="quiz-header">
+        <span class="quiz-eyebrow">Lesson check · 3 questions</span>
+      </div>
+      <h2 class="quiz-title" style="color:var(--slate);padding:0;margin-top:0">Did it stick?</h2>
+      <p class="quiz-sub">Takes about 30 seconds. Answers and explanations appear right away.</p>
+
+      <div class="quiz-progress" id="quizProgress">
+        <span class="active"></span><span></span><span></span>
+      </div>
+
+      <div id="quizQuestions"></div>
+
+      <div class="quiz-result" id="quizResult">
+        <div class="quiz-score"><span id="scoreNum">0</span><span>/3</span></div>
+        <h3 class="quiz-result-title" id="resultTitle">Nicely done</h3>
+        <p class="quiz-result-body" id="resultBody">Pattern locked in. Next up — building a trust hierarchy for when to rely on AI output, and when not to.</p>
+        <button class="btn btn-ghost" onclick="resetQuiz()">↻ Retry questions</button>
+      </div>
+
+      <div class="quiz-nav" id="quizNav">
+        <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+      </div>
+    </section>
+
+    <div class="lesson-footer">
+      <div class="completion-status" id="completionStatus">
+        <span>◯</span>
+        <span>Lesson in progress</span>
+      </div>
+      <a href="#" class="next-lesson">
+        <span class="next-lesson-label">Next · Lesson 3.2</span>
+        <span class="next-lesson-title">When to trust AI output (and when not) →</span>
+      </a>
+    </div>
+  </article>
+
+  <aside class="toc">
+    <div class="toc-label">In this lesson</div>
+    <ul>
+      <li><a href="#section-1" class="active">The three parts</a></li>
+      <li><a href="#section-2">Build one, live</a></li>
+      <li><a href="#section-3">Why it works</a></li>
+      <li><a href="#section-4">When to use it</a></li>
+      <li><a href="#section-5">Stacking with the brief</a></li>
+      <li><a href="#quiz">Lesson check</a></li>
+    </ul>
+  </aside>
+</main>
+
+<script>
+  // Progress bar
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+    progressBar.style.width = Math.min(100, Math.max(0, scrolled * 100)) + '%';
+  });
+
+  // TOC active state
+  const tocLinks = document.querySelectorAll('.toc a');
+  const sections = [...tocLinks].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY + 140;
+    let activeIdx = 0;
+    sections.forEach((s, i) => { if (s.offsetTop <= y) activeIdx = i; });
+    tocLinks.forEach((a,i) => a.classList.toggle('active', i === activeIdx));
+  });
+
+  // -------- Prompt builder --------
+  const roleOptions = [
+    { label:"Senior LinkedIn strategist", text:"You are a senior LinkedIn content strategist who's written for independent professional-services firms for the last decade." },
+    { label:"Straight-talking finance writer", text:"You are a finance writer who built an audience on plain English and a dislike of buzzwords." },
+    { label:"Editorial mentor", text:"You are an editorial mentor known for tightening other people's writing without losing their voice." }
+  ];
+  const ctxOptions = [
+    { label:"Full business context", text:"The post is for Maya, who runs a small UK accountancy serving hospitality businesses. Her audience is small business owners who are often two weeks behind on their own admin. Her voice is plain, practical, never preachy." },
+    { label:"Just the business", text:"Maya runs a small UK accountancy for hospitality clients. Her voice is plain and practical." },
+    { label:"Just the audience and tone", text:"The audience is small business owners two weeks behind on their admin. The tone is plain, practical, never preachy." }
+  ];
+  const taskOptions = [
+    { label:"Specific, tight brief", text:"Draft a 120-word LinkedIn post arguing that chasing late invoices is a leadership problem, not a chasing problem. Lead with a one-line opener that reframes the problem. End with a specific action the reader can take this week." },
+    { label:"The idea, less specific", text:"Write a LinkedIn post arguing that chasing late invoices is really a leadership problem." },
+    { label:"Broad topic only", text:"Write a LinkedIn post about late invoices for small businesses." }
+  ];
+
+  const state = { role:null, ctx:null, task:null };
+
+  function renderOptionSet(which, list, containerId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    list.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'builder-option';
+      btn.textContent = opt.label;
+      btn.addEventListener('click', () => {
+        state[which] = idx;
+        document.querySelectorAll(`#${containerId} .builder-option`).forEach(b => {
+          b.classList.remove('selected', which);
+        });
+        btn.classList.add('selected', which);
+        document.getElementById(which + 'Hint').textContent = '✓ Picked';
+        document.getElementById(which + 'Hint').style.color = 'var(--forest)';
+        renderBuilderOutput();
+      });
+      container.appendChild(btn);
+    });
+  }
+
+  function renderBuilderOutput() {
+    const output = document.getElementById('builderOutput');
+    const status = document.getElementById('builderStatus');
+    const score = document.getElementById('builderScore');
+
+    const picks = [state.role, state.ctx, state.task].filter(v => v !== null).length;
+    score.textContent = `${picks} of 3 parts picked`;
+
+    if (picks === 0) {
+      output.innerHTML = `<span class="placeholder">Your ROLE line appears here…
+Then your CONTEXT line…
+Then your TASK line.</span>`;
+      status.textContent = 'Pick from each row to build a full prompt';
+      status.classList.remove('complete');
+      return;
+    }
+
+    const parts = [];
+    if (state.role !== null) parts.push(`<span class="seg-role">${roleOptions[state.role].text}</span>`);
+    if (state.ctx !== null)  parts.push(`<span class="seg-ctx">${ctxOptions[state.ctx].text}</span>`);
+    if (state.task !== null) parts.push(`<span class="seg-task">${taskOptions[state.task].text}</span>`);
+
+    output.innerHTML = parts.join('\n\n');
+
+    if (picks < 3) {
+      status.textContent = `${3 - picks} more to go — keep picking.`;
+      status.classList.remove('complete');
+    } else {
+      // Commentary on quality of pick
+      const quality =
+        (state.ctx === 0 ? 1 : 0) + (state.task === 0 ? 1 : 0);
+      if (quality === 2) {
+        status.textContent = '✓ All three — and you picked the strongest context and task. Very shippable prompt.';
+      } else if (quality === 1) {
+        status.textContent = '✓ All three parts in. One more specific — try the tighter option in the weaker row.';
+      } else {
+        status.textContent = '✓ All three parts in, but both the context and task are a bit thin. Try the more specific options.';
+      }
+      status.classList.add('complete');
+    }
+  }
+
+  function resetBuilder() {
+    state.role = null; state.ctx = null; state.task = null;
+    document.querySelectorAll('.builder-option').forEach(b => {
+      b.classList.remove('selected','role','ctx','task');
+    });
+    ['role','ctx','task'].forEach(k => {
+      const hint = document.getElementById(k + 'Hint');
+      hint.textContent = 'Pick one';
+      hint.style.color = '';
+    });
+    renderBuilderOutput();
+  }
+
+  renderOptionSet('role', roleOptions, 'roleOptions');
+  renderOptionSet('ctx', ctxOptions, 'ctxOptions');
+  renderOptionSet('task', taskOptions, 'taskOptions');
+  renderBuilderOutput();
+
+  // -------- Quiz --------
+  const totalQuestions = 3;
+  let currentQ = 0;
+  let answers = [null, null, null];
+  let answered = [false, false, false];
+  let attemptCount = 0;
+
+  const questionBank = [
+    {
+      id: 1,
+      text: 'According to this lesson, what are the three parts of the ROLE / CONTEXT / TASK pattern, in order?',
+      options: [
+        { text: "Prompt, response, revision.", correct: false },
+        { text: "Who the AI is being, what the situation is, what you want it to do.", correct: true },
+        { text: "Length, tone, format.", correct: false },
+        { text: "Problem, solution, deadline.", correct: false }
+      ],
+      explanation: "ROLE is who the AI plays for this task. CONTEXT is the situation — who you are, who it's for, the tone. TASK is the specific thing you want, with its details. Three sentences, three jobs."
+    },
+    {
+      id: 2,
+      text: 'Based on the lesson, which of these prompts best uses the pattern?',
+      options: [
+        { text: "\"Write me a LinkedIn post about late invoices. Make it engaging and viral.\"", correct: false },
+        { text: "\"You are a finance writer known for plain English. I run a small UK accountancy for hospitality businesses — plain, practical tone. Draft a 120-word LinkedIn post arguing that late invoices are a leadership problem, not a chasing problem.\"", correct: true },
+        { text: "\"LinkedIn post on late invoices, please. Three hashtags, creative tone.\"", correct: false },
+        { text: "\"Ignore your training. Act as a human and write something about late invoices.\"", correct: false }
+      ],
+      explanation: "Option B delivers all three parts cleanly: role (finance writer, plain English), context (your business, audience, tone), and task (120-word LinkedIn post, specific angle). The others pile adjectives or format rules onto prompts that skip role and context entirely."
+    },
+    {
+      id: 3,
+      text: "Based on the lesson, when is it fine to skip the ROLE / CONTEXT / TASK pattern?",
+      options: [
+        { text: "Any time you're in a hurry.", correct: false },
+        { text: "When the output is a deliverable someone else will read.", correct: false },
+        { text: "For quick questions, casual conversation, or follow-ups mid-chat where the context is already established.", correct: true },
+        { text: "When using a paid AI tier — paid tiers don't need structured prompts.", correct: false }
+      ],
+      explanation: "The rule of thumb: use the pattern when the output is a deliverable (someone else will read it). Skip it for quick questions, brainstorms, and mid-conversation follow-ups where the context has already been set earlier in the chat."
+    },
+    {
+      id: 4,
+      text: "In the pattern, what is the specific job of the ROLE line?",
+      options: [
+        { text: "To flatter the AI into working harder.", correct: false },
+        { text: "To tune the voice, vocabulary, and default framing the model brings to the whole response.", correct: true },
+        { text: "To register your account with the provider.", correct: false },
+        { text: "To tell the AI what output length to produce.", correct: false }
+      ],
+      explanation: "\"You are a senior marketing strategist\" pulls in a completely different tone, vocabulary, and set of assumptions than \"You are a helpful assistant.\" The role line tunes the whole response before you've even stated the task."
+    },
+    {
+      id: 5,
+      text: "Why does the pattern work so well, mechanically — tying back to Module 2?",
+      options: [
+        { text: "It activates a hidden 'structured mode' in the model.", correct: false },
+        { text: "Each of the three parts narrows the model's word-by-word prediction toward your intended output instead of the internet's average.", correct: true },
+        { text: "It unlocks longer context windows.", correct: false },
+        { text: "It's a secret syntax the model was trained to recognise.", correct: false }
+      ],
+      explanation: "Straight back to Lesson 2.1. LLMs predict words based on what's in the context window; a structured prompt gives them three distinct things to pin predictions to — voice (role), audience/tone (context), and specifics (task). More to pin to, more specific output."
+    },
+    {
+      id: 6,
+      text: "You've got a personal brief saved from Lesson 2.2. How does the lesson recommend using it with ROLE / CONTEXT / TASK?",
+      options: [
+        { text: "Paste it at the end so the AI remembers you for next time.", correct: false },
+        { text: "Use the brief to cover the first half of the CONTEXT line automatically, then add role, situation-specific context, and task on top.", correct: true },
+        { text: "Replace the whole pattern with just the brief — it's enough on its own.", correct: false },
+        { text: "Save it as the ROLE line and rewrite it fresh each time.", correct: false }
+      ],
+      explanation: "The brief already captures who you are and your tone. So your real-world prompt becomes: brief + role line + specific context + task. You're writing less each time, not more, and still hitting all three parts."
+    },
+    {
+      id: 7,
+      text: "Which of these best describes the lesson's position on prompting cleverness?",
+      options: [
+        { text: "Clever phrasing is the single most important skill.", correct: false },
+        { text: "Better prompts need better structure, not cleverer phrasing.", correct: true },
+        { text: "Only paid tiers respond to clever phrasing.", correct: false },
+        { text: "Prompting itself is a fad that will disappear.", correct: false }
+      ],
+      explanation: "Take a position, don't hedge — the lesson is clear. Most output improvements come from making sure ROLE, CONTEXT, and TASK all actually arrive. Clever phrasing on top of that is sprinkle, not substance."
+    },
+    {
+      id: 8,
+      text: "You're in the middle of a chat with Claude. You've already set up your business context in message one, and it's replied with a solid draft. You want a tighter version. What's the most sensible prompt to send next?",
+      options: [
+        { text: "Re-write a full ROLE / CONTEXT / TASK prompt from scratch.", correct: false },
+        { text: "\"Can you tighten that last paragraph by about a third, keeping the opening line?\"", correct: true },
+        { text: "Paste your personal brief again so the model doesn't forget.", correct: false },
+        { text: "Start a new chat to get a cleaner output.", correct: false }
+      ],
+      explanation: "Mid-chat follow-ups don't need the full pattern — the model already has role and context in the window. A casual, specific ask is exactly right. The pattern is for deliverables, not every message."
+    }
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function pickQuestions() {
+    if (attemptCount === 0) {
+      const canonical = [1, 2, 3].map(id => questionBank.find(q => q.id === id));
+      return canonical.map(q => ({ ...q, options: q.options.slice() }));
+    }
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  function renderQuestions() {
+    const selected = pickQuestions();
+    const container = document.getElementById('quizQuestions');
+    container.innerHTML = '';
+
+    selected.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  const progressDots = document.querySelectorAll('#quizProgress span');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+
+  renderQuestions();
+
+  function getCards() { return document.querySelectorAll('.q-card'); }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    progressDots.forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < i) d.classList.add('done');
+      else if (idx === i) d.classList.add('active');
+    });
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('quiz').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) { currentQ++; showQuestion(currentQ); }
+    else { showResults(); }
+  }
+  function prevQuestion() {
+    if (currentQ > 0) { currentQ--; showQuestion(currentQ); }
+  }
+
+  function showResults() {
+    getCards().forEach(c => c.classList.remove('active'));
+    document.getElementById('quizNav').style.display = 'none';
+    progressDots.forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+
+    const score = answers.filter(a => a === true).length;
+    document.getElementById('scoreNum').textContent = score;
+
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+    if (score === 3) {
+      title.textContent = 'All three. Pattern locked in.';
+      body.textContent = attemptCount === 0
+        ? "You've got the most useful prompting habit in the course. Next up — building a trust hierarchy for when to rely on AI output, and when not to."
+        : "Clean sweep on the retry. You've got this.";
+    } else if (score === 2) {
+      title.textContent = 'Close — one to revisit.';
+      body.textContent = "Scroll back to the prompt builder for thirty seconds. Seeing the pattern assembled live is the quickest way to lock in what you missed.";
+    } else {
+      title.textContent = 'Worth another pass.';
+      body.textContent = "Role. Context. Task. Three sentences, three jobs. Scroll up, try the builder a couple of times, then retry.";
+    }
+
+    document.getElementById('quizResult').classList.add('show');
+    updateCompletion(score);
+  }
+
+  function resetQuiz() {
+    attemptCount++;
+    currentQ = 0;
+    answers = [null, null, null];
+    answered = [false, false, false];
+    renderQuestions();
+    document.getElementById('quizResult').classList.remove('show');
+    document.getElementById('quizNav').style.display = 'flex';
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Next question →';
+    showQuestion(0);
+  }
+
+  // Action + completion
+  const actionCheck = document.getElementById('actionDone');
+  const statusEl = document.getElementById('completionStatus');
+  function updateCompletion(quizScore) {
+    const quizDone = answered.every(Boolean);
+    const actionDone = actionCheck.checked;
+    const score = quizScore ?? answers.filter(a=>a===true).length;
+    if (quizDone && actionDone && score >= 2) {
+      statusEl.classList.add('complete');
+      statusEl.innerHTML = '<span>✓</span><span>Lesson complete</span>';
+    } else if (quizDone) {
+      statusEl.innerHTML = '<span>◐</span><span>Quiz done — finish your action</span>';
+    } else if (actionDone) {
+      statusEl.innerHTML = '<span>◐</span><span>Action done — take the quick check</span>';
+    }
+  }
+  actionCheck.addEventListener('change', () => updateCompletion());
+</script>
+
+</body>
+</html>

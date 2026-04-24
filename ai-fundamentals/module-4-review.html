@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Module 4 review — 5 questions to unlock the final assessment | AICraft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --warn:#F59E0B;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:var(--body);
+    font-size:17px;
+    line-height:1.7;
+    color:var(--text);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  header{
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(8px);
+    background:rgba(255,255,255,.85);
+  }
+  .header-inner{
+    max-width:1100px;margin:0 auto;
+    padding:18px 28px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;
+  }
+  .brand{
+    display:flex;align-items:center;gap:10px;
+    text-decoration:none;
+  }
+  .brand-logo{
+    height:32px;width:auto;
+    display:block;
+  }
+  .header-meta{
+    display:flex;align-items:center;gap:20px;
+    font-size:13px;color:var(--text-mute);
+  }
+  .header-meta .sep{opacity:.4}
+  .lesson-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 10px;border-radius:999px;
+    background:var(--mint);color:var(--forest);
+    font-weight:600;font-size:12px;letter-spacing:.02em;
+  }
+  .lesson-badge::before{
+    content:"";width:6px;height:6px;border-radius:50%;
+    background:var(--emerald);
+  }
+
+  main{
+    max-width:760px;margin:0 auto;
+    padding:48px 28px 80px;
+  }
+
+  .review-meta{
+    display:flex;align-items:center;gap:10px;
+    font-size:13px;color:var(--text-mute);
+    margin-bottom:20px;font-weight:500;
+  }
+  .review-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.review-title{
+    font-family:var(--display);
+    font-weight:500;
+    font-size:clamp(34px,4.8vw,52px);
+    line-height:1.08;
+    letter-spacing:-.02em;
+    color:var(--slate);
+    margin:0 0 20px;
+  }
+  h1.review-title em{font-style:italic;color:var(--forest)}
+  .review-lede{
+    font-family:var(--display);
+    font-size:20px;line-height:1.55;
+    color:var(--text-soft);
+    font-style:italic;
+    padding:0 0 0 20px;
+    border-left:3px solid var(--emerald);
+    margin:28px 0 40px;
+  }
+
+  .recap-label{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);margin:0 0 14px;
+  }
+  .recap-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:14px;margin:0 0 44px;
+  }
+  @media (max-width:700px){.recap-grid{grid-template-columns:1fr}}
+  .recap-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px 20px;
+    position:relative;
+  }
+  .recap-num{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;color:var(--emerald);
+    letter-spacing:.04em;margin-bottom:6px;
+  }
+  .recap-title{
+    font-family:var(--display);font-weight:600;
+    font-size:15.5px;color:var(--slate);line-height:1.3;
+    margin:0 0 8px;
+  }
+  .recap-summary{
+    font-size:13.5px;color:var(--text-soft);
+    line-height:1.55;margin:0;
+  }
+
+  .quiz{
+    padding:36px 36px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+  }
+  @media (max-width:600px){.quiz{padding:28px 22px}}
+
+  .quiz-header-row{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  .quiz-eyebrow{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);font-weight:700;
+  }
+  .quiz-rule{
+    font-size:12.5px;color:var(--text-mute);
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .quiz-rule strong{color:var(--forest);font-weight:600}
+  .quiz-title{
+    font-family:var(--display);font-weight:600;
+    font-size:26px;line-height:1.2;
+    color:var(--slate);margin:4px 0 8px;letter-spacing:-.01em;
+  }
+  .quiz-sub{color:var(--text-mute);margin:0 0 24px;font-size:15px}
+
+  .quiz-progress{
+    display:flex;gap:6px;margin-bottom:28px;
+  }
+  .quiz-progress span{
+    flex:1;height:4px;border-radius:2px;
+    background:var(--border);transition:background .3s;
+  }
+  .quiz-progress span.done{background:var(--emerald)}
+  .quiz-progress span.active{background:var(--forest)}
+
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(6px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .q-number{
+    font-family:var(--display);font-size:13px;color:var(--text-mute);
+    font-weight:500;letter-spacing:.04em;margin-bottom:8px;
+  }
+  .q-text{
+    font-family:var(--display);font-weight:500;
+    font-size:21px;line-height:1.4;color:var(--slate);
+    margin:0 0 24px;letter-spacing:-.005em;
+  }
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:16px 18px;
+    border:1.5px solid var(--border);
+    border-radius:10px;
+    cursor:pointer;
+    transition:all .2s;
+    background:var(--card);
+    font-size:15.5px;line-height:1.5;
+  }
+  .option:hover:not(.disabled){
+    border-color:var(--emerald);
+    background:var(--mint-soft);
+  }
+  .option.disabled{cursor:default}
+  .option-letter{
+    width:26px;height:26px;border-radius:7px;
+    background:var(--border-soft);color:var(--text-soft);
+    display:grid;place-items:center;
+    font-weight:700;font-size:13px;flex-shrink:0;
+    transition:all .2s;font-family:var(--display);
+  }
+  .option:hover:not(.disabled) .option-letter{
+    background:var(--emerald);color:#fff;
+  }
+  .option.correct{
+    border-color:var(--success);
+    background:#F0FDF4;
+  }
+  .option.correct .option-letter{
+    background:var(--success);color:#fff;
+  }
+  .option.incorrect{
+    border-color:var(--error);
+    background:#FEF2F2;
+  }
+  .option.incorrect .option-letter{
+    background:var(--error);color:#fff;
+  }
+  .option-check{
+    margin-left:auto;opacity:0;transition:opacity .2s;
+    font-size:20px;line-height:1;
+  }
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+
+  .explanation{
+    display:none;
+    margin-top:20px;padding:18px 20px;
+    border-radius:10px;
+    background:var(--mint-soft);
+    border-left:3px solid var(--emerald);
+    font-size:15px;line-height:1.6;color:var(--forest);
+  }
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{
+    display:block;
+    font-family:var(--display);font-size:13px;
+    letter-spacing:.1em;text-transform:uppercase;
+    color:var(--forest);margin-bottom:6px;
+  }
+  .explanation.wrong{
+    background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D;
+  }
+  .explanation.wrong strong{color:#7F1D1D}
+  .explanation .ref{
+    font-family:var(--body);font-size:12.5px;letter-spacing:0;
+    color:var(--text-mute);text-transform:none;font-weight:500;
+    margin-top:8px;display:block;
+  }
+
+  .quiz-nav{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:24px;gap:12px;
+  }
+  .btn{
+    border:0;cursor:pointer;font-family:var(--body);
+    font-weight:600;font-size:14.5px;
+    padding:11px 22px;border-radius:8px;
+    transition:all .18s;
+    display:inline-flex;align-items:center;gap:8px;
+    text-decoration:none;
+  }
+  .btn-primary{
+    background:var(--forest);color:#fff;
+  }
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{
+    background:var(--border);color:var(--text-mute);
+    cursor:not-allowed;transform:none;
+  }
+  .btn-ghost{
+    background:transparent;color:var(--text-mute);
+  }
+  .btn-ghost:hover{color:var(--forest)}
+  .btn-big{padding:14px 28px;font-size:15px}
+
+  .quiz-result{display:none}
+  .quiz-result.show{display:block;animation:fadeIn .4s ease}
+
+  .result-hero{
+    text-align:center;padding:16px 0 8px;
+  }
+  .result-score-wrap{
+    display:inline-flex;align-items:baseline;
+    gap:6px;
+    margin-bottom:10px;
+  }
+  .result-score{
+    font-family:var(--display);font-weight:500;
+    font-size:84px;line-height:1;
+    letter-spacing:-.03em;
+  }
+  .result-score-total{
+    font-family:var(--display);
+    font-size:36px;color:var(--text-mute);
+    font-weight:500;
+  }
+  .result-percent{
+    font-family:var(--body);
+    font-size:14px;color:var(--text-mute);
+    margin:0 0 6px;
+  }
+  .result-status{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 14px;border-radius:999px;
+    font-size:13px;font-weight:600;letter-spacing:.02em;
+    margin-bottom:16px;
+  }
+  .result-status.pass{background:var(--mint);color:var(--forest)}
+  .result-status.fail{background:#FEF2F2;color:var(--error)}
+
+  .result-title{
+    font-family:var(--display);font-weight:600;
+    font-size:26px;color:var(--slate);
+    margin:0 0 10px;letter-spacing:-.01em;
+  }
+  .result-body{
+    color:var(--text-soft);margin:0 auto 28px;max-width:480px;
+    font-size:15.5px;line-height:1.65;
+  }
+
+  .result-score.pass{color:var(--forest)}
+  .result-score.fail{color:var(--error)}
+
+  .breakdown{
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    margin:8px 0 28px;
+    background:var(--card);
+  }
+  .breakdown-title{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);
+    padding:14px 20px;
+    border-bottom:1px solid var(--border);
+    background:var(--bg);
+  }
+  .breakdown-row{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    gap:12px;align-items:center;
+    padding:12px 20px;
+    border-top:1px solid var(--border-soft);
+    font-size:14px;
+  }
+  .breakdown-row:first-of-type{border-top:0}
+  .breakdown-num{
+    font-family:var(--display);font-weight:600;
+    color:var(--text-mute);font-size:13px;
+    min-width:22px;
+  }
+  .breakdown-text{
+    color:var(--text);line-height:1.4;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .breakdown-status{
+    font-size:13px;font-weight:600;
+    display:inline-flex;align-items:center;gap:4px;
+  }
+  .breakdown-status.ok{color:var(--success)}
+  .breakdown-status.no{color:var(--error)}
+
+  .result-actions{
+    display:flex;gap:10px;justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  /* Special finale banner on pass — since this unlocks the final assessment */
+  .unlock-banner{
+    display:none;
+    margin:0 0 22px;
+    padding:18px 22px;
+    background:linear-gradient(135deg,var(--mint-soft),var(--mint));
+    border:1px solid #A7F3D0;
+    border-radius:12px;
+    text-align:left;
+    position:relative;overflow:hidden;
+  }
+  .unlock-banner::before{
+    content:"";position:absolute;left:0;top:14px;bottom:14px;
+    width:3px;background:var(--emerald);border-radius:2px;
+  }
+  .unlock-banner.show{display:block;animation:fadeIn .4s ease}
+  .unlock-label{
+    font-family:var(--display);font-weight:700;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);margin:0 0 4px;
+  }
+  .unlock-text{
+    font-family:var(--display);font-weight:500;font-size:16px;
+    color:var(--slate);margin:0;line-height:1.45;
+  }
+
+  .bottom-nav{
+    margin-top:32px;
+    padding-top:24px;border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:center;
+    gap:16px;flex-wrap:wrap;
+  }
+  .nav-back{
+    display:inline-flex;align-items:center;gap:8px;
+    color:var(--text-mute);font-size:14px;
+    text-decoration:none;
+  }
+  .nav-back:hover{color:var(--forest)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AICraft Learning">
+      <svg class="brand-logo" viewBox="0 0 420 80" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="lesson-badge">Module 4 · Review</span>
+      <span class="sep">·</span>
+      <span>5 questions</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div id="introScreen">
+    <div class="review-meta">
+      <span>AI Fundamentals: From Zero to Confident</span>
+      <span class="dot"></span>
+      <span>Module 4 complete</span>
+    </div>
+
+    <h1 class="review-title">Module 4 <em>review</em></h1>
+    <p class="review-lede">Five questions that pull Module 4 together — picking the right tool, protecting what you shouldn't paste, and seeing through AI hype. Score 60% or higher to unlock the final assessment.</p>
+
+    <p class="recap-label">Quick recap of what you've covered</p>
+    <div class="recap-grid">
+      <div class="recap-card">
+        <div class="recap-num">Lesson 4.1</div>
+        <h3 class="recap-title">Claude vs. ChatGPT vs. Gemini</h3>
+        <p class="recap-summary">Pick one based on fit — Claude for writing, ChatGPT for everything, Gemini for Google Workspace. Use it properly for 30 days before adding a second.</p>
+      </div>
+      <div class="recap-card">
+        <div class="recap-num">Lesson 4.2</div>
+        <h3 class="recap-title">Privacy and what not to paste</h3>
+        <p class="recap-summary">Safe, risky, dangerous — three tiers. Don't paste anything you wouldn't email to a stranger. Business tiers or anonymisation for genuinely sensitive work.</p>
+      </div>
+      <div class="recap-card">
+        <div class="recap-num">Lesson 4.3</div>
+        <h3 class="recap-title">Spotting AI hype</h3>
+        <p class="recap-summary">One question cuts through almost all of it: "What exactly would this do on Monday morning?" If the answer is vague, walk past.</p>
+      </div>
+    </div>
+
+    <section class="quiz">
+      <div class="quiz-header-row">
+        <span class="quiz-eyebrow">Module 4 quiz</span>
+        <span class="quiz-rule">Pass mark · <strong>60% (3 of 5)</strong> · unlimited retries</span>
+      </div>
+      <h2 class="quiz-title">Ready when you are</h2>
+      <p class="quiz-sub">Takes about two minutes. You'll see your score and explanations at the end — and, on a pass, the gate to the final assessment opens.</p>
+      <button class="btn btn-primary btn-big" onclick="startQuiz()">Start the quiz →</button>
+    </section>
+  </div>
+
+  <section class="quiz" id="quizScreen" style="display:none">
+    <div class="quiz-header-row">
+      <span class="quiz-eyebrow" id="quizEyebrow">Module 4 quiz</span>
+      <span class="quiz-rule">Pass mark · <strong>60% (3 of 5)</strong></span>
+    </div>
+
+    <div class="quiz-progress" id="quizProgress">
+      <span class="active"></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div id="quizQuestions"></div>
+
+    <div class="quiz-result" id="quizResult">
+      <div class="unlock-banner" id="unlockBanner">
+        <p class="unlock-label">Final assessment unlocked</p>
+        <p class="unlock-text">20 questions · across all four modules · 70% to earn your certificate</p>
+      </div>
+
+      <div class="result-hero">
+        <div class="result-score-wrap">
+          <span class="result-score" id="scoreNum">0</span>
+          <span class="result-score-total">/5</span>
+        </div>
+        <p class="result-percent" id="scorePercent">0%</p>
+        <div class="result-status pass" id="resultStatus">
+          <span>✓</span><span id="resultStatusText">Passed</span>
+        </div>
+        <h3 class="result-title" id="resultTitle">Module 4 complete</h3>
+        <p class="result-body" id="resultBody">Every lesson done, every module passed. One assessment left, and a certificate waiting at the end of it.</p>
+      </div>
+
+      <div class="breakdown" id="breakdown">
+        <div class="breakdown-title">Your answers</div>
+      </div>
+
+      <div class="result-actions" id="resultActions"></div>
+    </div>
+
+    <div class="quiz-nav" id="quizNav">
+      <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+    </div>
+  </section>
+
+  <div class="bottom-nav">
+    <a href="lesson-4-3.html" class="nav-back">← Back to Lesson 4.3</a>
+    <span style="font-size:13px;color:var(--text-mute)">Module 4 of 4 · final module</span>
+  </div>
+</main>
+
+<script>
+  const PASS_THRESHOLD = 0.6;
+  const totalQuestions = 5;
+  let currentQ = 0;
+  let answers = new Array(totalQuestions).fill(null);
+  let answered = new Array(totalQuestions).fill(false);
+  let attemptCount = 0;
+  let selectedQuestions = [];
+
+  // ---------- QUESTION BANK ----------
+  // 8 synthesis questions covering Module 4. Each tagged with source lessons.
+  const questionBank = [
+    {
+      id: 1,
+      text: "You run a small consultancy and most of your week is written deliverables. You want to commit to one AI tool for the next 30 days. Based on Module 4, which combination reflects the lesson's position?",
+      ref: 'Lesson 4.1',
+      options: [
+        { text: "Buy all three tools to compare them in parallel.", correct: false },
+        { text: "Pick Claude, commit for 30 days, then decide if a second tool would help for specific gaps.", correct: true },
+        { text: "Pick Gemini — any tool from Google is the safest default.", correct: false },
+        { text: "Wait six months for prices to drop before committing.", correct: false }
+      ],
+      explanation: "The lesson takes a clear position: writing-heavy professionals start with Claude, use it for thirty days with the proper habits, and only then consider adding a second tool. Comparing in parallel is just tool-hunting in a new shirt."
+    },
+    {
+      id: 2,
+      text: "You're drafting a reply to a late-delivery email from a supplier. Based on Module 4, what's the sensible way to get AI help?",
+      ref: 'Lesson 4.2',
+      options: [
+        { text: "Paste the full thread including names, email addresses, and order figures so AI has full context.", correct: false },
+        { text: "Describe the situation in general terms (\"my supplier is ten days late on a £4K order\") and let AI draft the reply — keep the identifiable details out.", correct: true },
+        { text: "Forward the email to ChatGPT from your inbox.", correct: false },
+        { text: "Skip AI — any business email is off-limits forever.", correct: false }
+      ],
+      explanation: "Real supplier names, emails, and order values are identifiable business data belonging to someone else — risky tier. The AI doesn't need those specifics to help you draft; the general situation is enough to produce a useful reply."
+    },
+    {
+      id: 3,
+      text: "You see an ad: \"Industry-first autonomous AI employee that replaces your entire operations team. Zero human oversight required.\" Based on Module 4, what's the right move?",
+      ref: 'Lessons 4.3, 3.2',
+      options: [
+        { text: "Buy it immediately — autonomy is a competitive edge.", correct: false },
+        { text: "Walk past. Red flags stack: \"autonomous,\" \"replaces your entire team,\" \"zero human oversight\" — and it contradicts the fastest-intern-not-advisor principle from earlier in the course.", correct: true },
+        { text: "Ask for a demo before deciding.", correct: false },
+        { text: "Only consider it if the price is under £50/month.", correct: false }
+      ],
+      explanation: "Two Module 4 ideas meet the trust hierarchy from Lesson 3.2. Zero-oversight AI isn't just hype — it's a liability. Anyone selling it is either confused or about to get someone in trouble."
+    },
+    {
+      id: 4,
+      text: "You're setting up a .env file troubleshoot with AI and you're about to paste: AWS_SECRET_ACCESS_KEY=wJalrXUt... along with your real database password. Based on Module 4, what should happen?",
+      ref: 'Lesson 4.2',
+      options: [
+        { text: "Paste it — AI can't execute credentials.", correct: false },
+        { text: "Replace every credential with placeholders (YOUR_AWS_KEY_HERE, YOUR_DB_PASSWORD) before pasting. If you've already pasted real ones, rotate them now.", correct: true },
+        { text: "Paste it but ask the AI nicely not to remember.", correct: false },
+        { text: "Only paste half the secret so it's \"anonymised\".", correct: false }
+      ],
+      explanation: "Credentials are dangerous tier. AI gives exactly the same troubleshooting help with placeholders as with real values, so there's no reason to expose them. If real ones have already been pasted, rotation takes minutes — a breach takes days to clean up."
+    },
+    {
+      id: 5,
+      text: "A colleague says: \"I've spent two weeks comparing ChatGPT, Claude, and Gemini and I still can't decide which to buy.\" Based on Module 4, what's the most accurate diagnosis?",
+      ref: 'Lesson 4.1',
+      options: [
+        { text: "They should compare for two more weeks to be thorough.", correct: false },
+        { text: "They're tool-hunting — the differences mostly matter after deep use. Pick based on fit (writing/general/Workspace) and commit to thirty days.", correct: true },
+        { text: "None of the tools are good enough yet.", correct: false },
+        { text: "They should buy all three to avoid the decision.", correct: false }
+      ],
+      explanation: "The lesson connects back to Module 3's tool-hunting waste. Comparing in advance rarely produces a decision. Pick based on the fit-to-work-profile, commit for thirty days, and the real differences become obvious in practice."
+    },
+    {
+      id: 6,
+      text: "Which of these is the cleanest example of a real AI product description, not hype, based on Module 4?",
+      ref: 'Lesson 4.3',
+      options: [
+        { text: "\"Revolutionary neural intelligence that unlocks 10x productivity.\"", correct: false },
+        { text: "\"Drafts personalised follow-up emails for your sales team using the last call's transcript and CRM history. Claude 3.5 Sonnet under the hood. £29/user/month. Saves most teams 2–5 hours per rep per week.\"", correct: true },
+        { text: "\"Next-generation AGI-powered assistant, deploys in minutes, no human needed.\"", correct: false },
+        { text: "\"Industry-first autonomous workflow engine that revolutionises operations.\"", correct: false }
+      ],
+      explanation: "Option B survives the Monday-morning question completely. Concrete task, named model, realistic price, time savings as a range not a promise, human still visible (\"your sales team\"). That's what a real AI product reads like."
+    },
+    {
+      id: 7,
+      text: "You're drafting a new page of your own marketing copy for your website. Which of these pastes is sensible?",
+      ref: 'Lesson 4.2',
+      options: [
+        { text: "Paste your real customer list so AI can personalise the copy to them.", correct: false },
+        { text: "Paste your own draft copy and ask for a tighter version — your own public-facing content is safe, and this is exactly what the tool is built for.", correct: true },
+        { text: "Don't use AI — marketing copy is too sensitive.", correct: false },
+        { text: "Paste internal strategy docs to give AI \"full context\".", correct: false }
+      ],
+      explanation: "Your own public-facing marketing copy is squarely in the safe tier — nothing confidential, nothing about anyone else. Working on your own drafts is exactly the job AI tools are built for. The other options either leak other people's data or overcorrect into never using the tool."
+    },
+    {
+      id: 8,
+      text: "Which single-sentence description best captures Module 4's overall position on making smart AI decisions?",
+      ref: 'Lessons 4.1, 4.2, 4.3',
+      options: [
+        { text: "Buy every AI tool available and test them all monthly.", correct: false },
+        { text: "Pick one tool based on fit, never paste what you wouldn't email to a stranger, and ask of every AI pitch \"what would this do on Monday morning?\"", correct: true },
+        { text: "Only use enterprise AI; consumer tools aren't serious.", correct: false },
+        { text: "Wait for the hype cycle to end before committing to anything.", correct: false }
+      ],
+      explanation: "Module 4 in one sentence. Tool choice by fit (4.1). Privacy by a simple rule (4.2). Marketing filtered by one question (4.3). Three decisions, three sharp heuristics — that's the craft layer applied to the outside world."
+    }
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function pickQuestions() {
+    if (attemptCount === 0) {
+      // Canonical first five
+      const canonical = [1, 2, 3, 4, 5].map(id => questionBank.find(q => q.id === id));
+      return canonical.map(q => ({ ...q, options: q.options.slice() }));
+    }
+    // Retries: shuffle bank, pick 5, shuffle options within each
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  function renderQuestions() {
+    selectedQuestions = pickQuestions();
+    const container = document.getElementById('quizQuestions');
+    container.innerHTML = '';
+
+    selectedQuestions.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+          <span class="ref">Covered in ${q.ref}</span>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  const progressDots = document.querySelectorAll('#quizProgress span');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+
+  function startQuiz() {
+    document.getElementById('introScreen').style.display = 'none';
+    document.getElementById('quizScreen').style.display = 'block';
+    renderQuestions();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function getCards() {
+    return document.querySelectorAll('.q-card');
+  }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    progressDots.forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < i) d.classList.add('done');
+      else if (idx === i) d.classList.add('active');
+    });
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('quizScreen').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) {
+      currentQ++;
+      showQuestion(currentQ);
+    } else {
+      showResults();
+    }
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) {
+      currentQ--;
+      showQuestion(currentQ);
+    }
+  }
+
+  function showResults() {
+    getCards().forEach(c => c.classList.remove('active'));
+    document.getElementById('quizNav').style.display = 'none';
+    progressDots.forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+
+    const score = answers.filter(a => a === true).length;
+    const pct = Math.round((score / totalQuestions) * 100);
+    const passed = (score / totalQuestions) >= PASS_THRESHOLD;
+
+    const scoreEl = document.getElementById('scoreNum');
+    scoreEl.textContent = score;
+    scoreEl.classList.toggle('pass', passed);
+    scoreEl.classList.toggle('fail', !passed);
+    document.getElementById('scorePercent').textContent = pct + '%';
+
+    const statusEl = document.getElementById('resultStatus');
+    const statusText = document.getElementById('resultStatusText');
+    statusEl.classList.toggle('pass', passed);
+    statusEl.classList.toggle('fail', !passed);
+    statusEl.querySelector('span:first-child').textContent = passed ? '✓' : '✕';
+    statusText.textContent = passed ? 'Final assessment unlocked' : 'Not quite there yet';
+
+    // Show the celebratory banner on pass
+    document.getElementById('unlockBanner').classList.toggle('show', passed);
+
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+
+    if (passed && score === 5) {
+      title.textContent = 'Five for five. Module 4 mastered.';
+      body.textContent = "Every lesson done, every module passed, cleanly. One assessment left — twenty questions across the whole course — and your certificate is yours.";
+    } else if (passed) {
+      title.textContent = 'Nicely done — Module 4 complete.';
+      body.textContent = `You scored ${score} out of 5. That's every module done. Glance at the questions you missed, then move on to the final assessment whenever you're ready.`;
+    } else if (score === 2) {
+      title.textContent = 'Close. One more correct answer and you\'re through.';
+      body.textContent = 'You need 3 out of 5 to unlock the final assessment. Review the questions you missed, skim the Module 4 lessons, and try again when you\'re ready. No limits on retries.';
+    } else {
+      title.textContent = 'Worth another pass through Module 4.';
+      body.textContent = 'You need 3 out of 5 to unlock the final assessment. The review below shows which ideas to go back to — the lesson references point you straight there.';
+    }
+
+    const breakdown = document.getElementById('breakdown');
+    breakdown.querySelectorAll('.breakdown-row').forEach(r => r.remove());
+    selectedQuestions.forEach((q, i) => {
+      const row = document.createElement('div');
+      row.className = 'breakdown-row';
+      const ok = answers[i] === true;
+      const shortText = q.text.length > 70 ? q.text.slice(0, 68) + '…' : q.text;
+      row.innerHTML = `
+        <span class="breakdown-num">Q${i+1}</span>
+        <span class="breakdown-text" title="${q.text.replace(/"/g,'&quot;')}">${shortText}</span>
+        <span class="breakdown-status ${ok ? 'ok' : 'no'}">${ok ? '✓ Correct' : '✕ Missed'}</span>
+      `;
+      breakdown.appendChild(row);
+    });
+
+    const actions = document.getElementById('resultActions');
+    if (passed) {
+      actions.innerHTML = `
+        <a href="final-assessment.html" class="btn btn-primary btn-big">Start the final assessment →</a>
+        <button class="btn btn-ghost" onclick="resetQuiz()">↻ Retake the quiz</button>
+      `;
+    } else {
+      actions.innerHTML = `
+        <button class="btn btn-primary btn-big" onclick="resetQuiz()">↻ Retake the quiz</button>
+        <a href="lesson-4-1.html" class="btn btn-ghost">Revisit Lesson 4.1</a>
+        <a href="lesson-4-2.html" class="btn btn-ghost">Revisit Lesson 4.2</a>
+        <a href="lesson-4-3.html" class="btn btn-ghost">Revisit Lesson 4.3</a>
+      `;
+    }
+
+    document.getElementById('quizResult').classList.add('show');
+    document.getElementById('quizResult').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function resetQuiz() {
+    attemptCount++;
+    currentQ = 0;
+    answers = new Array(totalQuestions).fill(null);
+    answered = new Array(totalQuestions).fill(false);
+
+    renderQuestions();
+
+    document.getElementById('quizResult').classList.remove('show');
+    document.getElementById('unlockBanner').classList.remove('show');
+    document.getElementById('quizNav').style.display = 'flex';
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Next question →';
+    showQuestion(0);
+  }
+</script>
+
+</body>
+</html>

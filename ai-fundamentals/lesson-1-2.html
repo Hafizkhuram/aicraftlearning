@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lesson 1.2 — The family tree of AI terms | AICraft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:var(--body);
+    font-size:17px;
+    line-height:1.7;
+    color:var(--text);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* Reading progress bar */
+  .progress-track{
+    position:fixed;top:0;left:0;right:0;height:3px;
+    background:transparent;z-index:100;
+  }
+  .progress-bar{
+    height:100%;width:0%;
+    background:linear-gradient(90deg,var(--emerald),var(--forest));
+    transition:width .15s ease-out;
+  }
+
+  /* Header */
+  header{
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(8px);
+    background:rgba(255,255,255,.85);
+  }
+  .header-inner{
+    max-width:1100px;margin:0 auto;
+    padding:18px 28px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;
+  }
+  .brand{
+    display:flex;align-items:center;gap:10px;
+    text-decoration:none;
+  }
+  .brand-logo{
+    height:32px;width:auto;
+    display:block;
+  }
+  .header-meta{
+    display:flex;align-items:center;gap:20px;
+    font-size:13px;color:var(--text-mute);
+  }
+  .header-meta .sep{opacity:.4}
+  .lesson-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 10px;border-radius:999px;
+    background:var(--mint);color:var(--forest);
+    font-weight:600;font-size:12px;letter-spacing:.02em;
+  }
+  .lesson-badge::before{
+    content:"";width:6px;height:6px;border-radius:50%;
+    background:var(--emerald);
+  }
+
+  /* Main grid */
+  main{
+    max-width:1100px;margin:0 auto;
+    padding:0 28px 80px;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 240px;
+    gap:56px;
+  }
+  @media (max-width:900px){
+    main{grid-template-columns:1fr;gap:0;padding-bottom:48px}
+    aside.toc{display:none}
+  }
+
+  /* Article */
+  article{max-width:680px;padding-top:48px}
+
+  .lesson-meta{
+    display:flex;align-items:center;gap:10px;
+    font-size:13px;color:var(--text-mute);
+    margin-bottom:20px;font-weight:500;
+  }
+  .lesson-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.lesson-title{
+    font-family:var(--display);
+    font-weight:500;
+    font-size:clamp(34px,4.8vw,52px);
+    line-height:1.08;
+    letter-spacing:-.02em;
+    color:var(--slate);
+    margin:0 0 20px;
+  }
+  h1.lesson-title em{
+    font-style:italic;
+    color:var(--forest);
+  }
+
+  .hook{
+    font-family:var(--display);
+    font-size:21px;line-height:1.5;
+    color:var(--text-soft);
+    font-style:italic;
+    font-weight:400;
+    padding:0 0 0 20px;
+    border-left:3px solid var(--emerald);
+    margin:28px 0 48px;
+  }
+
+  article h2{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:28px;
+    line-height:1.25;
+    letter-spacing:-.015em;
+    color:var(--forest);
+    margin:56px 0 16px;
+    position:relative;
+    padding-left:18px;
+  }
+  article h2::before{
+    content:"";position:absolute;left:0;top:10px;bottom:10px;
+    width:3px;border-radius:2px;background:var(--emerald);
+  }
+
+  article h3{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:20px;
+    color:var(--slate);
+    margin:32px 0 10px;
+    letter-spacing:-.005em;
+  }
+
+  article p{margin:0 0 18px}
+  article p strong{color:var(--slate);font-weight:600}
+
+  article code{
+    font-family:"SFMono-Regular",Consolas,monospace;
+    background:var(--mint-soft);
+    color:var(--forest);
+    padding:1px 6px;border-radius:4px;
+    font-size:.92em;
+  }
+
+  /* Misconception block */
+  .misconception{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:16px;
+    padding:20px 22px;
+    background:#FEF7EC;
+    border:1px solid #F4E0BB;
+    border-radius:10px;
+    margin:28px 0;
+  }
+  .misconception-icon{
+    width:32px;height:32px;border-radius:8px;
+    background:#F59E0B;color:#fff;
+    display:grid;place-items:center;
+    font-family:var(--display);font-weight:700;font-size:18px;
+    flex-shrink:0;
+  }
+  .misconception-label{
+    font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:#92400E;font-weight:700;margin-bottom:4px;
+  }
+  .misconception-text{margin:0;color:#78350F;font-size:15.5px;line-height:1.6}
+  .misconception-text strong{color:#78350F}
+
+  /* Takeaway */
+  .takeaway{
+    margin:40px 0;
+    padding:28px 32px;
+    background:linear-gradient(135deg,var(--mint-soft) 0%,var(--mint) 100%);
+    border:1px solid #A7F3D0;
+    border-radius:14px;
+    position:relative;
+    overflow:hidden;
+  }
+  .takeaway::before{
+    content:"";position:absolute;top:0;bottom:0;left:0;
+    width:4px;background:var(--emerald);
+  }
+  .takeaway-label{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);font-weight:700;
+    margin-bottom:12px;
+  }
+  .takeaway-label svg{width:14px;height:14px}
+  .takeaway-main{
+    font-family:var(--display);
+    font-size:22px;line-height:1.4;
+    color:var(--slate);
+    font-weight:600;
+    margin:0 0 10px;
+    letter-spacing:-.01em;
+  }
+  .takeaway-sub{
+    font-size:15.5px;color:var(--forest);
+    margin:0;line-height:1.6;
+  }
+
+  /* Interactive nesting diagram */
+  .nesting-diagram{
+    margin:32px 0;
+    padding:28px 24px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+  }
+  .nesting-diagram-head{
+    display:flex;justify-content:space-between;align-items:baseline;
+    margin-bottom:20px;flex-wrap:wrap;gap:8px;
+  }
+  .nesting-label{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--text-mute);
+  }
+  .nesting-hint{
+    font-size:13px;color:var(--text-mute);
+  }
+  .nesting-svg-wrap{
+    display:flex;justify-content:center;
+    padding:8px 0 16px;
+  }
+  .nest-ring{
+    cursor:pointer;
+    transition:all .25s ease;
+  }
+  .nest-ring rect{
+    transition:all .25s ease;
+  }
+  .nest-ring:hover rect{
+    stroke-width:2.5;
+  }
+  .nest-ring.active rect{
+    stroke-width:3;
+    fill-opacity:1;
+  }
+  .nest-ring text{
+    font-family:var(--display);
+    font-weight:600;
+    pointer-events:none;
+    transition:fill .2s ease;
+  }
+  .nest-detail{
+    min-height:120px;
+    padding:20px 22px;
+    background:var(--mint-soft);
+    border:1px solid #A7F3D0;
+    border-radius:10px;
+    border-left:3px solid var(--emerald);
+  }
+  .nest-detail-title{
+    font-family:var(--display);font-weight:600;
+    font-size:18px;color:var(--forest);
+    margin:0 0 6px;letter-spacing:-.005em;
+  }
+  .nest-detail-sub{
+    font-size:13px;color:var(--text-mute);
+    margin:0 0 10px;
+    font-weight:500;
+  }
+  .nest-detail-body{
+    margin:0;color:var(--text);
+    font-size:15px;line-height:1.6;
+  }
+  .nest-detail-examples{
+    display:flex;flex-wrap:wrap;gap:6px;
+    margin-top:12px;
+  }
+  .nest-chip{
+    display:inline-block;
+    padding:4px 10px;
+    background:var(--card);
+    border:1px solid #A7F3D0;
+    border-radius:999px;
+    font-size:12.5px;color:var(--forest);
+    font-weight:500;
+  }
+
+  /* Comparison table */
+  .compare-table{
+    margin:28px 0;
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    background:var(--card);
+  }
+  .compare-row{
+    display:grid;
+    grid-template-columns:130px 1fr 1fr;
+    border-top:1px solid var(--border);
+  }
+  .compare-row:first-child{border-top:0;background:var(--mint-soft)}
+  .compare-row > div{
+    padding:14px 18px;
+    font-size:14.5px;
+    line-height:1.5;
+  }
+  .compare-row:first-child > div{
+    font-family:var(--display);font-weight:600;font-size:13px;
+    letter-spacing:.04em;text-transform:uppercase;color:var(--forest);
+  }
+  .compare-row > div:first-child{
+    font-weight:600;color:var(--slate);
+    border-right:1px solid var(--border);
+  }
+  .compare-row > div:nth-child(2){
+    border-right:1px solid var(--border);
+    color:var(--text-soft);
+  }
+  .compare-row > div:nth-child(3){color:var(--text-soft)}
+  @media (max-width:600px){
+    .compare-row{grid-template-columns:1fr}
+    .compare-row > div{border-right:0 !important}
+  }
+
+  /* Action box */
+  .action-box{
+    margin:48px 0 0;
+    padding:32px;
+    background:var(--slate);
+    border-radius:16px;
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+  }
+  .action-box::after{
+    content:"";position:absolute;
+    right:-60px;bottom:-60px;
+    width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(16,185,129,.18),transparent 70%);
+    pointer-events:none;
+  }
+  .action-eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    color:var(--emerald);font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;font-weight:700;margin-bottom:14px;
+  }
+  .action-title{
+    font-family:var(--display);font-weight:500;
+    font-size:26px;line-height:1.25;margin:0 0 12px;
+    color:#fff;letter-spacing:-.01em;
+  }
+  .action-body{
+    color:#CBD5E1;font-size:16px;line-height:1.65;margin:0 0 20px;
+  }
+  .action-prompt{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:8px;
+    padding:14px 16px;
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:14px;color:#E2E8F0;
+    margin:0 0 20px;
+  }
+  .action-check{
+    display:flex;align-items:center;gap:10px;
+    cursor:pointer;user-select:none;
+    padding:10px 0;
+    color:#CBD5E1;font-size:15px;
+    position:relative;z-index:2;
+  }
+  .action-check input{display:none}
+  .action-check .box{
+    width:20px;height:20px;border-radius:5px;
+    border:1.5px solid #475569;
+    display:grid;place-items:center;
+    transition:all .2s;flex-shrink:0;
+  }
+  .action-check input:checked + .box{
+    background:var(--emerald);border-color:var(--emerald);
+  }
+  .action-check input:checked + .box::after{
+    content:"✓";color:#fff;font-size:13px;font-weight:700;
+  }
+  .action-check input:checked ~ span:last-child{color:#fff;text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3)}
+
+  /* Quiz */
+  .quiz{
+    margin-top:72px;
+    padding:40px 36px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+  }
+  .quiz-header{
+    display:flex;align-items:center;gap:12px;
+    margin-bottom:6px;
+  }
+  .quiz-eyebrow{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);font-weight:700;
+  }
+  .quiz-title{
+    font-family:var(--display);font-weight:600;
+    font-size:26px;line-height:1.2;
+    color:var(--slate);margin:4px 0 8px;letter-spacing:-.01em;
+  }
+  .quiz-sub{color:var(--text-mute);margin:0 0 28px;font-size:15px}
+  .quiz-progress{
+    display:flex;gap:6px;margin-bottom:28px;
+  }
+  .quiz-progress span{
+    flex:1;height:4px;border-radius:2px;
+    background:var(--border);transition:background .3s;
+  }
+  .quiz-progress span.done{background:var(--emerald)}
+  .quiz-progress span.active{background:var(--forest)}
+
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(6px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .q-number{
+    font-family:var(--display);font-size:13px;color:var(--text-mute);
+    font-weight:500;letter-spacing:.04em;margin-bottom:8px;
+  }
+  .q-text{
+    font-family:var(--display);font-weight:500;
+    font-size:21px;line-height:1.4;color:var(--slate);
+    margin:0 0 24px;letter-spacing:-.005em;
+  }
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:16px 18px;
+    border:1.5px solid var(--border);
+    border-radius:10px;
+    cursor:pointer;
+    transition:all .2s;
+    background:var(--card);
+    font-size:15.5px;line-height:1.5;
+  }
+  .option:hover:not(.disabled){
+    border-color:var(--emerald);
+    background:var(--mint-soft);
+  }
+  .option.disabled{cursor:default}
+  .option-letter{
+    width:26px;height:26px;border-radius:7px;
+    background:var(--border-soft);color:var(--text-soft);
+    display:grid;place-items:center;
+    font-weight:700;font-size:13px;flex-shrink:0;
+    transition:all .2s;font-family:var(--display);
+  }
+  .option:hover:not(.disabled) .option-letter{
+    background:var(--emerald);color:#fff;
+  }
+  .option.correct{
+    border-color:var(--success);
+    background:#F0FDF4;
+  }
+  .option.correct .option-letter{
+    background:var(--success);color:#fff;
+  }
+  .option.incorrect{
+    border-color:var(--error);
+    background:#FEF2F2;
+  }
+  .option.incorrect .option-letter{
+    background:var(--error);color:#fff;
+  }
+  .option-check{
+    margin-left:auto;opacity:0;transition:opacity .2s;
+    font-size:20px;line-height:1;
+  }
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+
+  .explanation{
+    display:none;
+    margin-top:20px;padding:18px 20px;
+    border-radius:10px;
+    background:var(--mint-soft);
+    border-left:3px solid var(--emerald);
+    font-size:15px;line-height:1.6;color:var(--forest);
+  }
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{
+    display:block;
+    font-family:var(--display);font-size:13px;
+    letter-spacing:.1em;text-transform:uppercase;
+    color:var(--forest);margin-bottom:6px;
+  }
+  .explanation.wrong{
+    background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D;
+  }
+  .explanation.wrong strong{color:#7F1D1D}
+
+  .quiz-nav{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:24px;gap:12px;
+  }
+  .btn{
+    border:0;cursor:pointer;font-family:var(--body);
+    font-weight:600;font-size:14.5px;
+    padding:11px 22px;border-radius:8px;
+    transition:all .18s;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn-primary{
+    background:var(--forest);color:#fff;
+  }
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{
+    background:var(--border);color:var(--text-mute);
+    cursor:not-allowed;transform:none;
+  }
+  .btn-ghost{
+    background:transparent;color:var(--text-mute);
+  }
+  .btn-ghost:hover{color:var(--forest)}
+
+  .quiz-result{
+    display:none;text-align:center;padding:20px 0;
+  }
+  .quiz-result.show{display:block;animation:fadeIn .4s ease}
+  .quiz-score{
+    font-family:var(--display);font-weight:500;
+    font-size:72px;line-height:1;color:var(--forest);
+    margin:0 0 8px;letter-spacing:-.03em;
+  }
+  .quiz-score span{color:var(--text-mute);font-size:32px}
+  .quiz-result-title{
+    font-family:var(--display);font-weight:600;font-size:24px;
+    color:var(--slate);margin:0 0 8px;
+  }
+  .quiz-result-body{
+    color:var(--text-mute);margin:0 auto 24px;max-width:420px;
+    font-size:15.5px;line-height:1.6;
+  }
+
+  /* TOC */
+  aside.toc{
+    padding-top:56px;
+    position:sticky;top:80px;
+    align-self:start;
+    max-height:calc(100vh - 100px);
+    overflow-y:auto;
+  }
+  .toc-label{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--text-mute);font-weight:700;margin-bottom:14px;
+  }
+  .toc ul{list-style:none;padding:0;margin:0;
+    border-left:1px solid var(--border);
+  }
+  .toc li{margin:0}
+  .toc a{
+    display:block;padding:7px 16px;
+    font-size:13.5px;color:var(--text-mute);
+    text-decoration:none;
+    border-left:2px solid transparent;
+    margin-left:-1px;
+    transition:all .15s;line-height:1.4;
+  }
+  .toc a:hover{color:var(--forest)}
+  .toc a.active{
+    color:var(--forest);font-weight:600;
+    border-left-color:var(--emerald);
+  }
+
+  /* Footer nav */
+  .lesson-footer{
+    max-width:680px;margin:56px 0 0;
+    padding-top:32px;border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:center;
+    gap:16px;flex-wrap:wrap;
+  }
+  .next-lesson{
+    display:flex;flex-direction:column;gap:2px;
+    padding:16px 22px;border-radius:10px;
+    background:var(--card);border:1px solid var(--border);
+    text-decoration:none;
+    transition:all .2s;
+  }
+  .next-lesson:hover{
+    border-color:var(--emerald);
+    transform:translateY(-1px);
+    box-shadow:0 4px 14px rgba(6,95,70,.06);
+  }
+  .next-lesson-label{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);font-weight:600;
+  }
+  .next-lesson-title{
+    font-family:var(--display);font-weight:600;
+    font-size:16px;color:var(--forest);
+  }
+  .completion-status{
+    display:flex;align-items:center;gap:10px;
+    font-size:14px;color:var(--text-mute);
+  }
+  .completion-status.complete{color:var(--success)}
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AICraft Learning">
+      <svg class="brand-logo" viewBox="0 0 420 80" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="lesson-badge">Module 1 · Lesson 2</span>
+      <span class="sep">·</span>
+      <span>6 min read</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article>
+    <div class="lesson-meta">
+      <span>AI Fundamentals: From Zero to Confident</span>
+      <span class="dot"></span>
+      <span>What AI actually is (and isn't)</span>
+    </div>
+
+    <h1 class="lesson-title">The <em>family tree</em> of AI terms</h1>
+
+    <p class="hook">Every AI vendor uses the word "AI" to mean something different. Here's how to cut through the noise with a single mental picture.</p>
+
+    <p>Walk into any meeting in 2026 and you'll hear AI, machine learning, deep learning, LLM, and GPT thrown around as if they're the same thing. They aren't. They're related — but in a specific way that, once you see it, you'll never un-see.</p>
+
+    <p>This lesson gives you that picture. Once you have it, you'll be the person in the room who can gently ask, "Sorry, when you say AI, which kind do you mean?" and look completely reasonable doing it.</p>
+
+    <div class="misconception">
+      <div class="misconception-icon">!</div>
+      <div>
+        <div class="misconception-label">The common misconception</div>
+        <p class="misconception-text"><strong>"AI is all the same stuff."</strong> It isn't. A spam filter and ChatGPT are both called "AI," but they work in completely different ways. Treating them as interchangeable is why people get talked into buying things they don't need.</p>
+      </div>
+    </div>
+
+    <h2 id="section-1">Four words, nested like Russian dolls</h2>
+
+    <p>Here's the single most useful picture in AI. Four terms, sitting inside each other like a set of Russian dolls.</p>
+
+    <p><strong>AI</strong> is the outer doll — the broadest term. Inside it sits <strong>Machine Learning</strong>. Inside that sits <strong>Deep Learning</strong>. And inside that sits a particular kind of model called a <strong>Large Language Model</strong> — an LLM. That's the box Claude, ChatGPT, and Gemini all live in.</p>
+
+    <p>This matters because every LLM is an AI, but not every AI is an LLM. When a vendor says "our product uses AI," they could be talking about something as sophisticated as GPT-4 or something as simple as a rule-based filter from 1998. Both qualify.</p>
+
+    <div class="nesting-diagram">
+      <div class="nesting-diagram-head">
+        <span class="nesting-label">Interactive · click each layer</span>
+        <span class="nesting-hint" id="nestingHint">Tap a ring to see what it means</span>
+      </div>
+      <div class="nesting-svg-wrap">
+        <svg viewBox="0 0 420 320" width="100%" style="max-width:460px" role="img" aria-label="Nested diagram showing AI contains Machine Learning which contains Deep Learning which contains LLMs">
+          <!-- Outer: AI -->
+          <g class="nest-ring" data-layer="ai">
+            <rect x="10" y="10" width="400" height="300" rx="16" ry="16"
+                  fill="#ECFDF5" fill-opacity="0.6"
+                  stroke="#065F46" stroke-width="1.5" />
+            <text x="30" y="36" fill="#065F46" font-size="15">Artificial Intelligence</text>
+          </g>
+          <!-- ML -->
+          <g class="nest-ring" data-layer="ml">
+            <rect x="45" y="58" width="330" height="240" rx="14" ry="14"
+                  fill="#D1FAE5" fill-opacity="0.7"
+                  stroke="#065F46" stroke-width="1.5" />
+            <text x="62" y="82" fill="#065F46" font-size="14">Machine Learning</text>
+          </g>
+          <!-- Deep Learning -->
+          <g class="nest-ring" data-layer="dl">
+            <rect x="80" y="106" width="260" height="184" rx="12" ry="12"
+                  fill="#A7F3D0" fill-opacity="0.7"
+                  stroke="#065F46" stroke-width="1.5" />
+            <text x="95" y="128" fill="#065F46" font-size="13.5">Deep Learning</text>
+          </g>
+          <!-- LLM -->
+          <g class="nest-ring active" data-layer="llm">
+            <rect x="120" y="154" width="180" height="128" rx="10" ry="10"
+                  fill="#10B981" fill-opacity="0.95"
+                  stroke="#065F46" stroke-width="2" />
+            <text x="170" y="222" fill="#ffffff" font-size="18" font-weight="700" text-anchor="middle">LLMs</text>
+            <text x="210" y="244" fill="#D1FAE5" font-size="11" text-anchor="middle" font-family="DM Sans">Claude · ChatGPT · Gemini</text>
+          </g>
+        </svg>
+      </div>
+      <div class="nest-detail" id="nestDetail">
+        <h4 class="nest-detail-title">Large Language Models (LLMs)</h4>
+        <p class="nest-detail-sub">A specific type of deep learning model — the one behind today's AI boom</p>
+        <p class="nest-detail-body">Trained on vast amounts of text to predict language. When someone says "AI" in 2026, this is almost always what they mean. It's what you're using when you open Claude, ChatGPT, or Gemini.</p>
+        <div class="nest-detail-examples">
+          <span class="nest-chip">Claude</span>
+          <span class="nest-chip">ChatGPT</span>
+          <span class="nest-chip">Gemini</span>
+          <span class="nest-chip">Copilot</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="section-2">What each layer actually is</h2>
+
+    <p><strong>AI</strong> is the umbrella. It's any system that does something we'd normally call "intelligent" — spotting spam, recommending films, beating you at chess, writing a product description. The term is over seventy years old and covers everything from hand-written rules to the latest models. It's broad on purpose, which is why it's nearly meaningless when a vendor uses it on its own.</p>
+
+    <p><strong>Machine learning</strong> is a specific way of doing AI — instead of engineers writing the rules, the system works them out by looking at lots of examples. Show it 10,000 emails labelled "spam" and 10,000 labelled "not spam," and it learns the pattern itself. Your bank uses ML to spot fraud. Netflix uses it to guess what you'll watch next. Nothing magical, just pattern-finding at scale.</p>
+
+    <p><strong>Deep learning</strong> is a particular flavour of machine learning that uses something called a <code>neural network</code> — loosely inspired by how neurons in a brain are wired together. You don't need to know the maths. You just need to know it's the technique behind most of the impressive AI you've seen in the last decade. Image recognition, voice assistants, and image generators all run on deep learning.</p>
+
+    <p><strong>LLMs</strong> sit at the innermost layer. They're deep learning models trained specifically on huge amounts of text. They predict language — word by word, sentence by sentence — which is why they're so good at writing, summarising, and rephrasing. Everything you've heard about "AI writing emails" or "AI doing your admin" is almost certainly an LLM doing the work.</p>
+
+    <h2 id="section-3">The 2026 shortcut everyone uses</h2>
+
+    <p>Here's the real-world bit. In practice, when somebody at work says "AI," they almost always mean an LLM. The distinction between ML, deep learning, and LLMs has quietly collapsed in everyday conversation, because LLMs are what made the current boom feel like magic.</p>
+
+    <p>So your working rule is simple. Nine times out of ten, when someone says "we're using AI for X," they mean they're using an LLM. The tenth time, it's something else — a recommendation engine, a fraud detector, an image classifier — and that's when you should ask which kind.</p>
+
+    <div class="takeaway">
+      <div class="takeaway-label">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.5 7.5l-4 4a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06L9 11.94l3.44-3.44a.75.75 0 011.06 1.06z"/></svg>
+        The one thing to remember
+      </div>
+      <p class="takeaway-main">When someone says "AI" in 2026, 90% of the time they mean an LLM. The other 10% you need to ask.</p>
+      <p class="takeaway-sub">This one question — "which kind of AI?" — will save you from buying tools that don't do what you think they do.</p>
+    </div>
+
+    <h2 id="section-4">The AI that isn't an LLM</h2>
+
+    <p>It's worth seeing the other 10% clearly, because these tools are everywhere and they're useful. They're just not what ChatGPT is.</p>
+
+    <div class="compare-table">
+      <div class="compare-row">
+        <div>Example</div>
+        <div>What it actually is</div>
+        <div>Why it's not an LLM</div>
+      </div>
+      <div class="compare-row">
+        <div>Netflix recommendations</div>
+        <div>Machine learning on viewing data</div>
+        <div>No language generation — it just ranks what you might like</div>
+      </div>
+      <div class="compare-row">
+        <div>Spam filter</div>
+        <div>Machine learning on email features</div>
+        <div>Classifying into "spam or not," not writing anything</div>
+      </div>
+      <div class="compare-row">
+        <div>Midjourney, DALL·E</div>
+        <div>Deep learning, but for images not language</div>
+        <div>Different kind of model — generates pixels, not words</div>
+      </div>
+      <div class="compare-row">
+        <div>Face unlock on your phone</div>
+        <div>Deep learning for image recognition</div>
+        <div>Recognises patterns in pixels — nothing to do with text</div>
+      </div>
+    </div>
+
+    <p>The pattern worth noticing: when the job is <em>language</em>, it's almost always an LLM. When the job is something else — ranking, classifying, recognising, generating images — it's a different flavour of AI underneath. Same umbrella, different tool.</p>
+
+    <h2 id="section-5">Why this matters when money is involved</h2>
+
+    <p>Here's where this becomes practical. A software vendor says, "Our CRM is AI-powered." That sentence, on its own, tells you nothing. It could mean:</p>
+
+    <p>They've wired up GPT-4 to draft replies to your emails. Or they have a simple ML model that scores leads. Or they renamed a filter from 2015 and slapped "AI" on the label. All three are technically true. All three are very different products at very different prices.</p>
+
+    <p>The single question that cuts through it: <strong>"Which kind of AI, exactly, and what does it do on a Tuesday afternoon?"</strong> If the vendor can't answer that clearly, you now know to be sceptical. If they can — "it's an LLM that drafts email replies based on the customer's history" — then you can judge whether it's worth the money.</p>
+
+    <div class="action-box">
+      <div class="action-eyebrow">
+        ◆ Try this right now
+      </div>
+      <h3 class="action-title">Spot the three kinds right now</h3>
+      <p class="action-body">Take two minutes. Open a new tab and think of three AI products you've seen recently — in an ad, in software you use, in a LinkedIn post, anywhere. For each one, work out which layer of the nesting diagram it sits in.</p>
+      <div class="action-prompt">
+        Product 1: ____________________ → which kind?<br>
+        Product 2: ____________________ → which kind?<br>
+        Product 3: ____________________ → which kind?
+      </div>
+      <p class="action-body" style="margin-bottom:8px">If you can't tell — that's useful data too. It usually means the vendor hasn't said, which is the first sign to ask.</p>
+      <label class="action-check">
+        <input type="checkbox" id="actionDone" />
+        <span class="box"></span>
+        <span>I've done this — mark as complete</span>
+      </label>
+    </div>
+
+    <!-- QUIZ -->
+    <section class="quiz" id="quiz">
+      <div class="quiz-header">
+        <span class="quiz-eyebrow">Lesson check · 3 questions</span>
+      </div>
+      <h2 class="quiz-title" style="color:var(--slate);padding:0;margin-top:0">Did it stick?</h2>
+      <p class="quiz-sub">Takes about 30 seconds. Answers and explanations appear right away.</p>
+
+      <div class="quiz-progress" id="quizProgress">
+        <span class="active"></span><span></span><span></span>
+      </div>
+
+      <div id="quizQuestions"></div>
+
+      <!-- Result -->
+      <div class="quiz-result" id="quizResult">
+        <div class="quiz-score"><span id="scoreNum">0</span><span>/3</span></div>
+        <h3 class="quiz-result-title" id="resultTitle">Nicely done</h3>
+        <p class="quiz-result-body" id="resultBody">You've got the family tree clear. On to Lesson 1.3 — what AI is genuinely good at, and where it falls flat.</p>
+        <button class="btn btn-ghost" onclick="resetQuiz()">↻ Retry questions</button>
+      </div>
+
+      <div class="quiz-nav" id="quizNav">
+        <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+      </div>
+    </section>
+
+    <!-- Lesson footer -->
+    <div class="lesson-footer">
+      <div class="completion-status" id="completionStatus">
+        <span>◯</span>
+        <span>Lesson in progress</span>
+      </div>
+      <a href="#" class="next-lesson">
+        <span class="next-lesson-label">Next · Lesson 1.3</span>
+        <span class="next-lesson-title">What AI is good at vs. terrible at →</span>
+      </a>
+    </div>
+  </article>
+
+  <aside class="toc">
+    <div class="toc-label">In this lesson</div>
+    <ul>
+      <li><a href="#section-1" class="active">Nested like Russian dolls</a></li>
+      <li><a href="#section-2">What each layer actually is</a></li>
+      <li><a href="#section-3">The 2026 shortcut</a></li>
+      <li><a href="#section-4">The AI that isn't an LLM</a></li>
+      <li><a href="#section-5">Why this matters for spend</a></li>
+      <li><a href="#quiz">Lesson check</a></li>
+    </ul>
+  </aside>
+</main>
+
+<script>
+  // Reading progress bar
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+    progressBar.style.width = Math.min(100, Math.max(0, scrolled * 100)) + '%';
+  });
+
+  // TOC active state
+  const tocLinks = document.querySelectorAll('.toc a');
+  const sections = [...tocLinks].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY + 140;
+    let activeIdx = 0;
+    sections.forEach((s, i) => { if (s.offsetTop <= y) activeIdx = i; });
+    tocLinks.forEach((a,i) => a.classList.toggle('active', i === activeIdx));
+  });
+
+  // Interactive nesting diagram
+  const layerData = {
+    ai: {
+      title: "Artificial Intelligence",
+      sub: "The umbrella — any 'intelligent' system",
+      body: "A 70-year-old term covering any system that does something we'd call intelligent. Broad by design, which is why it's nearly meaningless when a vendor uses it on its own.",
+      examples: ["Chess engines", "Hand-written rules", "Expert systems", "Everything below"]
+    },
+    ml: {
+      title: "Machine Learning (ML)",
+      sub: "AI that learns patterns from examples instead of following written rules",
+      body: "Instead of engineers writing instructions, ML systems look at thousands of examples and work out the patterns themselves. Most of the AI you already use daily — quietly — is this.",
+      examples: ["Spam filters", "Netflix recs", "Fraud detection", "Google Maps ETA"]
+    },
+    dl: {
+      title: "Deep Learning",
+      sub: "ML done with neural networks — the technique behind the modern AI boom",
+      body: "A particular flavour of ML that uses layered neural networks, loosely inspired by brains. You don't need the maths — just know this is the technique behind almost every impressive AI breakthrough since 2012.",
+      examples: ["Image recognition", "Voice assistants", "Midjourney", "Face unlock"]
+    },
+    llm: {
+      title: "Large Language Models (LLMs)",
+      sub: "A specific type of deep learning model — the one behind today's AI boom",
+      body: "Trained on vast amounts of text to predict language. When someone says \"AI\" in 2026, this is almost always what they mean. It's what you're using when you open Claude, ChatGPT, or Gemini.",
+      examples: ["Claude", "ChatGPT", "Gemini", "Copilot"]
+    }
+  };
+
+  const nestRings = document.querySelectorAll('.nest-ring');
+  const nestDetail = document.getElementById('nestDetail');
+
+  nestRings.forEach(ring => {
+    ring.addEventListener('click', () => {
+      const layer = ring.dataset.layer;
+      nestRings.forEach(r => r.classList.remove('active'));
+      ring.classList.add('active');
+      const d = layerData[layer];
+      nestDetail.innerHTML = `
+        <h4 class="nest-detail-title">${d.title}</h4>
+        <p class="nest-detail-sub">${d.sub}</p>
+        <p class="nest-detail-body">${d.body}</p>
+        <div class="nest-detail-examples">
+          ${d.examples.map(e => `<span class="nest-chip">${e}</span>`).join('')}
+        </div>
+      `;
+    });
+  });
+
+  // Quiz state
+  const totalQuestions = 3;
+  let currentQ = 0;
+  let answers = [null, null, null];
+  let answered = [false, false, false];
+  let attemptCount = 0;
+
+  // ---------- QUESTION BANK ----------
+  // 8 questions covering the lesson's core ideas.
+  const questionBank = [
+    {
+      id: 1,
+      text: 'Based on the nesting diagram in this lesson, which of these is true?',
+      options: [
+        { text: 'Every LLM is an AI, but not every AI is an LLM.', correct: true },
+        { text: 'Every AI is an LLM, but not every LLM is an AI.', correct: false },
+        { text: 'AI and LLM mean the same thing.', correct: false },
+        { text: 'LLMs sit outside the AI category entirely.', correct: false }
+      ],
+      explanation: "LLMs are the innermost doll — a specific type of deep learning model, which is a type of machine learning, which is a type of AI. So every LLM is an AI, but the reverse isn't true."
+    },
+    {
+      id: 2,
+      text: "A colleague says, 'We're buying a new AI-powered CRM.' Based on this lesson, what's the most useful follow-up question?",
+      options: [
+        { text: '"Is it cloud-based?"', correct: false },
+        { text: '"Which kind of AI, exactly, and what does it actually do?"', correct: true },
+        { text: '"Does it use a neural network?"', correct: false },
+        { text: '"Is the AI part of the basic tier or an add-on?"', correct: false }
+      ],
+      explanation: '"AI-powered" tells you almost nothing on its own — it could be a 2025 LLM, a 2015 ML model, or a renamed 1998 filter. Asking which kind and what it does is the fastest way to cut through vendor language.'
+    },
+    {
+      id: 3,
+      text: "In 2026, when a non-technical colleague at work casually says 'AI,' what are they most likely talking about?",
+      options: [
+        { text: 'A spam filter or recommendation engine.', correct: false },
+        { text: 'An image recognition system.', correct: false },
+        { text: 'An LLM like ChatGPT, Claude, or Gemini.', correct: true },
+        { text: 'A hand-coded rule-based system.', correct: false }
+      ],
+      explanation: "Roughly nine times out of ten, 'AI' in everyday 2026 conversation means an LLM. The other tenth of the time — things like spam filters or image classifiers — is when it's worth asking which kind."
+    },
+    {
+      id: 4,
+      text: "Netflix's recommendation system, which predicts what you'll watch next based on your viewing history, is best described as:",
+      options: [
+        { text: 'An LLM.', correct: false },
+        { text: 'Machine learning, but not an LLM.', correct: true },
+        { text: 'A hand-written rule-based system.', correct: false },
+        { text: 'Not really AI at all.', correct: false }
+      ],
+      explanation: "Netflix's recs are a classic ML system — learning patterns from data — but the job is ranking what you'll like, not generating language. So it's AI and ML, but not an LLM. It's part of the other 10%."
+    },
+    {
+      id: 5,
+      text: "Midjourney and DALL·E generate images from text prompts. Where do they sit in the family tree?",
+      options: [
+        { text: "They're LLMs.", correct: false },
+        { text: "They're a kind of deep learning, but not an LLM.", correct: true },
+        { text: "They're machine learning but not deep learning.", correct: false },
+        { text: "They're not AI in the technical sense.", correct: false }
+      ],
+      explanation: "Image generators are deep learning models — but they generate pixels, not language. LLMs specifically are trained to predict text, so image tools sit one ring out from LLMs in the diagram."
+    },
+    {
+      id: 6,
+      text: "What's the key difference between machine learning and older, rule-based AI?",
+      options: [
+        { text: 'ML uses computers and older AI did not.', correct: false },
+        { text: "ML works out patterns from examples, instead of engineers writing the rules by hand.", correct: true },
+        { text: "ML is always correct and rule-based AI is always wrong.", correct: false },
+        { text: "ML only handles language, and rule-based AI handles everything else.", correct: false }
+      ],
+      explanation: "That's the core shift: with rule-based AI, a human codes the logic. With ML, the system looks at thousands of labelled examples and learns the patterns itself. It's why ML scales to things no one could hand-code."
+    },
+    {
+      id: 7,
+      text: "Which of these statements about the four terms is correct?",
+      options: [
+        { text: 'AI and machine learning are the same thing.', correct: false },
+        { text: 'All deep learning models are LLMs.', correct: false },
+        { text: 'LLMs are a specific type of deep learning, which is a specific type of machine learning, which is a type of AI.', correct: true },
+        { text: 'LLMs sit outside machine learning.', correct: false }
+      ],
+      explanation: "This is the whole nesting structure in one sentence. Each term is a narrower, more specific version of the one before — which is why the Russian-doll picture sticks."
+    },
+    {
+      id: 8,
+      text: "You see an ad for a 'revolutionary AI-powered fraud detection system.' Based on this lesson, which type of AI is it most likely to be?",
+      options: [
+        { text: 'An LLM, like ChatGPT.', correct: false },
+        { text: 'Machine learning — looking for unusual patterns in transaction data.', correct: true },
+        { text: 'An image generator.', correct: false },
+        { text: 'A hand-coded spam filter.', correct: false }
+      ],
+      explanation: "Fraud detection is a classic ML job — spotting patterns in numbers and transaction data that suggest something's off. It's one of the oldest practical uses of ML and has nothing to do with language, so it's almost never an LLM."
+    }
+  ];
+
+  // Fisher–Yates shuffle
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function pickQuestions() {
+    if (attemptCount === 0) {
+      const canonical = [1, 2, 3].map(id => questionBank.find(q => q.id === id));
+      return canonical.map(q => ({ ...q, options: q.options.slice() }));
+    }
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  function renderQuestions() {
+    const selected = pickQuestions();
+    const container = document.getElementById('quizQuestions');
+    container.innerHTML = '';
+
+    selected.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  const progressDots = document.querySelectorAll('#quizProgress span');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+
+  renderQuestions();
+
+  function getCards() {
+    return document.querySelectorAll('.q-card');
+  }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    progressDots.forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < i) d.classList.add('done');
+      else if (idx === i) d.classList.add('active');
+    });
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('quiz').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) {
+      currentQ++;
+      showQuestion(currentQ);
+    } else {
+      showResults();
+    }
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) {
+      currentQ--;
+      showQuestion(currentQ);
+    }
+  }
+
+  function showResults() {
+    getCards().forEach(c => c.classList.remove('active'));
+    document.getElementById('quizNav').style.display = 'none';
+    progressDots.forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+
+    const score = answers.filter(a => a === true).length;
+    document.getElementById('scoreNum').textContent = score;
+
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+    if (score === 3) {
+      title.textContent = 'All three. Family tree sorted.';
+      body.textContent = attemptCount === 0
+        ? "You've got the nesting clear in your head. On to Lesson 1.3 — what AI is genuinely good at, and where it falls flat."
+        : "Clean sweep on the retry. Properly locked in now.";
+    } else if (score === 2) {
+      title.textContent = 'Close — one to revisit.';
+      body.textContent = "Skim the section you missed. The nesting picture is the single thing that makes the rest of the course click.";
+    } else {
+      title.textContent = 'Worth another pass.';
+      body.textContent = "Scroll up, click through the interactive diagram, then retry. Once this nesting picture is solid, everything else in the course gets easier.";
+    }
+
+    document.getElementById('quizResult').classList.add('show');
+    updateCompletion(score);
+  }
+
+  function resetQuiz() {
+    attemptCount++;
+    currentQ = 0;
+    answers = [null, null, null];
+    answered = [false, false, false];
+
+    renderQuestions();
+
+    document.getElementById('quizResult').classList.remove('show');
+    document.getElementById('quizNav').style.display = 'flex';
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Next question →';
+    showQuestion(0);
+  }
+
+  // Action checkbox + completion
+  const actionCheck = document.getElementById('actionDone');
+  const statusEl = document.getElementById('completionStatus');
+  function updateCompletion(quizScore) {
+    const quizDone = answered.every(Boolean);
+    const actionDone = actionCheck.checked;
+    const score = quizScore ?? answers.filter(a=>a===true).length;
+    if (quizDone && actionDone && score >= 2) {
+      statusEl.classList.add('complete');
+      statusEl.innerHTML = '<span>✓</span><span>Lesson complete</span>';
+    } else if (quizDone) {
+      statusEl.innerHTML = '<span>◐</span><span>Quiz done — finish your action</span>';
+    } else if (actionDone) {
+      statusEl.innerHTML = '<span>◐</span><span>Action done — take the quick check</span>';
+    }
+  }
+  actionCheck.addEventListener('change', () => updateCompletion());
+</script>
+
+</body>
+</html>

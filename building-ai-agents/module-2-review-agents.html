@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Module 2 review | AICraft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--body);font-size:17px;line-height:1.7;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+
+  header{
+    border-bottom:1px solid var(--border);
+    background:var(--card);
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(8px);
+    background:rgba(255,255,255,.85);
+  }
+  .header-inner{max-width:1100px;margin:0 auto;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:inline-flex;align-items:center;text-decoration:none;transition:opacity .15s}
+  .brand:hover{opacity:.85}
+  .brand-logo{height:36px;width:auto;display:block}
+  .header-meta{display:flex;align-items:center;gap:20px;font-size:13px;color:var(--text-mute)}
+  .header-meta .sep{opacity:.4}
+  .lesson-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 10px;border-radius:999px;
+    background:var(--mint);color:var(--forest);
+    font-weight:600;font-size:12px;letter-spacing:.02em;
+  }
+  .lesson-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald)}
+
+  main{max-width:760px;margin:0 auto;padding:56px 28px 80px}
+
+  .review-meta{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-mute);margin-bottom:16px;font-weight:500}
+  .review-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.review-title{
+    font-family:var(--display);
+    font-weight:500;
+    font-size:clamp(34px,4.6vw,48px);
+    line-height:1.08;
+    letter-spacing:-.02em;
+    color:var(--slate);
+    margin:0 0 16px;
+  }
+  h1.review-title em{font-style:italic;color:var(--forest)}
+
+  .review-lede{
+    font-family:var(--display);
+    font-size:19px;line-height:1.55;
+    color:var(--text-soft);
+    font-style:italic;
+    font-weight:400;
+    padding:0 0 0 20px;
+    border-left:3px solid var(--emerald);
+    margin:12px 0 36px;
+  }
+
+  /* Rules / pre-quiz info panel */
+  .rules{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:26px 30px;
+    margin:0 0 32px;
+  }
+  .rules-title{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);
+    margin:0 0 18px;
+  }
+  .rules-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:18px;
+  }
+  @media (max-width:640px){.rules-grid{grid-template-columns:repeat(2, 1fr);gap:20px}}
+  .rule-item-num{
+    font-family:var(--display);font-weight:500;
+    font-size:32px;line-height:1;color:var(--forest);
+    letter-spacing:-.02em;margin-bottom:4px;
+  }
+  .rule-item-label{font-size:13px;line-height:1.4;color:var(--text-mute)}
+  .rule-item-label strong{color:var(--slate);font-weight:600;display:block}
+
+  /* Covered block */
+  .covered{
+    background:var(--mint-soft);
+    border:1px solid #A7F3D0;
+    border-radius:12px;
+    padding:20px 24px;
+    margin:0 0 36px;
+  }
+  .covered-label{
+    font-family:var(--display);font-weight:600;
+    font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--forest);
+    margin-bottom:10px;
+  }
+  .covered ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+  .covered li{
+    display:flex;gap:10px;align-items:flex-start;
+    font-size:15px;color:var(--text);line-height:1.5;
+  }
+  .covered li::before{content:"✓";color:var(--emerald);font-weight:700;flex-shrink:0}
+  .covered li strong{color:var(--slate);font-weight:600}
+
+  /* Module milestone reminder — specific to Module 2 where the learner has actually built something */
+  .milestone{
+    margin:0 0 32px;
+    padding:20px 24px;
+    background:var(--slate);
+    border-radius:12px;
+    color:#fff;
+    position:relative;overflow:hidden;
+  }
+  .milestone::after{
+    content:"";position:absolute;
+    right:-40px;top:-40px;
+    width:180px;height:180px;border-radius:50%;
+    background:radial-gradient(circle,rgba(16,185,129,.22),transparent 70%);
+    pointer-events:none;
+  }
+  .milestone-label{
+    display:inline-block;
+    font-family:var(--display);font-weight:700;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--emerald);
+    margin-bottom:8px;
+    position:relative;z-index:2;
+  }
+  .milestone-title{
+    font-family:var(--display);font-weight:600;
+    font-size:17px;line-height:1.35;
+    color:#fff;
+    margin:0 0 4px;
+    position:relative;z-index:2;
+  }
+  .milestone-sub{
+    font-size:14px;color:#CBD5E1;
+    margin:0;line-height:1.5;
+    position:relative;z-index:2;
+  }
+
+  /* Start button */
+  .start-wrap{text-align:center;padding:12px 0 4px}
+  .btn-start{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--forest);color:#fff;
+    font-family:var(--body);font-weight:600;
+    font-size:16px;
+    padding:16px 32px;border-radius:10px;
+    border:0;cursor:pointer;
+    transition:all .18s;
+    letter-spacing:.01em;
+  }
+  .btn-start:hover{background:var(--slate);transform:translateY(-1px);box-shadow:0 6px 20px rgba(6,95,70,.18)}
+  .btn-start-hint{display:block;margin-top:10px;font-size:13px;color:var(--text-mute)}
+
+  /* Review area */
+  .review-area{display:none}
+  .review-area.show{display:block;animation:fadeIn .35s ease}
+
+  .progress-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;font-size:13px;color:var(--text-mute);font-weight:500}
+  .progress-header strong{color:var(--slate)}
+
+  .progress-dots{display:flex;gap:6px;margin-bottom:32px}
+  .progress-dots span{flex:1;height:5px;border-radius:3px;background:var(--border);transition:background .3s}
+  .progress-dots span.done{background:var(--emerald)}
+  .progress-dots span.active{background:var(--forest)}
+
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .q-number{font-family:var(--display);font-size:13px;color:var(--text-mute);font-weight:500;letter-spacing:.04em;margin-bottom:10px}
+  .q-text{
+    font-family:var(--display);font-weight:500;
+    font-size:23px;line-height:1.4;color:var(--slate);
+    margin:0 0 28px;letter-spacing:-.005em;
+  }
+
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:16px 18px;
+    border:1.5px solid var(--border);
+    border-radius:10px;
+    cursor:pointer;transition:all .2s;
+    background:var(--card);
+    font-size:15.5px;line-height:1.5;
+  }
+  .option:hover:not(.disabled){border-color:var(--emerald);background:var(--mint-soft)}
+  .option.disabled{cursor:default}
+  .option-letter{
+    width:26px;height:26px;border-radius:7px;
+    background:var(--border-soft);color:var(--text-soft);
+    display:grid;place-items:center;
+    font-weight:700;font-size:13px;flex-shrink:0;
+    transition:all .2s;font-family:var(--display);
+  }
+  .option:hover:not(.disabled) .option-letter{background:var(--emerald);color:#fff}
+  .option.correct{border-color:var(--success);background:#F0FDF4}
+  .option.correct .option-letter{background:var(--success);color:#fff}
+  .option.incorrect{border-color:var(--error);background:#FEF2F2}
+  .option.incorrect .option-letter{background:var(--error);color:#fff}
+  .option-check{margin-left:auto;opacity:0;transition:opacity .2s;font-size:20px;line-height:1}
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+
+  .explanation{
+    display:none;
+    margin-top:20px;padding:18px 20px;
+    border-radius:10px;
+    background:var(--mint-soft);
+    border-left:3px solid var(--emerald);
+    font-size:15px;line-height:1.6;color:var(--forest);
+  }
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{display:block;font-family:var(--display);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--forest);margin-bottom:6px}
+  .explanation.wrong{background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D}
+  .explanation.wrong strong{color:#7F1D1D}
+  .explanation .ref{
+    display:block;margin-top:8px;
+    font-size:12.5px;color:var(--text-mute);
+    font-style:italic;
+    letter-spacing:.01em;
+  }
+  .explanation.wrong .ref{color:#9B6262}
+
+  .review-nav{display:flex;justify-content:space-between;align-items:center;margin-top:28px;gap:12px}
+  .btn{border:0;cursor:pointer;font-family:var(--body);font-weight:600;font-size:14.5px;padding:11px 22px;border-radius:8px;transition:all .18s;display:inline-flex;align-items:center;gap:8px}
+  .btn-primary{background:var(--forest);color:#fff}
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{background:var(--border);color:var(--text-mute);cursor:not-allowed;transform:none}
+  .btn-ghost{background:transparent;color:var(--text-mute)}
+  .btn-ghost:hover{color:var(--forest)}
+
+  /* Result state */
+  .result-area{display:none;padding:20px 0 0}
+  .result-area.show{display:block;animation:fadeIn .4s ease}
+
+  .result-card{
+    padding:40px 36px;
+    border-radius:20px;
+    text-align:center;
+    position:relative;overflow:hidden;
+  }
+  .result-card.pass{background:linear-gradient(135deg,var(--mint-soft) 0%,var(--mint) 100%);border:1px solid #A7F3D0}
+  .result-card.fail{background:var(--card);border:1px solid var(--border)}
+  .result-card::before{
+    content:"";position:absolute;
+    top:-80px;right:-80px;
+    width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(16,185,129,.22),transparent 70%);
+    pointer-events:none;
+  }
+  .result-card.fail::before{background:radial-gradient(circle,rgba(100,116,139,.1),transparent 70%)}
+
+  .result-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 14px;border-radius:999px;
+    font-family:var(--display);font-size:11px;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;
+    margin-bottom:18px;
+    position:relative;z-index:2;
+  }
+  .result-badge.pass{background:var(--forest);color:#fff}
+  .result-badge.fail{background:var(--border-soft);color:var(--text-soft)}
+  .result-badge svg{width:13px;height:13px}
+
+  .score-display{
+    font-family:var(--display);font-weight:500;
+    font-size:88px;line-height:1;color:var(--forest);
+    letter-spacing:-.03em;
+    margin:0 0 4px;position:relative;z-index:2;
+  }
+  .score-display span{color:var(--text-mute);font-size:40px}
+
+  .score-label{font-size:13px;color:var(--text-mute);letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:22px;position:relative;z-index:2}
+
+  .result-title{font-family:var(--display);font-weight:600;font-size:28px;line-height:1.25;color:var(--slate);margin:0 0 10px;position:relative;z-index:2;letter-spacing:-.01em}
+  .result-body{font-size:16px;line-height:1.6;color:var(--text-soft);max-width:460px;margin:0 auto 28px;position:relative;z-index:2}
+
+  .result-cta{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 28px;
+    background:var(--forest);color:#fff;
+    text-decoration:none;
+    font-family:var(--body);font-weight:600;font-size:15.5px;
+    border-radius:10px;transition:all .18s;
+    position:relative;z-index:2;
+  }
+  .result-cta:hover{background:var(--slate);transform:translateY(-1px);box-shadow:0 6px 20px rgba(6,95,70,.18)}
+  .result-cta-ghost{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:11px 22px;
+    background:transparent;color:var(--text-mute);
+    border:0;cursor:pointer;
+    font-family:var(--body);font-weight:600;font-size:14.5px;
+    border-radius:8px;transition:all .18s;
+    position:relative;z-index:2;
+  }
+  .result-cta-ghost:hover{color:var(--forest)}
+
+  .result-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;position:relative;z-index:2}
+
+  /* Breakdown */
+  .breakdown{
+    margin-top:32px;
+    padding:24px 28px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    text-align:left;
+  }
+  .breakdown-title{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute);margin:0 0 14px}
+  .breakdown ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+  .breakdown li{display:flex;gap:12px;align-items:flex-start;font-size:14.5px;line-height:1.55;color:var(--text-soft)}
+  .breakdown li .mark{flex-shrink:0;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:13px;font-weight:700}
+  .breakdown li .mark.right{background:#F0FDF4;color:var(--success)}
+  .breakdown li .mark.wrong{background:#FEF2F2;color:var(--error)}
+  .breakdown li strong{color:var(--slate);font-weight:600}
+
+  /* Unlocked banner */
+  .unlocked{
+    margin-top:28px;
+    padding:20px 24px;
+    border-radius:12px;
+    background:var(--slate);color:#fff;
+    display:flex;align-items:center;gap:16px;
+    position:relative;overflow:hidden;
+  }
+  .unlocked::after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.25),transparent 70%);pointer-events:none}
+  .unlocked-icon{flex-shrink:0;width:44px;height:44px;border-radius:11px;background:var(--emerald);display:grid;place-items:center;color:#fff;position:relative;z-index:2}
+  .unlocked-icon svg{width:22px;height:22px}
+  .unlocked-text{position:relative;z-index:2}
+  .unlocked-label{font-family:var(--display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--emerald);font-weight:700;margin-bottom:2px}
+  .unlocked-main{font-family:var(--display);font-weight:600;font-size:17px;color:#fff;line-height:1.3}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AICraft Learning — home">
+      <svg class="brand-logo" viewBox="0 0 420 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="lesson-badge">Module 2 · Review</span>
+      <span class="sep">·</span>
+      <span>~6 min</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- START VIEW -->
+  <section id="startView">
+    <div class="review-meta">
+      <span>Building AI Agents &amp; Workflows</span>
+      <span class="dot"></span>
+      <span>Module 2 checkpoint</span>
+    </div>
+
+    <h1 class="review-title">Module 2 review — <em>unlock Module 3</em></h1>
+
+    <p class="review-lede">You've shipped a real workflow, debugged it, and hardened it. Five questions now to make sure the thinking behind it is as solid as the build itself.</p>
+
+    <div class="milestone">
+      <div class="milestone-label">◆ What you've built so far</div>
+      <p class="milestone-title">A production-ready email triage workflow</p>
+      <p class="milestone-sub">Build #1 with drafts-only replies, per-node retries, an error-handler workflow, full logging to a Sheet, and a kill switch. Module 3's agent builds will inherit this exact four-layer pattern.</p>
+    </div>
+
+    <div class="rules">
+      <div class="rules-title">How this works</div>
+      <div class="rules-grid">
+        <div>
+          <div class="rule-item-num">5</div>
+          <div class="rule-item-label"><strong>Questions</strong>Scenarios and judgement calls</div>
+        </div>
+        <div>
+          <div class="rule-item-num">3/5</div>
+          <div class="rule-item-label"><strong>To pass</strong>60% — unlocks Module 3</div>
+        </div>
+        <div>
+          <div class="rule-item-num">∞</div>
+          <div class="rule-item-label"><strong>Retakes</strong>Unlimited, fresh questions each try</div>
+        </div>
+        <div>
+          <div class="rule-item-num">~6</div>
+          <div class="rule-item-label"><strong>Minutes</strong>A short coffee break</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="covered">
+      <div class="covered-label">What this review covers</div>
+      <ul>
+        <li><strong>Lesson 2.1</strong> — Anatomy: triggers, nodes, actions</li>
+        <li><strong>Lesson 2.2</strong> — Build #1: email triage with drafts-only replies</li>
+        <li><strong>Lesson 2.3</strong> — Debugging: reading logs, pinning data, "Debug in editor"</li>
+        <li><strong>Lesson 2.4</strong> — Hardening: retries, error handler, logging, kill switch</li>
+      </ul>
+    </div>
+
+    <div class="start-wrap">
+      <button class="btn-start" onclick="startReview()">
+        Start the review →
+      </button>
+      <span class="btn-start-hint">Explanations appear after each answer</span>
+    </div>
+  </section>
+
+  <!-- REVIEW AREA -->
+  <section class="review-area" id="reviewArea">
+    <div class="progress-header">
+      <span>Module 2 review</span>
+      <span>Question <strong id="qCurrent">1</strong> of <strong>5</strong></span>
+    </div>
+
+    <div class="progress-dots" id="progressDots">
+      <span class="active"></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div id="questionsContainer"></div>
+
+    <div class="review-nav" id="reviewNav">
+      <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+    </div>
+  </section>
+
+  <!-- RESULT AREA -->
+  <section class="result-area" id="resultArea">
+    <div class="result-card" id="resultCard">
+      <div class="result-badge" id="resultBadge">
+        <svg viewBox="0 0 20 20" fill="currentColor" id="resultBadgeIcon"></svg>
+        <span id="resultBadgeText"></span>
+      </div>
+      <div class="score-display"><span id="scoreNum">0</span><span>/5</span></div>
+      <div class="score-label" id="scoreLabel">Your score</div>
+      <h2 class="result-title" id="resultTitle"></h2>
+      <p class="result-body" id="resultBody"></p>
+      <div class="result-actions">
+        <a href="#" class="result-cta" id="resultCta"></a>
+        <button class="result-cta-ghost" onclick="resetReview()">↻ Retry review</button>
+      </div>
+    </div>
+
+    <div class="unlocked" id="unlockedBanner" style="display:none">
+      <div class="unlocked-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div class="unlocked-text">
+        <div class="unlocked-label">Module 2 complete</div>
+        <div class="unlocked-main">Module 3 — Build your first agent — is unlocked.</div>
+      </div>
+    </div>
+
+    <div class="breakdown" id="breakdown">
+      <div class="breakdown-title">Question-by-question</div>
+      <ul id="breakdownList"></ul>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  const totalQuestions = 5;
+  let currentQ = 0;
+  let answers = new Array(totalQuestions).fill(null);
+  let answered = new Array(totalQuestions).fill(false);
+  let attemptCount = 0;
+  let currentSelection = [];
+
+  // ---------- QUESTION BANK (10 questions) ----------
+  // Every question is a synthesis — a scenario that combines ideas from multiple 2.x lessons.
+  // Canonical first attempt: ids 1-5 in a narrative order (build shape → stance → debug → iterate → harden).
+  const questionBank = [
+    {
+      id: 1,
+      ref: 'Lesson 2.1 + 2.2',
+      text: "A colleague describes an idea: every time a new purchase order comes in as an email, classify whether it's from an existing supplier, extract the line items with Claude, and update a Google Sheet — but they want to know if they're building a workflow or something more complex. Based on Module 2, what do you tell them?",
+      options: [
+        { text: "This has to be an agent — Claude is involved, so it can't be a workflow.", correct: false },
+        { text: "It's a workflow. The shape is trigger → processing nodes → action, the path is fixed every time, and the three-part anatomy from Lesson 2.1 applies cleanly. Build it as a workflow — an agent would be over-engineered for this.", correct: true },
+        { text: "They should hire a developer — this is too complex for n8n.", correct: false },
+        { text: "Build two separate workflows — one for classification and one for extraction.", correct: false }
+      ],
+      explanation: "The sticky-note test from Module 1 and the three-part anatomy from 2.1 both apply: the steps are fixed every time (new email → classify → extract → write to sheet), so it's a workflow. Using Claude as a processing node doesn't make something an agent — agents decide what to do next. A fixed pipeline with AI in the middle is still a workflow, and that's exactly what n8n is built for."
+    },
+    {
+      id: 2,
+      ref: 'Lesson 2.2',
+      text: "A stakeholder asks you to remove the IF branch from Build #1 so that <em>every</em> email — including spam, urgent, and requests — gets a drafted reply saved to Gmail drafts. Their reasoning: 'more drafts = more time saved.' What's the right response, based on this module?",
+      options: [
+        { text: "Agree — more automation is always better.", correct: false },
+        { text: "Push back. Drafting replies to spam is pointless noise; drafting replies to urgent emails risks a templated response going to a customer in crisis; drafting replies to requests skips the judgement the request actually deserves. The IF branch targets automation at the templatable middle — which is where the real ROI lives.", correct: true },
+        { text: "Remove the IF branch but add a human approval step after each draft — that covers all cases.", correct: false },
+        { text: "Remove the IF branch but train a second classifier to filter drafts afterwards.", correct: false }
+      ],
+      explanation: "The IF branch is the human-in-the-loop checkpoint from Lesson 2.2, and it's deliberate. Drafting for every category isn't more ROI — it's more noise plus more risk. Only 'routine' emails are genuinely templatable; the other three categories need your judgement, your attention, or nothing at all. Automating the templatable middle keeps 100% of the judgement while cutting 80% of the reply time."
+    },
+    {
+      id: 3,
+      ref: 'Lesson 2.3',
+      text: "You open n8n on Monday morning and Build #1 has six failed executions from over the weekend. Based on this module, what's your first move?",
+      options: [
+        { text: "Delete the workflow and rebuild it from scratch — something must have corrupted.", correct: false },
+        { text: "Open the Executions tab, click the most recent red row, find the failed (red) node, and read the exact error message before doing anything else.", correct: true },
+        { text: "Restart n8n and hope the problem doesn't come back.", correct: false },
+        { text: "Switch LLM providers in case it's a Claude-side outage.", correct: false }
+      ],
+      explanation: "Every broken workflow has an execution log. Reading it takes twenty seconds and tells you exactly which node failed, what input it received, and what error it threw. Guessing without reading is the fastest way to waste an hour — and usually ends with you rebuilding something that was fine, breaking something that wasn't, and creating a new problem on top of the old one."
+    },
+    {
+      id: 4,
+      ref: 'Lesson 2.2 + 2.3',
+      text: "Your classifier keeps tagging legitimate customer enquiries as <code>spam</code> — about 1 in 15. You need to iterate on the classifier prompt to fix this without spending money on Gmail and Claude API calls every test run. What's the right approach, based on this module?",
+      options: [
+        { text: "Upgrade to a bigger LLM — the current model isn't smart enough.", correct: false },
+        { text: "Use 'Pin data' on the Gmail Trigger output with a real misclassified email, then iterate on the classifier prompt — adding one or two concrete examples of a customer enquiry being 'routine, not spam'. Each test run reuses the pinned email, so Gmail isn't re-called and Claude only fires once per iteration.", correct: true },
+        { text: "Delete all recent executions and rebuild the workflow.", correct: false },
+        { text: "Switch to n8n's native Text Classifier node, which doesn't use prompts.", correct: false }
+      ],
+      explanation: "This is the craft-level iteration loop from Lesson 2.3 applied to the Lesson 2.2 prompt problem. Pinning data freezes the trigger output so you're not hammering Gmail. Adding concrete examples to the classifier prompt is the fix recommended in Lesson 2.3's diagnostic for miscategorisation. Together, you iterate cheaply, against real data, fixing the single smallest thing — exactly the craft-first debugging pattern."
+    },
+    {
+      id: 5,
+      ref: 'Lesson 2.4',
+      text: "A colleague has built a workflow that works on test data and wants to switch it on for their business tomorrow. They ask what else is needed. Based on Module 2's takeaway, what's the honest answer?",
+      options: [
+        { text: "Nothing — if it works on test data, it's ready.", correct: false },
+        { text: "Three things separate a toy from a tool: logs (every run writes a row), error paths (retries + a dedicated error-handler workflow), and a kill switch (a way to stop it in seconds). Add those first, then flip it on.", correct: true },
+        { text: "They need to pay for the n8n Business plan for production use.", correct: false },
+        { text: "They should hire a DevOps engineer to productionise it.", correct: false }
+      ],
+      explanation: "Lesson 2.4's takeaway exactly: logs, error paths, and a kill switch. Retries catch transient noise, an error-handler workflow alerts on real failures, logs record what actually happened, and the kill switch lets you stop everything in seconds. Without those four layers, a workflow that works in testing becomes a workflow that fails silently in production — and nobody notices until a customer emails to ask why nobody replied."
+    },
+    {
+      id: 6,
+      ref: 'Lesson 2.4',
+      text: "Your workflow occasionally errors with '429 rate limited' from Claude. You're about to build an elaborate alerting system to catch these. What does Module 2 suggest you do first?",
+      options: [
+        { text: "Switch to OpenAI to avoid Claude's rate limits.", correct: false },
+        { text: "Enable 'Retry on Fail' on the Claude node — 3 tries, 5-second wait. Rate limits are transient; retries catch them silently. If the alert fires after 3 failed retries, then it's a real issue worth your attention.", correct: true },
+        { text: "Add a Wait node before every Claude call to pace execution.", correct: false },
+        { text: "Alert on every single rate-limit response so you know when Claude is busy.", correct: false }
+      ],
+      explanation: "The four-layer hardening from Lesson 2.4 has a specific order for a reason. Per-node retries are the cheapest layer — they handle transient errors silently, before anything else sees them. Alerting on every rate limit creates alert fatigue within a week. Retries first, then alerts for the things retries couldn't fix. That order matters."
+    },
+    {
+      id: 7,
+      ref: 'Lesson 2.2',
+      text: "In your Build #1 drafting Claude node, you wrote the expression <code>$('Gmail Trigger').item.json.From</code> instead of <code>$json.From</code>. Why?",
+      options: [
+        { text: "The two syntaxes are identical — either works.", correct: false },
+        { text: "Because $json always refers to the <em>immediately previous</em> node's output. The drafter sits after the classifier, whose output is just one word — so the drafter has to reach back past the classifier to the Gmail Trigger to get the original email fields.", correct: true },
+        { text: "Because n8n requires the full path syntax for all Gmail fields.", correct: false },
+        { text: "Because $json only works on the first node of a workflow.", correct: false }
+      ],
+      explanation: "This is the 'reach-back' pattern from Lesson 2.2, and it's one of the first patterns that trips people up in multi-node n8n workflows. $json is shorthand for 'the previous node's output' — useful when that's where your data is, but misleading when the previous node has stripped away the fields you actually need. Naming the source node explicitly ($('Gmail Trigger')) is more verbose but far more reliable."
+    },
+    {
+      id: 8,
+      ref: 'Lesson 2.3',
+      text: "In the Executions tab, a failed node's Output panel shows: 'cannot read property To of undefined.' You're trying to work out whether the field name should be <code>To</code>, <code>to</code>, or <code>recipient</code>. Which n8n view mode gives you the definitive answer?",
+      options: [
+        { text: "Table view — it's the friendliest format.", correct: false },
+        { text: "JSON view — it shows the raw data including exact key names and nesting.", correct: true },
+        { text: "Schema view alone — it's designed for field names.", correct: false },
+        { text: "All three show exactly the same level of detail.", correct: false }
+      ],
+      explanation: "JSON view is the truth. Table view is nicer for scanning content but hides exact field names and nesting. Schema view gives you the shape but not the precise key strings. When a node complains about 'cannot read property X of undefined,' the question is always 'what's this field actually called in the JSON?' — and JSON view answers it unambiguously."
+    },
+    {
+      id: 9,
+      ref: 'Lesson 2.4',
+      text: "You set up an Error Trigger workflow for Build #1 and linked it via Workflow Settings. A week later, your Gmail OAuth expires and the workflow stops polling — but your Error Handler never fires. Why, according to Module 2?",
+      options: [
+        { text: "The Error Handler is broken and needs rebuilding.", correct: false },
+        { text: "Error Trigger workflows fire on failures that happen during execution. If the trigger itself can't run (e.g. expired OAuth), there's no execution to fail — so no Error Trigger fires. That's why periodic Executions log checks remain essential even with error handling in place.", correct: true },
+        { text: "The Error Handler only fires on paid plans.", correct: false },
+        { text: "Gmail OAuth expiry is handled automatically and doesn't count as an error.", correct: false }
+      ],
+      explanation: "The honest limitation called out in Lesson 2.4. An Error Trigger catches things that go wrong during a run — a node erroring, data malformed, an API failing mid-workflow. When the workflow's trigger itself can't start, there's no run to fail, so no Error Trigger fires. This is why the Lesson 2.3 habit of checking the Executions log weekly matters even after you've added every layer of error handling."
+    },
+    {
+      id: 10,
+      ref: 'Lesson 2.4',
+      text: "Your Build #1 run log in Google Sheets shows a classification of <code>skipped</code> on Monday morning. What does this mean?",
+      options: [
+        { text: "Claude returned an error and the email wasn't classified.", correct: false },
+        { text: "The kill switch was flipped to 'paused,' so the workflow deliberately skipped classification and drafting, but still recorded the run so you'd know an email arrived during the paused window.", correct: true },
+        { text: "The email had no body and couldn't be classified.", correct: false },
+        { text: "The workflow reached its daily execution limit.", correct: false }
+      ],
+      explanation: "The kill-switch pattern from Lesson 2.4. When the kill switch is 'paused,' the workflow's IF check routes straight to the logging node with classification = 'skipped.' This is intentional: you want a record that emails arrived during paused windows (so you can process them manually later or confirm they were caught on resume), but you don't want labelling or drafting during that time. The log becomes an audit trail of both real work done and deliberate pauses."
+    }
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function pickQuestions() {
+    if (attemptCount === 0) {
+      const canonical = [1,2,3,4,5].map(id => questionBank.find(q => q.id === id));
+      return canonical.map(q => ({ ...q, options: q.options.slice() }));
+    }
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  function renderQuestions() {
+    currentSelection = pickQuestions();
+    const container = document.getElementById('questionsContainer');
+    container.innerHTML = '';
+
+    currentSelection.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A','B','C','D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+          <span class="ref">Draws on: ${q.ref}</span>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  const progressDots = document.querySelectorAll('#progressDots span');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+
+  function startReview() {
+    document.getElementById('startView').style.display = 'none';
+    document.getElementById('reviewArea').classList.add('show');
+    renderQuestions();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function getCards() { return document.querySelectorAll('.q-card'); }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    progressDots.forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < i) d.classList.add('done');
+      else if (idx === i) d.classList.add('active');
+    });
+    document.getElementById('qCurrent').textContent = i + 1;
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('reviewArea').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) { currentQ++; showQuestion(currentQ); }
+    else { showResults(); }
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) { currentQ--; showQuestion(currentQ); }
+  }
+
+  function showResults() {
+    getCards().forEach(c => c.classList.remove('active'));
+    document.getElementById('reviewNav').style.display = 'none';
+    progressDots.forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+
+    const score = answers.filter(a => a === true).length;
+    const passed = score >= 3;
+
+    document.getElementById('scoreNum').textContent = score;
+    document.getElementById('reviewArea').style.display = 'none';
+    document.getElementById('resultArea').classList.add('show');
+
+    const card = document.getElementById('resultCard');
+    const badge = document.getElementById('resultBadge');
+    const badgeIcon = document.getElementById('resultBadgeIcon');
+    const badgeText = document.getElementById('resultBadgeText');
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+    const cta = document.getElementById('resultCta');
+    const unlocked = document.getElementById('unlockedBanner');
+
+    if (passed) {
+      card.classList.remove('fail');
+      card.classList.add('pass');
+      badge.classList.remove('fail');
+      badge.classList.add('pass');
+      badgeIcon.innerHTML = '<path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.5 7.5l-4 4a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06L9 11.94l3.44-3.44a.75.75 0 011.06 1.06z"/>';
+      badgeText.textContent = 'Passed';
+
+      if (score === 5) {
+        title.textContent = 'Perfect. Build instincts are sharp.';
+        body.textContent = "All five right on your first pass means you don't just know what you built — you understand why each piece is there. Module 3 moves to agents; these same instincts carry across.";
+      } else if (score === 4) {
+        title.textContent = 'Well played.';
+        body.textContent = "Four out of five is a strong pass. Skim the breakdown below for the one you missed — it'll sharpen your instincts for Module 3. On to agents.";
+      } else {
+        title.textContent = 'Passed — just.';
+        body.textContent = "You cleared the bar. Before jumping into Module 3, a quick look at the questions you missed below — Module 3 pushes further into the same patterns, so a sharper foundation now pays off soon.";
+      }
+
+      cta.href = '#';
+      cta.innerHTML = 'Start Module 3 — Build your first agent →';
+      unlocked.style.display = 'flex';
+    } else {
+      card.classList.remove('pass');
+      card.classList.add('fail');
+      badge.classList.remove('pass');
+      badge.classList.add('fail');
+      badgeIcon.innerHTML = '<path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11a1 1 0 11-2 0 1 1 0 012 0zM9 5a1 1 0 112 0v4a1 1 0 11-2 0V5z"/>';
+      badgeText.textContent = 'Not yet';
+
+      if (score === 2) {
+        title.textContent = 'So close.';
+        body.textContent = "One answer away from the pass mark. The breakdown below shows which lesson each question came from — ten minutes of re-reading and you'll clear it easily.";
+      } else if (score === 1) {
+        title.textContent = 'Worth another pass.';
+        body.textContent = "Module 3 assumes you've internalised the craft patterns from Module 2 — not just the build steps, but the reasoning behind each choice. Go back to the lessons flagged below, then retry.";
+      } else {
+        title.textContent = 'Time for a re-read.';
+        body.textContent = "Module 3 moves into agents, which fail in more interesting ways than workflows. The patterns from Module 2 are what keep that manageable. Re-read and retry when you're ready.";
+      }
+
+      cta.href = '#';
+      cta.innerHTML = '← Back to Module 2 lessons';
+      unlocked.style.display = 'none';
+    }
+
+    renderBreakdown();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderBreakdown() {
+    const list = document.getElementById('breakdownList');
+    list.innerHTML = '';
+    currentSelection.forEach((q, idx) => {
+      const right = answers[idx] === true;
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span class="mark ${right ? 'right' : 'wrong'}">${right ? '✓' : '✗'}</span>
+        <span><strong>Q${idx + 1}</strong> — ${q.ref}${right ? '' : ' · revisit this lesson'}</span>
+      `;
+      list.appendChild(li);
+    });
+  }
+
+  function resetReview() {
+    attemptCount++;
+    currentQ = 0;
+    answers = new Array(totalQuestions).fill(null);
+    answered = new Array(totalQuestions).fill(false);
+
+    renderQuestions();
+
+    document.getElementById('resultArea').classList.remove('show');
+    document.getElementById('reviewArea').style.display = 'block';
+    document.getElementById('reviewNav').style.display = 'flex';
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Next question →';
+    showQuestion(0);
+  }
+</script>
+
+</body>
+</html>

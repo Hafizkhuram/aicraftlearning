@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Final assessment — AI Fundamentals | AICraft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --warn:#F59E0B;
+    --warn-bg:#FEF7EC;
+    --warn-border:#F4E0BB;
+    --warn-text:#92400E;
+    --warn-deep:#78350F;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:var(--body);
+    font-size:17px;line-height:1.7;
+    color:var(--text);background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  header{
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(8px);background:rgba(255,255,255,.85);
+  }
+  .header-inner{
+    max-width:1100px;margin:0 auto;padding:18px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .brand{
+    display:flex;align-items:center;gap:10px;
+    text-decoration:none;
+  }
+  .brand-logo{
+    height:32px;width:auto;
+    display:block;
+  }
+  .header-meta{display:flex;align-items:center;gap:20px;font-size:13px;color:var(--text-mute)}
+  .header-meta .sep{opacity:.4}
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 10px;border-radius:999px;
+    background:var(--slate);color:#fff;
+    font-weight:600;font-size:12px;letter-spacing:.02em;
+  }
+  .badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald)}
+
+  main{
+    max-width:780px;margin:0 auto;
+    padding:48px 28px 80px;
+  }
+
+  /* -------- Intro screen -------- */
+  .intro-meta{
+    display:flex;align-items:center;gap:10px;
+    font-size:13px;color:var(--text-mute);
+    margin-bottom:20px;font-weight:500;
+  }
+  .intro-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.intro-title{
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(36px,5vw,54px);line-height:1.08;
+    letter-spacing:-.02em;color:var(--slate);margin:0 0 20px;
+  }
+  h1.intro-title em{font-style:italic;color:var(--forest)}
+
+  .intro-lede{
+    font-family:var(--display);font-size:20px;line-height:1.55;
+    color:var(--text-soft);font-style:italic;
+    padding:0 0 0 20px;border-left:3px solid var(--emerald);
+    margin:28px 0 40px;
+  }
+
+  /* Rules panel */
+  .rules{
+    background:var(--card);
+    border:1px solid var(--border);border-radius:14px;
+    padding:24px 28px;
+    margin:0 0 24px;
+  }
+  .rules-label{
+    font-family:var(--display);font-weight:700;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--text-mute);margin:0 0 14px;
+  }
+  .rules-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+  }
+  @media (max-width:680px){.rules-grid{grid-template-columns:repeat(2,1fr)}}
+  .rule-cell{
+    padding:12px 14px;
+    background:var(--bg);
+    border-radius:8px;
+  }
+  .rule-num{
+    font-family:var(--display);font-weight:500;
+    font-size:26px;line-height:1;color:var(--forest);
+    letter-spacing:-.02em;margin:0 0 4px;
+  }
+  .rule-label{
+    font-family:var(--display);font-weight:600;
+    font-size:12.5px;color:var(--slate);margin:0 0 2px;
+  }
+  .rule-sub{
+    font-size:11.5px;color:var(--text-mute);
+    line-height:1.4;margin:0;
+  }
+
+  /* Module coverage preview */
+  .coverage{
+    background:var(--card);
+    border:1px solid var(--border);border-radius:14px;
+    padding:24px 28px;
+    margin:0 0 24px;
+  }
+  .coverage-label{
+    font-family:var(--display);font-weight:700;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--text-mute);margin:0 0 14px;
+  }
+  .coverage-list{
+    list-style:none;padding:0;margin:0;
+    display:grid;grid-template-columns:repeat(2,1fr);gap:8px;
+  }
+  @media (max-width:620px){.coverage-list{grid-template-columns:1fr}}
+  .coverage-list li{
+    display:flex;gap:10px;align-items:flex-start;
+    padding:8px 0;font-size:14px;line-height:1.5;
+    color:var(--text);
+  }
+  .coverage-list li::before{
+    content:"";width:6px;height:6px;border-radius:50%;
+    background:var(--emerald);flex-shrink:0;margin-top:9px;
+  }
+  .coverage-list li strong{color:var(--slate);font-weight:600}
+
+  /* Soft cooldown banner */
+  .cooldown{
+    display:none;
+    margin:0 0 24px;
+    padding:18px 22px;
+    background:var(--warn-bg);
+    border:1px solid var(--warn-border);border-radius:12px;
+    position:relative;
+  }
+  .cooldown.show{display:block;animation:fadeIn .3s ease}
+  .cooldown::before{
+    content:"";position:absolute;left:0;top:14px;bottom:14px;
+    width:3px;background:var(--warn);border-radius:2px;
+  }
+  .cooldown-label{
+    font-family:var(--display);font-weight:700;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--warn-text);margin:0 0 6px;padding-left:14px;
+  }
+  .cooldown-body{
+    font-size:14.5px;color:var(--warn-deep);
+    margin:0;padding-left:14px;line-height:1.55;
+  }
+  .cooldown-body strong{color:var(--warn-deep)}
+  .cooldown-time{
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:14px;color:var(--warn-deep);
+    padding:2px 8px;background:#FEF3C7;border-radius:4px;
+  }
+
+  .start-cta{
+    display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+    margin-top:8px;
+  }
+  .btn{
+    border:0;cursor:pointer;font-family:var(--body);
+    font-weight:600;font-size:14.5px;padding:12px 22px;border-radius:8px;
+    transition:all .18s;display:inline-flex;align-items:center;gap:8px;
+    text-decoration:none;
+  }
+  .btn-primary{background:var(--forest);color:#fff}
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{
+    background:var(--border);color:var(--text-mute);
+    cursor:not-allowed;transform:none;
+  }
+  .btn-ghost{background:transparent;color:var(--text-mute)}
+  .btn-ghost:hover{color:var(--forest)}
+  .btn-big{padding:15px 30px;font-size:15.5px}
+
+  /* -------- Assessment screen -------- */
+  .assess{
+    padding:34px 36px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+  }
+  @media (max-width:600px){.assess{padding:26px 22px}}
+
+  .assess-header-row{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  .assess-eyebrow{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);font-weight:700;
+  }
+  .assess-rule{
+    font-size:12.5px;color:var(--text-mute);
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .assess-rule strong{color:var(--forest);font-weight:600}
+
+  /* 20-segment progress bar */
+  .assess-progress{
+    display:flex;gap:3px;margin-bottom:28px;
+  }
+  .assess-progress span{
+    flex:1;height:4px;border-radius:2px;
+    background:var(--border);transition:background .3s;
+  }
+  .assess-progress span.done{background:var(--emerald)}
+  .assess-progress span.active{background:var(--forest)}
+
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(6px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .q-number{
+    font-family:var(--display);font-size:13px;color:var(--text-mute);
+    font-weight:500;letter-spacing:.04em;margin-bottom:8px;
+  }
+  .q-text{
+    font-family:var(--display);font-weight:500;font-size:21px;
+    line-height:1.4;color:var(--slate);margin:0 0 24px;letter-spacing:-.005em;
+  }
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:15px 18px;border:1.5px solid var(--border);border-radius:10px;
+    cursor:pointer;transition:all .18s;background:var(--card);
+    font-size:15.5px;line-height:1.5;
+  }
+  .option:hover:not(.disabled){border-color:var(--emerald);background:var(--mint-soft)}
+  .option.disabled{cursor:default}
+  .option-letter{
+    width:26px;height:26px;border-radius:7px;
+    background:var(--border-soft);color:var(--text-soft);
+    display:grid;place-items:center;font-weight:700;font-size:13px;
+    flex-shrink:0;transition:all .2s;font-family:var(--display);
+  }
+  .option:hover:not(.disabled) .option-letter{background:var(--emerald);color:#fff}
+  .option.correct{border-color:var(--success);background:#F0FDF4}
+  .option.correct .option-letter{background:var(--success);color:#fff}
+  .option.incorrect{border-color:var(--error);background:#FEF2F2}
+  .option.incorrect .option-letter{background:var(--error);color:#fff}
+  .option-check{
+    margin-left:auto;opacity:0;transition:opacity .2s;
+    font-size:20px;line-height:1;
+  }
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+
+  .explanation{
+    display:none;margin-top:20px;padding:16px 20px;border-radius:10px;
+    background:var(--mint-soft);border-left:3px solid var(--emerald);
+    font-size:14.5px;line-height:1.6;color:var(--forest);
+  }
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{
+    display:block;font-family:var(--display);font-size:12px;
+    letter-spacing:.1em;text-transform:uppercase;
+    color:var(--forest);margin-bottom:6px;
+  }
+  .explanation.wrong{background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D}
+  .explanation.wrong strong{color:#7F1D1D}
+  .explanation .ref{
+    font-family:var(--body);font-size:12px;letter-spacing:0;
+    color:var(--text-mute);text-transform:none;font-weight:500;
+    margin-top:6px;display:block;
+  }
+
+  .assess-nav{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:24px;gap:12px;flex-wrap:wrap;
+  }
+  .assess-running-score{
+    font-size:13px;color:var(--text-mute);
+    font-family:var(--display);font-weight:500;
+  }
+  .assess-running-score strong{
+    color:var(--forest);font-weight:700;
+  }
+
+  /* -------- Results -------- */
+  .result-screen{display:none}
+  .result-screen.show{display:block;animation:fadeIn .4s ease}
+
+  .result-hero{
+    padding:44px 40px 36px;border-radius:16px;
+    margin-bottom:28px;
+    position:relative;overflow:hidden;
+  }
+  .result-hero.pass{
+    background:linear-gradient(135deg,#065F46 0%,#0F172A 100%);
+    color:#fff;
+  }
+  .result-hero.pass::before{
+    content:"";position:absolute;
+    top:-80px;right:-80px;
+    width:280px;height:280px;border-radius:50%;
+    background:radial-gradient(circle,rgba(16,185,129,.3),transparent 65%);
+    pointer-events:none;
+  }
+  .result-hero.fail{
+    background:var(--card);
+    border:1px solid var(--border);color:var(--text);
+  }
+  .result-hero-inner{position:relative;z-index:2;text-align:center}
+
+  .result-pill{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 14px;border-radius:999px;
+    font-family:var(--display);font-weight:700;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .result-hero.pass .result-pill{
+    background:rgba(16,185,129,.2);
+    color:#A7F3D0;
+  }
+  .result-hero.pass .result-pill::before{
+    content:"✓";font-size:13px;color:var(--emerald);
+  }
+  .result-hero.fail .result-pill{
+    background:var(--warn-bg);color:var(--warn-deep);
+  }
+  .result-hero.fail .result-pill::before{
+    content:"—";font-size:13px;color:var(--warn);
+  }
+
+  .result-score-big{
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(64px,9vw,96px);line-height:1;
+    letter-spacing:-.03em;margin:0 0 4px;
+  }
+  .result-hero.pass .result-score-big{color:#fff}
+  .result-hero.fail .result-score-big{color:var(--slate)}
+  .result-score-big span{
+    color:rgba(255,255,255,.4);font-size:.45em;
+    font-weight:500;
+  }
+  .result-hero.fail .result-score-big span{color:var(--text-mute)}
+
+  .result-pct{
+    font-family:var(--body);font-size:14.5px;
+    margin:0 0 22px;
+  }
+  .result-hero.pass .result-pct{color:#CBD5E1}
+  .result-hero.fail .result-pct{color:var(--text-mute)}
+
+  .result-title{
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(26px,4vw,34px);line-height:1.2;
+    margin:0 0 12px;letter-spacing:-.01em;
+  }
+  .result-hero.pass .result-title{color:#fff}
+  .result-hero.fail .result-title{color:var(--slate)}
+  .result-title em{font-style:italic}
+  .result-hero.pass .result-title em{color:#A7F3D0}
+  .result-hero.fail .result-title em{color:var(--forest)}
+
+  .result-body{
+    margin:0 auto;max-width:520px;
+    font-size:15.5px;line-height:1.65;
+  }
+  .result-hero.pass .result-body{color:#CBD5E1}
+  .result-hero.fail .result-body{color:var(--text-soft)}
+
+  .result-actions{
+    display:flex;gap:10px;justify-content:center;
+    flex-wrap:wrap;margin-top:24px;
+  }
+  .result-hero.pass .btn-primary{
+    background:var(--emerald);color:var(--slate);
+  }
+  .result-hero.pass .btn-primary:hover{background:#A7F3D0}
+  .result-hero.pass .btn-ghost{color:#A7F3D0}
+  .result-hero.pass .btn-ghost:hover{color:#fff}
+
+  /* Module breakdown */
+  .module-breakdown{
+    background:var(--card);
+    border:1px solid var(--border);border-radius:14px;
+    overflow:hidden;margin:0 0 24px;
+  }
+  .module-breakdown-head{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);
+    padding:16px 22px;
+    border-bottom:1px solid var(--border);
+    background:var(--bg);
+  }
+  .module-row{
+    display:grid;
+    grid-template-columns:auto 1fr auto auto;
+    gap:16px;align-items:center;
+    padding:14px 22px;
+    border-top:1px solid var(--border-soft);
+    font-size:14px;
+  }
+  .module-row:first-of-type{border-top:0}
+  .module-row-num{
+    font-family:var(--display);font-weight:600;
+    color:var(--text-mute);font-size:12px;
+    letter-spacing:.06em;
+  }
+  .module-row-name{
+    color:var(--slate);font-weight:500;
+    font-family:var(--display);
+  }
+  .module-row-bar{
+    width:100px;height:6px;border-radius:3px;
+    background:var(--border-soft);overflow:hidden;
+    justify-self:end;
+  }
+  @media (max-width:540px){.module-row-bar{display:none}}
+  .module-row-bar-inner{
+    height:100%;
+    background:linear-gradient(90deg,var(--emerald),var(--forest));
+    transition:width .4s ease;
+  }
+  .module-row-score{
+    font-family:var(--display);font-weight:600;
+    color:var(--slate);font-size:14px;
+    min-width:42px;text-align:right;
+  }
+
+  /* Per-question breakdown (collapsible) */
+  .qb-toggle{
+    width:100%;
+    background:var(--card);
+    border:1px solid var(--border);border-radius:12px;
+    padding:14px 20px;cursor:pointer;
+    font-family:var(--body);font-weight:600;font-size:14px;
+    color:var(--text);
+    display:flex;justify-content:space-between;align-items:center;
+    transition:all .18s;
+  }
+  .qb-toggle:hover{border-color:var(--forest)}
+  .qb-toggle-arrow{
+    transition:transform .2s;
+    color:var(--text-mute);font-size:12px;
+  }
+  .qb-toggle.expanded .qb-toggle-arrow{transform:rotate(180deg)}
+  .qb-list{
+    display:none;
+    margin-top:10px;
+    background:var(--card);
+    border:1px solid var(--border);border-radius:12px;
+    overflow:hidden;
+  }
+  .qb-list.show{display:block;animation:fadeIn .3s ease}
+  .qb-row{
+    display:grid;
+    grid-template-columns:auto 1fr auto auto;
+    gap:12px;align-items:center;
+    padding:11px 20px;
+    border-top:1px solid var(--border-soft);
+    font-size:13.5px;
+  }
+  .qb-row:first-of-type{border-top:0}
+  .qb-row-num{
+    font-family:var(--display);font-weight:600;
+    color:var(--text-mute);font-size:12px;min-width:30px;
+  }
+  .qb-row-text{
+    color:var(--text);line-height:1.4;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .qb-row-mod{
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:11px;color:var(--text-mute);
+    padding:2px 6px;background:var(--bg);border-radius:4px;
+  }
+  .qb-row-status{
+    font-size:13px;font-weight:600;
+    display:inline-flex;align-items:center;gap:4px;
+    min-width:70px;justify-content:flex-end;
+  }
+  .qb-row-status.ok{color:var(--success)}
+  .qb-row-status.no{color:var(--error)}
+
+  .bottom-nav{
+    margin-top:32px;
+    padding-top:24px;border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:center;
+    gap:16px;flex-wrap:wrap;
+  }
+  .nav-back{
+    display:inline-flex;align-items:center;gap:8px;
+    color:var(--text-mute);font-size:14px;
+    text-decoration:none;
+  }
+  .nav-back:hover{color:var(--forest)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AICraft Learning">
+      <svg class="brand-logo" viewBox="0 0 420 80" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="badge">Final assessment</span>
+      <span class="sep">·</span>
+      <span>20 questions</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ================= INTRO SCREEN ================= -->
+  <div id="introScreen">
+    <div class="intro-meta">
+      <span>AI Fundamentals: From Zero to Confident</span>
+      <span class="dot"></span>
+      <span>One step to certification</span>
+    </div>
+
+    <h1 class="intro-title">Final <em>assessment</em></h1>
+    <p class="intro-lede">Twenty questions, drawn from the whole course. Pass with 70% (14 of 20) to earn your AICraft Learning — AI Fundamentals Certified certificate.</p>
+
+    <!-- Soft cooldown notice (shown on retry within 24h) -->
+    <div class="cooldown" id="cooldownNotice">
+      <p class="cooldown-label">Recommended — take a breath</p>
+      <p class="cooldown-body">You finished an attempt less than 24 hours ago. We suggest waiting <span class="cooldown-time" id="cooldownRemaining">~24h</span> before trying again — a short gap helps you notice what to revise. But if you'd rather go again now, the button's still there.</p>
+    </div>
+
+    <div class="rules">
+      <p class="rules-label">How it works</p>
+      <div class="rules-grid">
+        <div class="rule-cell">
+          <p class="rule-num">20</p>
+          <p class="rule-label">Questions</p>
+          <p class="rule-sub">Drawn from a bank of 30</p>
+        </div>
+        <div class="rule-cell">
+          <p class="rule-num">70%</p>
+          <p class="rule-label">Pass mark</p>
+          <p class="rule-sub">14 out of 20 correct</p>
+        </div>
+        <div class="rule-cell">
+          <p class="rule-num">~10</p>
+          <p class="rule-label">Minutes</p>
+          <p class="rule-sub">At a comfortable pace</p>
+        </div>
+        <div class="rule-cell">
+          <p class="rule-num">24h</p>
+          <p class="rule-label">Recommended gap</p>
+          <p class="rule-sub">Before retrying if you fail</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="coverage">
+      <p class="coverage-label">What it covers</p>
+      <ul class="coverage-list">
+        <li><strong>Module 1 —</strong> what AI actually is, the family tree, good-at vs terrible-at</li>
+        <li><strong>Module 2 —</strong> prediction mechanics, context window, the fix for generic output</li>
+        <li><strong>Module 3 —</strong> ROLE/CONTEXT/TASK, the trust hierarchy, the three wastes</li>
+        <li><strong>Module 4 —</strong> tool choice, privacy rules, spotting AI hype</li>
+      </ul>
+    </div>
+
+    <div class="start-cta">
+      <button class="btn btn-primary btn-big" onclick="startAssessment()">Start the assessment →</button>
+      <a href="module-4-review.html" class="btn btn-ghost">← Back to Module 4 review</a>
+    </div>
+  </div>
+
+  <!-- ================= ASSESSMENT SCREEN ================= -->
+  <section class="assess" id="assessScreen" style="display:none">
+    <div class="assess-header-row">
+      <span class="assess-eyebrow">Final assessment</span>
+      <span class="assess-rule">Pass mark · <strong>70% (14 of 20)</strong></span>
+    </div>
+
+    <div class="assess-progress" id="assessProgress"></div>
+
+    <div id="assessQuestions"></div>
+
+    <div class="assess-nav" id="assessNav">
+      <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+      <span class="assess-running-score" id="runningScore">Question <strong>1</strong> of 20</span>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+    </div>
+  </section>
+
+  <!-- ================= RESULTS SCREEN ================= -->
+  <section class="result-screen" id="resultScreen">
+    <div class="result-hero" id="resultHero">
+      <div class="result-hero-inner">
+        <div class="result-pill" id="resultPill">Passed</div>
+        <p class="result-score-big" id="resultScoreBig">0<span>/20</span></p>
+        <p class="result-pct" id="resultPct">0%</p>
+        <h2 class="result-title" id="resultTitle">Certified</h2>
+        <p class="result-body" id="resultBody"></p>
+        <div class="result-actions" id="resultActions"></div>
+      </div>
+    </div>
+
+    <!-- Module-by-module breakdown -->
+    <div class="module-breakdown">
+      <div class="module-breakdown-head">How you did, by module</div>
+      <div id="moduleRows"></div>
+    </div>
+
+    <!-- Per-question breakdown (collapsible) -->
+    <button class="qb-toggle" id="qbToggle" onclick="toggleBreakdown()">
+      <span>See every question and how you answered it</span>
+      <span class="qb-toggle-arrow">▼</span>
+    </button>
+    <div class="qb-list" id="qbList"></div>
+  </section>
+
+  <div class="bottom-nav">
+    <a href="module-4-review.html" class="nav-back">← Back to Module 4 review</a>
+    <span style="font-size:13px;color:var(--text-mute)">Final · 20 questions · 70% to pass</span>
+  </div>
+</main>
+
+<script>
+  // ------------------ CONFIG ------------------
+  const PASS_THRESHOLD = 0.7; // 70%
+  const totalQuestions = 20;
+  const COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+  let currentQ = 0;
+  let answers = [];
+  let answered = [];
+  let selectedQuestions = [];
+
+  // ------------------ QUESTION BANK (30) ------------------
+  // Each question tagged with its primary source module(s).
+  // Mix of application, scenario, and synthesis — weighted toward judgement.
+  const questionBank = [
+    // ---- Module 1 : What AI actually is ----
+    {
+      id: 1, mod: 'M1',
+      text: 'Which statement best describes how a modern LLM like Claude or ChatGPT produces its answers?',
+      options: [
+        { text: 'It consults a structured database of facts curated by engineers.', correct: false },
+        { text: 'It predicts the most statistically likely next word, one at a time, based on patterns learned from huge amounts of text.', correct: true },
+        { text: 'It reasons through your question and forms a belief before writing.', correct: false },
+        { text: 'It runs a real-time web search for every question.', correct: false }
+      ],
+      explanation: "LLMs are word-by-word predictors, not reasoners or lookups. Everything weird and everything useful about them flows from that single mechanism."
+    },
+    {
+      id: 2, mod: 'M1',
+      text: 'Your AI gives you a confident, polished paragraph. Based on Module 1, what does that confidence actually tell you?',
+      options: [
+        { text: "Almost nothing — confidence is a writing style the model learned from training data, not a signal of truth.", correct: true },
+        { text: "The answer has been cross-checked internally.", correct: false },
+        { text: "The model is highly certain and the content is reliable.", correct: false },
+        { text: "The model has a verified source for every claim.", correct: false }
+      ],
+      explanation: "An AI sounds exactly as confident when it's wrong as when it's right. The tone is cosmetic; the content is what you actually need to judge."
+    },
+    {
+      id: 3, mod: 'M1',
+      text: 'Based on the family tree of AI terms, which of these statements is correct?',
+      options: [
+        { text: "Every LLM is an AI, but not every AI is an LLM.", correct: true },
+        { text: "Every AI is an LLM, but not every LLM is an AI.", correct: false },
+        { text: "AI and LLM are two names for the same thing.", correct: false },
+        { text: "LLMs sit outside the AI umbrella entirely.", correct: false }
+      ],
+      explanation: "LLMs are the innermost doll — a specific kind of deep learning, which is a kind of ML, which is a kind of AI. In 2026 \"AI\" usually means LLM, but other kinds exist."
+    },
+    {
+      id: 4, mod: 'M1',
+      text: 'A software vendor says their CRM is \"AI-powered.\" What should you do next?',
+      options: [
+        { text: "Buy it — \"AI-powered\" is a quality signal.", correct: false },
+        { text: "Ask: \"Which kind of AI exactly, and what does it actually do on Monday morning?\"", correct: true },
+        { text: "Assume it must use GPT-4 and pay accordingly.", correct: false },
+        { text: "Reject it — \"AI-powered\" is always marketing fluff.", correct: false }
+      ],
+      explanation: '"AI" covers everything from hand-coded rules from the 90s to the newest LLMs. Until the vendor names the kind and the concrete task, the label tells you almost nothing.'
+    },
+    {
+      id: 5, mod: 'M1',
+      text: "Which of these tasks plays to what AI is genuinely good at?",
+      options: [
+        { text: "Calculating the exact VAT owed on 50 pasted invoice lines.", correct: false },
+        { text: "Rewriting a blunt customer email into a warmer, more diplomatic tone.", correct: true },
+        { text: "Listing three real academic citations with working URLs.", correct: false },
+        { text: "Giving the current share price of a named company.", correct: false }
+      ],
+      explanation: "Rewriting tone is pure language work — AI's strongest ground. The other three are precision tasks (exact maths, real citations, live data) where it fails most often."
+    },
+    {
+      id: 6, mod: 'M1',
+      text: 'Which statement most accurately captures the "fastest intern, not advisor" principle?',
+      options: [
+        { text: "AI is too junior to trust with anything important.", correct: false },
+        { text: "Let AI produce fast drafts and rewrites, but keep the final judgement and any fact-checking with you.", correct: true },
+        { text: "Only senior staff should use AI.", correct: false },
+        { text: "AI will eventually replace your job.", correct: false }
+      ],
+      explanation: "A great intern gives you speed on drafts, summaries, and first passes. They don't make final decisions for you, and you check their numbers. Same discipline with AI."
+    },
+
+    // ---- Module 2 : How AI actually works ----
+    {
+      id: 7, mod: 'M2',
+      text: "Why does AI confidently fabricate academic citations, complete with author names and journal titles?",
+      options: [
+        { text: "A citation is a strong pattern the model has seen thousands of times, so it produces citation-shaped output even when no real source exists.", correct: true },
+        { text: "The model deliberately hides its uncertainty to seem helpful.", correct: false },
+        { text: "It searches the web and sometimes retrieves corrupted data.", correct: false },
+        { text: "Academic papers weren't included in training.", correct: false }
+      ],
+      explanation: "Citations have an unmistakable shape. The model is excellent at reproducing that shape. Whether the paper actually exists is a separate question it has no way to check."
+    },
+    {
+      id: 8, mod: 'M2',
+      text: "You had a long, useful chat with ChatGPT last Monday. On Wednesday you open a new chat and reference \"the plan we made.\" What happens?",
+      options: [
+        { text: "It continues seamlessly — recent chats carry forward automatically.", correct: false },
+        { text: "It retrieves your old conversation from the cloud.", correct: false },
+        { text: "It has no memory of the previous chat. If it sounds like it remembers, that's prediction producing plausible memory-language — you have to bring the context in yourself.", correct: true },
+        { text: "It refuses to answer until you paste the old chat.", correct: false }
+      ],
+      explanation: "Every new chat starts empty. There's no memory between chats unless you explicitly paste the relevant context in. The model will happily fake recall if you let it."
+    },
+    {
+      id: 9, mod: 'M2',
+      text: "You paste the same prompt into ChatGPT twice and get noticeably different answers. Why?",
+      options: [
+        { text: "The model was updated between requests.", correct: false },
+        { text: "At each step of prediction several plausible next words exist, and the model picks from them with a small amount of randomness.", correct: true },
+        { text: "It remembered your first attempt and tried harder.", correct: false },
+        { text: "Same prompts always produce identical responses.", correct: false }
+      ],
+      explanation: "Prediction isn't deterministic. Similar input, slightly different path, slightly different output. It's not a bug — it's what prediction does."
+    },
+    {
+      id: 10, mod: 'M2',
+      text: "A colleague asks AI \"what was my company's Q3 revenue?\" without pasting any real data. It replies with a confident, specific number. Combining Module 2 ideas, what's happening?",
+      options: [
+        { text: "It looked up your company in a hidden database.", correct: false },
+        { text: "The number isn't in the context window, so the model is predicting what a revenue-shaped answer looks like — the figure is plausible but almost certainly invented.", correct: true },
+        { text: "It searched the web and found last year's filing.", correct: false },
+        { text: "It refused and returned a placeholder.", correct: false }
+      ],
+      explanation: "Prediction + empty context = fabrication. With no real data to pin the answer to, the model produces something shaped like a real number because revenue-shaped answers are a pattern it's seen a million times."
+    },
+    {
+      id: 11, mod: 'M2',
+      text: "Your AI output feels generic and unlike your business voice. Based on Module 2, the most effective fix is:",
+      options: [
+        { text: "Use a different AI tool.", correct: false },
+        { text: "Upgrade to the premium version.", correct: false },
+        { text: "Add context — who you are, who it's for, the tone you want, the specifics of the task.", correct: true },
+        { text: "Write a longer prompt.", correct: false }
+      ],
+      explanation: "Generic in, generic out. With context to pin its predictions to, the same model produces something specific to your audience and voice. That's the whole fix."
+    },
+    {
+      id: 12, mod: 'M2',
+      text: 'Which of these prompts is most likely to produce a useful, on-brand output?',
+      options: [
+        { text: "\"Write a LinkedIn post about productivity.\"", correct: false },
+        { text: "\"I run a small UK accountancy for hospitality clients. My voice is plain and practical. Write a 120-word LinkedIn post arguing that chasing late invoices is a leadership problem, not a chasing problem.\"", correct: true },
+        { text: "\"Write a LinkedIn post — make it engaging, viral, and optimised for reach.\"", correct: false },
+        { text: "\"Give me a LinkedIn post. Use three hashtags. Be creative.\"", correct: false }
+      ],
+      explanation: "Four context ingredients stacked: who you are, who it's for, the tone, and the specifics. The others load adjectives or format rules onto prompts that stay generic underneath."
+    },
+    {
+      id: 13, mod: 'M2',
+      text: "After 40 messages of analysing a long pasted document, AI starts ignoring an instruction you gave near the start. Why, based on Module 2?",
+      options: [
+        { text: "The AI got tired and made a mistake.", correct: false },
+        { text: "The context window filled up, and the oldest content — including your early instruction — was dropped to make room.", correct: true },
+        { text: "Instructions expire after 20 messages.", correct: false },
+        { text: "It deliberately ignores older instructions to keep things fresh.", correct: false }
+      ],
+      explanation: "Context windows are large but not infinite. Long documents plus long chats can exceed the limit, and the tool quietly drops the oldest content. Early instructions are often the first casualty."
+    },
+
+    // ---- Module 3 : Working with AI well ----
+    {
+      id: 14, mod: 'M3',
+      text: "What are the three parts of the ROLE / CONTEXT / TASK pattern, in order?",
+      options: [
+        { text: "Prompt, response, revision.", correct: false },
+        { text: "Length, format, tone.", correct: false },
+        { text: "Who the AI is being, what the situation is, and what you want it to do.", correct: true },
+        { text: "Claude, ChatGPT, Gemini.", correct: false }
+      ],
+      explanation: "ROLE tunes the voice. CONTEXT sets the audience and tone. TASK gives the specifics. Three sentences, three distinct jobs."
+    },
+    {
+      id: 15, mod: 'M3',
+      text: "Based on the trust hierarchy, which output should you trust the LEAST without verifying?",
+      options: [
+        { text: "A rephrased version of your own email in a warmer tone.", correct: false },
+        { text: "A summary of a long email thread you pasted in.", correct: false },
+        { text: "A confident, well-formatted answer containing specific numbers, dates, and named sources.", correct: true },
+        { text: "A brainstormed list of angles for a blog post.", correct: false }
+      ],
+      explanation: "Specific facts you didn't supply are classic low-trust territory. Polished language and quick responses tell you nothing about whether those specifics are real."
+    },
+    {
+      id: 16, mod: 'M3',
+      text: "Based on Module 3, which of these is the cleanest example of \"real iteration\"?",
+      options: [
+        { text: "Trying the same prompt across three different AI tools.", correct: false },
+        { text: "Rewriting the original prompt from scratch with new wording.", correct: false },
+        { text: "Staying in the same chat and giving specific feedback — \"tighten the middle paragraph, make the opening less formal\" — so the model builds on what's already there.", correct: true },
+        { text: "Accepting the first draft because the model did its best.", correct: false }
+      ],
+      explanation: "Real iteration refines the draft you've got, using the context window you've already built. Restarting throws away everything the model has picked up."
+    },
+    {
+      id: 17, mod: 'M3',
+      text: "You've spent 40 minutes on ChatGPT and still haven't finished a task that should have taken 10. Which diagnosis from Module 3 is most likely?",
+      options: [
+        { text: "The AI needed a different prompt format.", correct: false },
+        { text: "The model was having an off day.", correct: false },
+        { text: "You're likely in one of the three wastes — tool-hunting (no clear outcome), not iterating (restarting instead of refining), or using AI for the wrong task type.", correct: true },
+        { text: "You should switch to the paid tier.", correct: false }
+      ],
+      explanation: "Long sessions with thin outputs usually trace back to one of three patterns. The pre-flight check — what outcome? language or precision? what feedback? — catches all three."
+    },
+    {
+      id: 18, mod: 'M3',
+      text: "AI is drafting a proposal for you. It includes specific pricing figures it made up. Based on Module 3, what's the right move?",
+      options: [
+        { text: "Send it — proposals are language work, which is high-trust.", correct: false },
+        { text: "Reject the whole output — any AI proposal is unreliable.", correct: false },
+        { text: "Keep the language (high-trust) but replace the invented prices with figures you've set yourself (low-trust on specifics).", correct: true },
+        { text: "Ask the AI to verify its own pricing.", correct: false }
+      ],
+      explanation: "Single outputs often have mixed trust levels. The prose structure is usually fine; specific numbers are your responsibility. Split them, keep the structure, replace the specifics."
+    },
+    {
+      id: 19, mod: 'M3',
+      text: "You ask AI to add up 60 invoice totals from a pasted CSV. It gives a confident answer. Based on Module 3, what's the best practice?",
+      options: [
+        { text: "Trust the figure — the CSV is in the context window, so the data is there.", correct: false },
+        { text: "Do the arithmetic in a spreadsheet (precision task), then use AI to help summarise or describe the findings (language task).", correct: true },
+        { text: "Paste the same CSV into three AI tools and pick the answer two of them agree on.", correct: false },
+        { text: "Trust the total but not the per-row breakdown.", correct: false }
+      ],
+      explanation: "Exact arithmetic is a precision task — AI's weakest ground. Use the right tool for the maths, then hand the findings to AI for language work. That's Waste #3 avoided by design."
+    },
+    {
+      id: 20, mod: 'M3',
+      text: "Based on the ROLE / CONTEXT / TASK pattern, when is it sensible to skip the full structure?",
+      options: [
+        { text: "For quick questions, casual brainstorms, and mid-chat follow-ups where the context is already set.", correct: true },
+        { text: "Any time you're short on time.", correct: false },
+        { text: "For any deliverable someone else will read.", correct: false },
+        { text: "Whenever you're using a free-tier tool.", correct: false }
+      ],
+      explanation: "Use the pattern for deliverables, skip it for conversations. Mid-chat follow-ups don't need the full structure because role and context are already in the window from earlier."
+    },
+
+    // ---- Module 4 : Smart AI decisions ----
+    {
+      id: 21, mod: 'M4',
+      text: "You're a small business owner considering whether to paste your customer email list into ChatGPT to help you draft a marketing campaign. Based on Module 4, what's the best course of action?",
+      options: [
+        { text: "Go ahead — AI can help you personalise the messages.", correct: false },
+        { text: "Only paste a few entries to stay under the token limit.", correct: false },
+        { text: "Don't paste the list. Describe the audience in general terms and use AI to help draft the campaign — the customer data stays in your proper email tool.", correct: true },
+        { text: "It's fine if you use the paid version.", correct: false }
+      ],
+      explanation: "Customer data is exactly the kind of personal information you shouldn't paste into consumer AI. The safer approach: share the audience context in general terms and keep the actual list private."
+    },
+    {
+      id: 22, mod: 'M4',
+      text: "Most of your week is producing written deliverables — emails, reports, LinkedIn posts. Based on Module 4, which tool should you start with?",
+      options: [
+        { text: "Gemini, for the Google integrations.", correct: false },
+        { text: "Claude, because writing quality and voice are its strongest suit.", correct: true },
+        { text: "All three at once to compare outputs.", correct: false },
+        { text: "Whichever is cheapest this month.", correct: false }
+      ],
+      explanation: "The lesson takes a clear position: writing-heavy professionals start with Claude, commit for 30 days, and consider a second tool only after real use."
+    },
+    {
+      id: 23, mod: 'M4',
+      text: "You see an ad: \"Revolutionary autonomous AI that replaces your entire ops team. Zero human oversight required. Deploys in minutes.\" Based on Module 4, what's the right move?",
+      options: [
+        { text: "Buy it — autonomy is a real edge.", correct: false },
+        { text: "Walk past. Red flags stack: \"revolutionary,\" \"autonomous,\" \"replaces your entire team,\" \"zero human oversight\" — and it contradicts the fastest-intern-not-advisor principle.", correct: true },
+        { text: "Ask for a demo before deciding.", correct: false },
+        { text: "Only consider it if priced under £50/month.", correct: false }
+      ],
+      explanation: "Four hype phrases in one sentence, zero concrete Monday-morning task. And anyone selling zero-oversight AI is either confused or about to get someone into serious trouble."
+    },
+    {
+      id: 24, mod: 'M4',
+      text: "According to Module 4, how long should you use a single AI tool before deciding whether you need a second?",
+      options: [
+        { text: "A week — that's enough to know.", correct: false },
+        { text: "Thirty days of actual, proper use.", correct: true },
+        { text: "Six months — anything less is premature.", correct: false },
+        { text: "You shouldn't — always run two in parallel.", correct: false }
+      ],
+      explanation: "Thirty days is long enough to feel where the tool struggles for your specific work, short enough to stop you endlessly deferring. Less and you're still on the tutorial; more and you're avoiding the decision."
+    },
+    {
+      id: 25, mod: 'M4',
+      text: "A developer is about to paste a .env file with real AWS keys and a database password into AI to troubleshoot a script. Based on Module 4, what should happen?",
+      options: [
+        { text: "It's fine — AI can't execute credentials.", correct: false },
+        { text: "Replace every credential with placeholders (YOUR_AWS_KEY_HERE, YOUR_DB_PASSWORD) before pasting. If real values have already been pasted, rotate them now.", correct: true },
+        { text: "Paste it all but ask the AI not to store it.", correct: false },
+        { text: "Only paste half the password to anonymise it.", correct: false }
+      ],
+      explanation: "Credentials are dangerous tier. The AI gives you exactly the same troubleshooting help with placeholders. If the real values were already pasted, rotation takes minutes — cleaning up a breach takes days."
+    },
+    {
+      id: 26, mod: 'M4',
+      text: "Based on Module 4, which single question cuts through most AI marketing?",
+      options: [
+        { text: "\"How many users does it have?\"", correct: false },
+        { text: "\"Is it powered by the latest model?\"", correct: false },
+        { text: "\"What exactly would this do on Monday morning?\"", correct: true },
+        { text: "\"Which celebrity endorsed it?\"", correct: false }
+      ],
+      explanation: "One question forces specificity. Real products survive it with a concrete task; hype products collapse into vague promises. One question, applied consistently, defeats most of the noise."
+    },
+
+    // ---- Cross-module synthesis ----
+    {
+      id: 27, mod: 'M1+M2',
+      text: "Your AI gives a confident paragraph containing a specific revenue figure you never provided. What's actually happening?",
+      options: [
+        { text: "It looked up the figure in a hidden database.", correct: false },
+        { text: "Two course ideas meet: prediction doesn't know (Module 1), and the context window doesn't contain the real figure (Module 2) — so the AI generates a revenue-shaped answer that may or may not be correct.", correct: true },
+        { text: "It read your emails in the background.", correct: false },
+        { text: "It cross-checked with the web before answering.", correct: false }
+      ],
+      explanation: "This is Module 1 and Module 2 colliding. No knowledge, no lookup, no data in the window — so the output is a plausible guess shaped like a fact. Confident + specific + unsourced = verify."
+    },
+    {
+      id: 28, mod: 'M2+M3',
+      text: "Module 2 said context is the meal. Module 3 added the ROLE / CONTEXT / TASK pattern on top. How do the two relate?",
+      options: [
+        { text: "They contradict each other — pick one.", correct: false },
+        { text: "The pattern is structured context: ROLE tunes the voice, CONTEXT names the audience and tone, TASK gives specifics. Same underlying idea, made operational.", correct: true },
+        { text: "ROLE replaces context entirely.", correct: false },
+        { text: "The pattern is a paid-tier-only feature.", correct: false }
+      ],
+      explanation: "The pattern isn't new content — it's a repeatable structure for delivering context. Context is still the meal; the pattern is the plate it arrives on."
+    },
+    {
+      id: 29, mod: 'M3+M4',
+      text: "A colleague has spent two weeks comparing Claude, ChatGPT, and Gemini and still can't decide. Combining Module 3 and Module 4, what's the diagnosis and the fix?",
+      options: [
+        { text: "They need more rigorous side-by-side testing.", correct: false },
+        { text: "They're tool-hunting (Waste #1 from Module 3). The fix (Module 4): pick based on fit to their work profile, commit for 30 days, and let real use surface the differences.", correct: true },
+        { text: "None of the tools are good enough yet.", correct: false },
+        { text: "They should buy all three to avoid deciding.", correct: false }
+      ],
+      explanation: "Classic tool-hunting — activity without outcome. The thirty-day rule from Module 4 is the antidote: pick, commit, use properly, re-evaluate."
+    },
+    {
+      id: 30, mod: 'All',
+      text: "Which single-sentence description best captures what this whole course has taught?",
+      options: [
+        { text: "Use every AI tool available, constantly, for everything.", correct: false },
+        { text: "Understand how AI actually works (prediction, context), give it good input (context-loaded prompts, the pattern), judge its output (trust hierarchy), and make smart external choices (tool, privacy, filtering hype).", correct: true },
+        { text: "Clever prompts chained across three tools beats one tool used well.", correct: false },
+        { text: "AI will replace most knowledge work within a year.", correct: false }
+      ],
+      explanation: "Module 1 was the model. Module 2 was the mechanics. Module 3 was the craft and judgement. Module 4 was the real-world fit. All four modules, one disciplined approach."
+    }
+  ];
+
+  // ------------------ SHUFFLE ------------------
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // Every attempt draws 20 random questions from the 30, options shuffled too.
+  function pickQuestions() {
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  // ------------------ COOLDOWN CHECK ------------------
+  // Stored via in-memory session attempt tracking (no browser storage — see comment below).
+  // For the prototype, a soft cooldown appears after a failed submission in the same session.
+  // In production, a real timestamp-backed cooldown would live server-side.
+  let lastFailTimestamp = null;
+
+  function checkCooldown() {
+    if (!lastFailTimestamp) return;
+    const elapsed = Date.now() - lastFailTimestamp;
+    if (elapsed < COOLDOWN_MS) {
+      const remaining = COOLDOWN_MS - elapsed;
+      const hours = Math.floor(remaining / (60 * 60 * 1000));
+      const mins = Math.floor((remaining % (60 * 60 * 1000)) / (60 * 1000));
+      document.getElementById('cooldownRemaining').textContent =
+        hours > 0 ? `~${hours}h ${mins}m` : `~${mins}m`;
+      document.getElementById('cooldownNotice').classList.add('show');
+    } else {
+      document.getElementById('cooldownNotice').classList.remove('show');
+    }
+  }
+
+  // ------------------ RENDER ------------------
+  function renderProgressSegments() {
+    const container = document.getElementById('assessProgress');
+    container.innerHTML = '';
+    for (let i = 0; i < totalQuestions; i++) {
+      const span = document.createElement('span');
+      if (i === 0) span.classList.add('active');
+      container.appendChild(span);
+    }
+  }
+
+  function renderQuestions() {
+    selectedQuestions = pickQuestions();
+    answers = new Array(totalQuestions).fill(null);
+    answered = new Array(totalQuestions).fill(false);
+    currentQ = 0;
+
+    const container = document.getElementById('assessQuestions');
+    container.innerHTML = '';
+
+    selectedQuestions.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+          <span class="ref">Covered in ${q.mod === 'All' ? 'the whole course' : q.mod}</span>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  // ------------------ NAV ------------------
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const progressDots = () => document.querySelectorAll('#assessProgress span');
+  const runningScore = document.getElementById('runningScore');
+
+  function startAssessment() {
+    document.getElementById('introScreen').style.display = 'none';
+    document.getElementById('assessScreen').style.display = 'block';
+    renderProgressSegments();
+    renderQuestions();
+    updateProgressUI();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function getCards() { return document.querySelectorAll('.q-card'); }
+
+  function updateProgressUI() {
+    progressDots().forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < currentQ) d.classList.add('done');
+      else if (idx === currentQ) d.classList.add('active');
+    });
+    runningScore.innerHTML = `Question <strong>${currentQ + 1}</strong> of ${totalQuestions}`;
+  }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    updateProgressUI();
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('assessScreen').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) {
+      currentQ++;
+      showQuestion(currentQ);
+    } else {
+      showResults();
+    }
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) {
+      currentQ--;
+      showQuestion(currentQ);
+    }
+  }
+
+  // ------------------ RESULTS ------------------
+  function showResults() {
+    const score = answers.filter(a => a === true).length;
+    const pct = Math.round((score / totalQuestions) * 100);
+    const passed = (score / totalQuestions) >= PASS_THRESHOLD;
+
+    document.getElementById('assessScreen').style.display = 'none';
+    document.getElementById('resultScreen').classList.add('show');
+
+    // Hero
+    const hero = document.getElementById('resultHero');
+    hero.className = 'result-hero ' + (passed ? 'pass' : 'fail');
+    document.getElementById('resultScoreBig').innerHTML = `${score}<span>/20</span>`;
+    document.getElementById('resultPct').textContent = `${pct}% · pass mark 70%`;
+
+    document.getElementById('resultPill').textContent =
+      passed ? 'Certified' : 'Not this time';
+
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+
+    if (passed && score === 20) {
+      title.innerHTML = 'Full marks. <em>Properly certified.</em>';
+      body.textContent = "Twenty for twenty. That's the whole course tested and locked in. Your certificate is ready, and you've earned it cleanly.";
+    } else if (passed) {
+      title.innerHTML = 'You\'re <em>certified</em>.';
+      body.textContent = `You scored ${score} out of 20. That's above the 70% pass mark — well done. Your certificate is ready to download.`;
+    } else if (score >= 12) {
+      title.innerHTML = 'So close.';
+      body.textContent = `You scored ${score} out of 20 — just under the 14 needed. Glance at the module breakdown below, revisit the lesson that let you down, and take another run when you're ready.`;
+    } else {
+      title.innerHTML = 'Worth another pass.';
+      body.textContent = `You scored ${score} out of 20. The module breakdown below shows where to focus — spend half an hour with the lessons, then retry. You've got this.`;
+    }
+
+    // Module breakdown
+    renderModuleBreakdown();
+
+    // Per-question breakdown
+    renderQuestionBreakdown();
+
+    // Actions
+    const actions = document.getElementById('resultActions');
+    if (passed) {
+      actions.innerHTML = `
+        <a href="certificate.html" class="btn btn-primary btn-big">View your certificate →</a>
+        <button class="btn btn-ghost" onclick="retakeNow()">↻ Retake for a higher score</button>
+      `;
+      lastFailTimestamp = null; // clear any cooldown
+    } else {
+      lastFailTimestamp = Date.now();
+      actions.innerHTML = `
+        <button class="btn btn-primary btn-big" onclick="retakeNow()">↻ Retake the assessment</button>
+        <a href="module-1-review.html" class="btn btn-ghost">Revisit modules</a>
+      `;
+    }
+
+    document.getElementById('resultScreen').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function renderModuleBreakdown() {
+    const modBuckets = {
+      'M1': { name: 'Module 1 — What AI actually is', correct: 0, total: 0 },
+      'M2': { name: 'Module 2 — How AI actually works', correct: 0, total: 0 },
+      'M3': { name: 'Module 3 — Working with AI well', correct: 0, total: 0 },
+      'M4': { name: 'Module 4 — Smart AI decisions', correct: 0, total: 0 },
+      'Synthesis': { name: 'Cross-module synthesis', correct: 0, total: 0 }
+    };
+    selectedQuestions.forEach((q, i) => {
+      let key;
+      if (q.mod === 'M1' || q.mod === 'M2' || q.mod === 'M3' || q.mod === 'M4') key = q.mod;
+      else key = 'Synthesis';
+      modBuckets[key].total += 1;
+      if (answers[i] === true) modBuckets[key].correct += 1;
+    });
+    const rows = document.getElementById('moduleRows');
+    rows.innerHTML = '';
+    Object.keys(modBuckets).forEach((k, idx) => {
+      const b = modBuckets[k];
+      if (b.total === 0) return; // skip if not tested in this draw
+      const pct = Math.round((b.correct / b.total) * 100);
+      const row = document.createElement('div');
+      row.className = 'module-row';
+      row.innerHTML = `
+        <span class="module-row-num">0${idx+1}</span>
+        <span class="module-row-name">${b.name}</span>
+        <span class="module-row-bar"><span class="module-row-bar-inner" style="width:${pct}%"></span></span>
+        <span class="module-row-score">${b.correct}/${b.total}</span>
+      `;
+      rows.appendChild(row);
+    });
+  }
+
+  function renderQuestionBreakdown() {
+    const list = document.getElementById('qbList');
+    list.innerHTML = '';
+    selectedQuestions.forEach((q, i) => {
+      const row = document.createElement('div');
+      row.className = 'qb-row';
+      const ok = answers[i] === true;
+      const short = q.text.length > 60 ? q.text.slice(0, 58) + '…' : q.text;
+      row.innerHTML = `
+        <span class="qb-row-num">Q${String(i+1).padStart(2,'0')}</span>
+        <span class="qb-row-text" title="${q.text.replace(/"/g,'&quot;')}">${short}</span>
+        <span class="qb-row-mod">${q.mod}</span>
+        <span class="qb-row-status ${ok ? 'ok' : 'no'}">${ok ? '✓ Correct' : '✕ Missed'}</span>
+      `;
+      list.appendChild(row);
+    });
+  }
+
+  function toggleBreakdown() {
+    const toggle = document.getElementById('qbToggle');
+    const list = document.getElementById('qbList');
+    toggle.classList.toggle('expanded');
+    list.classList.toggle('show');
+  }
+
+  function retakeNow() {
+    document.getElementById('resultScreen').classList.remove('show');
+    document.getElementById('introScreen').style.display = 'block';
+    checkCooldown(); // show soft notice if recently failed
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // Initial cooldown check on load (session-only; no persistence)
+  checkCooldown();
+</script>
+
+</body>
+</html>

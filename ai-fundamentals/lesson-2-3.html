@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lesson 2.3 — Why outputs feel generic, and the fix | AICraft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --warn:#F59E0B;
+    --warn-bg:#FEF7EC;
+    --warn-border:#F4E0BB;
+    --warn-text:#92400E;
+    --warn-deep:#78350F;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:var(--body);
+    font-size:17px;line-height:1.7;
+    color:var(--text);background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .progress-track{position:fixed;top:0;left:0;right:0;height:3px;z-index:100}
+  .progress-bar{height:100%;width:0%;
+    background:linear-gradient(90deg,var(--emerald),var(--forest));
+    transition:width .15s ease-out;
+  }
+
+  header{
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(8px);background:rgba(255,255,255,.85);
+  }
+  .header-inner{
+    max-width:1100px;margin:0 auto;padding:18px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .brand{
+    display:flex;align-items:center;gap:10px;
+    text-decoration:none;
+  }
+  .brand-logo{
+    height:32px;width:auto;
+    display:block;
+  }
+  .header-meta{display:flex;align-items:center;gap:20px;font-size:13px;color:var(--text-mute)}
+  .header-meta .sep{opacity:.4}
+  .lesson-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 10px;border-radius:999px;
+    background:var(--mint);color:var(--forest);
+    font-weight:600;font-size:12px;letter-spacing:.02em;
+  }
+  .lesson-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald)}
+
+  main{
+    max-width:1100px;margin:0 auto;padding:0 28px 80px;
+    display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:56px;
+  }
+  @media (max-width:900px){
+    main{grid-template-columns:1fr;gap:0;padding-bottom:48px}
+    aside.toc{display:none}
+  }
+
+  article{max-width:680px;padding-top:48px}
+
+  .lesson-meta{
+    display:flex;align-items:center;gap:10px;
+    font-size:13px;color:var(--text-mute);
+    margin-bottom:20px;font-weight:500;
+  }
+  .lesson-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.lesson-title{
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(34px,4.8vw,52px);line-height:1.08;
+    letter-spacing:-.02em;color:var(--slate);margin:0 0 20px;
+  }
+  h1.lesson-title em{font-style:italic;color:var(--forest)}
+
+  .hook{
+    font-family:var(--display);font-size:21px;line-height:1.5;
+    color:var(--text-soft);font-style:italic;font-weight:400;
+    padding:0 0 0 20px;border-left:3px solid var(--emerald);
+    margin:28px 0 48px;
+  }
+
+  article h2{
+    font-family:var(--display);font-weight:600;font-size:28px;
+    line-height:1.25;letter-spacing:-.015em;color:var(--forest);
+    margin:56px 0 16px;position:relative;padding-left:18px;
+  }
+  article h2::before{
+    content:"";position:absolute;left:0;top:10px;bottom:10px;
+    width:3px;border-radius:2px;background:var(--emerald);
+  }
+  article h3{
+    font-family:var(--display);font-weight:600;font-size:20px;
+    color:var(--slate);margin:32px 0 10px;letter-spacing:-.005em;
+  }
+  article p{margin:0 0 18px}
+  article p strong{color:var(--slate);font-weight:600}
+  article code{
+    font-family:"SFMono-Regular",Consolas,monospace;
+    background:var(--mint-soft);color:var(--forest);
+    padding:1px 6px;border-radius:4px;font-size:.92em;
+  }
+
+  .misconception{
+    display:grid;grid-template-columns:auto 1fr;gap:16px;
+    padding:20px 22px;background:var(--warn-bg);
+    border:1px solid var(--warn-border);border-radius:10px;margin:28px 0;
+  }
+  .misconception-icon{
+    width:32px;height:32px;border-radius:8px;
+    background:var(--warn);color:#fff;
+    display:grid;place-items:center;
+    font-family:var(--display);font-weight:700;font-size:18px;flex-shrink:0;
+  }
+  .misconception-label{
+    font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--warn-text);font-weight:700;margin-bottom:4px;
+  }
+  .misconception-text{margin:0;color:var(--warn-deep);font-size:15.5px;line-height:1.6}
+
+  .takeaway{
+    margin:40px 0;padding:28px 32px;
+    background:linear-gradient(135deg,var(--mint-soft) 0%,var(--mint) 100%);
+    border:1px solid #A7F3D0;border-radius:14px;
+    position:relative;overflow:hidden;
+  }
+  .takeaway::before{
+    content:"";position:absolute;top:0;bottom:0;left:0;
+    width:4px;background:var(--emerald);
+  }
+  .takeaway-label{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);font-weight:700;margin-bottom:12px;
+  }
+  .takeaway-label svg{width:14px;height:14px}
+  .takeaway-main{
+    font-family:var(--display);font-size:22px;line-height:1.4;
+    color:var(--slate);font-weight:600;margin:0 0 10px;letter-spacing:-.01em;
+  }
+  .takeaway-sub{font-size:15.5px;color:var(--forest);margin:0;line-height:1.6}
+
+  /* Before/after comparison */
+  .compare{
+    margin:28px 0;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    overflow:hidden;
+  }
+  .compare-head{
+    display:flex;justify-content:space-between;align-items:baseline;
+    flex-wrap:wrap;gap:8px;
+    padding:22px 26px 18px;
+    border-bottom:1px solid var(--border-soft);
+  }
+  .compare-label{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--text-mute);
+  }
+  .compare-hint{font-size:13px;color:var(--text-mute)}
+  .compare-scenario{
+    padding:18px 26px;
+    background:var(--bg);
+    border-bottom:1px solid var(--border-soft);
+    font-size:14.5px;
+  }
+  .compare-scenario-label{
+    font-family:var(--display);font-weight:600;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);margin-bottom:6px;
+  }
+  .compare-scenario p{margin:0;color:var(--text);line-height:1.55}
+  .compare-scenario strong{color:var(--slate)}
+
+  .compare-tabs{
+    display:flex;
+    border-bottom:1px solid var(--border-soft);
+  }
+  .compare-tab{
+    flex:1;
+    padding:14px 20px;
+    background:var(--card);
+    border:0;border-bottom:2px solid transparent;
+    cursor:pointer;font-family:var(--body);
+    font-weight:600;font-size:14px;
+    color:var(--text-mute);
+    transition:all .18s;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .compare-tab:hover{color:var(--text)}
+  .compare-tab.active{
+    color:var(--forest);
+    border-bottom-color:var(--emerald);
+    background:var(--mint-soft);
+  }
+  .compare-tab .tab-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--warn);
+  }
+  .compare-tab.good .tab-dot{background:var(--emerald)}
+
+  .compare-panel{
+    display:none;padding:24px 26px;
+    animation:fadeIn .3s ease;
+  }
+  .compare-panel.active{display:block}
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(4px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+
+  .compare-prompt-label{
+    font-family:var(--display);font-weight:600;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);margin-bottom:8px;
+    display:flex;justify-content:space-between;align-items:baseline;
+  }
+  .compare-prompt-label .wordcount{
+    font-family:var(--body);font-weight:500;
+    text-transform:none;letter-spacing:0;font-size:12px;color:var(--text-mute);
+  }
+  .compare-prompt{
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:13.5px;line-height:1.65;
+    background:var(--slate);color:#E2E8F0;
+    padding:14px 18px;border-radius:8px;
+    margin-bottom:22px;
+    white-space:pre-wrap;word-wrap:break-word;
+  }
+  .compare-prompt .highlight-context{
+    background:rgba(16,185,129,.25);
+    color:#A7F3D0;
+    padding:0 3px;border-radius:3px;
+  }
+
+  .compare-output-label{
+    font-family:var(--display);font-weight:600;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);margin-bottom:8px;
+  }
+  .compare-output{
+    padding:18px 20px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:8px;
+    font-size:14.5px;line-height:1.65;
+    color:var(--text);
+  }
+  .compare-output.good{
+    background:var(--mint-soft);
+    border-color:#A7F3D0;
+  }
+  .compare-output.bad{
+    background:var(--warn-bg);
+    border-color:var(--warn-border);
+  }
+  .compare-output p{margin:0 0 12px}
+  .compare-output p:last-child{margin-bottom:0}
+
+  .compare-verdict{
+    margin-top:14px;padding:12px 16px;
+    border-radius:8px;font-size:13.5px;line-height:1.55;
+    display:flex;gap:10px;align-items:flex-start;
+  }
+  .compare-verdict.bad{
+    background:var(--warn-bg);
+    border-left:3px solid var(--warn);
+    color:var(--warn-deep);
+  }
+  .compare-verdict.good{
+    background:var(--mint-soft);
+    border-left:3px solid var(--emerald);
+    color:var(--forest);
+  }
+  .compare-verdict-icon{
+    width:22px;height:22px;border-radius:50%;
+    display:grid;place-items:center;
+    font-weight:700;font-size:13px;color:#fff;flex-shrink:0;
+    font-family:var(--display);
+  }
+  .compare-verdict.bad .compare-verdict-icon{background:var(--warn)}
+  .compare-verdict.good .compare-verdict-icon{background:var(--emerald)}
+
+  /* Four ingredients list */
+  .ingredients{
+    margin:24px 0;
+    display:grid;grid-template-columns:1fr 1fr;gap:12px;
+  }
+  @media (max-width:600px){.ingredients{grid-template-columns:1fr}}
+  .ingredient{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:16px 18px;
+    position:relative;
+  }
+  .ingredient-num{
+    position:absolute;top:14px;right:16px;
+    font-family:var(--display);font-weight:500;
+    font-size:28px;color:var(--mint);
+    line-height:1;
+  }
+  .ingredient-label{
+    font-family:var(--display);font-weight:600;
+    font-size:14px;color:var(--forest);
+    letter-spacing:.02em;margin:0 0 6px;
+  }
+  .ingredient-q{
+    font-size:14px;color:var(--text);
+    margin:0 0 4px;font-weight:600;
+  }
+  .ingredient-eg{
+    font-size:13px;color:var(--text-mute);
+    margin:0;line-height:1.5;font-style:italic;
+  }
+
+  /* Action box */
+  .action-box{
+    margin:48px 0 0;padding:32px;
+    background:var(--slate);border-radius:16px;color:#fff;
+    position:relative;overflow:hidden;
+  }
+  .action-box::after{
+    content:"";position:absolute;right:-60px;bottom:-60px;
+    width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(16,185,129,.18),transparent 70%);
+    pointer-events:none;
+  }
+  .action-eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    color:var(--emerald);font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;font-weight:700;margin-bottom:14px;
+  }
+  .action-title{
+    font-family:var(--display);font-weight:500;font-size:26px;
+    line-height:1.25;margin:0 0 12px;color:#fff;letter-spacing:-.01em;
+  }
+  .action-body{color:#CBD5E1;font-size:16px;line-height:1.65;margin:0 0 20px}
+  .action-prompt{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:8px;padding:14px 16px;
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:13.5px;color:#E2E8F0;margin:0 0 20px;line-height:1.7;
+  }
+  .action-check{
+    display:flex;align-items:center;gap:10px;
+    cursor:pointer;user-select:none;padding:10px 0;
+    color:#CBD5E1;font-size:15px;position:relative;z-index:2;
+  }
+  .action-check input{display:none}
+  .action-check .box{
+    width:20px;height:20px;border-radius:5px;
+    border:1.5px solid #475569;
+    display:grid;place-items:center;transition:all .2s;flex-shrink:0;
+  }
+  .action-check input:checked + .box{background:var(--emerald);border-color:var(--emerald)}
+  .action-check input:checked + .box::after{
+    content:"✓";color:#fff;font-size:13px;font-weight:700;
+  }
+  .action-check input:checked ~ span:last-child{
+    color:#fff;text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3);
+  }
+
+  /* Quiz */
+  .quiz{
+    margin-top:72px;padding:40px 36px;
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+  }
+  .quiz-header{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .quiz-eyebrow{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);font-weight:700;
+  }
+  .quiz-title{
+    font-family:var(--display);font-weight:600;font-size:26px;
+    line-height:1.2;color:var(--slate);margin:4px 0 8px;letter-spacing:-.01em;
+  }
+  .quiz-sub{color:var(--text-mute);margin:0 0 28px;font-size:15px}
+  .quiz-progress{display:flex;gap:6px;margin-bottom:28px}
+  .quiz-progress span{
+    flex:1;height:4px;border-radius:2px;
+    background:var(--border);transition:background .3s;
+  }
+  .quiz-progress span.done{background:var(--emerald)}
+  .quiz-progress span.active{background:var(--forest)}
+
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  .q-number{
+    font-family:var(--display);font-size:13px;color:var(--text-mute);
+    font-weight:500;letter-spacing:.04em;margin-bottom:8px;
+  }
+  .q-text{
+    font-family:var(--display);font-weight:500;font-size:21px;
+    line-height:1.4;color:var(--slate);margin:0 0 24px;letter-spacing:-.005em;
+  }
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:16px 18px;border:1.5px solid var(--border);border-radius:10px;
+    cursor:pointer;transition:all .2s;background:var(--card);
+    font-size:15.5px;line-height:1.5;
+  }
+  .option:hover:not(.disabled){border-color:var(--emerald);background:var(--mint-soft)}
+  .option.disabled{cursor:default}
+  .option-letter{
+    width:26px;height:26px;border-radius:7px;
+    background:var(--border-soft);color:var(--text-soft);
+    display:grid;place-items:center;font-weight:700;font-size:13px;
+    flex-shrink:0;transition:all .2s;font-family:var(--display);
+  }
+  .option:hover:not(.disabled) .option-letter{background:var(--emerald);color:#fff}
+  .option.correct{border-color:var(--success);background:#F0FDF4}
+  .option.correct .option-letter{background:var(--success);color:#fff}
+  .option.incorrect{border-color:var(--error);background:#FEF2F2}
+  .option.incorrect .option-letter{background:var(--error);color:#fff}
+  .option-check{
+    margin-left:auto;opacity:0;transition:opacity .2s;
+    font-size:20px;line-height:1;
+  }
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+
+  .explanation{
+    display:none;margin-top:20px;padding:18px 20px;border-radius:10px;
+    background:var(--mint-soft);border-left:3px solid var(--emerald);
+    font-size:15px;line-height:1.6;color:var(--forest);
+  }
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{
+    display:block;font-family:var(--display);font-size:13px;
+    letter-spacing:.1em;text-transform:uppercase;
+    color:var(--forest);margin-bottom:6px;
+  }
+  .explanation.wrong{background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D}
+  .explanation.wrong strong{color:#7F1D1D}
+
+  .quiz-nav{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:24px;gap:12px;
+  }
+  .btn{
+    border:0;cursor:pointer;font-family:var(--body);
+    font-weight:600;font-size:14.5px;padding:11px 22px;border-radius:8px;
+    transition:all .18s;display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn-primary{background:var(--forest);color:#fff}
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{
+    background:var(--border);color:var(--text-mute);
+    cursor:not-allowed;transform:none;
+  }
+  .btn-ghost{background:transparent;color:var(--text-mute)}
+  .btn-ghost:hover{color:var(--forest)}
+
+  .quiz-result{display:none;text-align:center;padding:20px 0}
+  .quiz-result.show{display:block;animation:fadeIn .4s ease}
+  .quiz-score{
+    font-family:var(--display);font-weight:500;font-size:72px;
+    line-height:1;color:var(--forest);margin:0 0 8px;letter-spacing:-.03em;
+  }
+  .quiz-score span{color:var(--text-mute);font-size:32px}
+  .quiz-result-title{
+    font-family:var(--display);font-weight:600;font-size:24px;
+    color:var(--slate);margin:0 0 8px;
+  }
+  .quiz-result-body{
+    color:var(--text-mute);margin:0 auto 24px;max-width:420px;
+    font-size:15.5px;line-height:1.6;
+  }
+
+  aside.toc{
+    padding-top:56px;position:sticky;top:80px;
+    align-self:start;max-height:calc(100vh - 100px);overflow-y:auto;
+  }
+  .toc-label{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--text-mute);font-weight:700;margin-bottom:14px;
+  }
+  .toc ul{list-style:none;padding:0;margin:0;border-left:1px solid var(--border)}
+  .toc li{margin:0}
+  .toc a{
+    display:block;padding:7px 16px;font-size:13.5px;color:var(--text-mute);
+    text-decoration:none;border-left:2px solid transparent;margin-left:-1px;
+    transition:all .15s;line-height:1.4;
+  }
+  .toc a:hover{color:var(--forest)}
+  .toc a.active{color:var(--forest);font-weight:600;border-left-color:var(--emerald)}
+
+  .lesson-footer{
+    max-width:680px;margin:56px 0 0;
+    padding-top:32px;border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:center;
+    gap:16px;flex-wrap:wrap;
+  }
+  .next-lesson{
+    display:flex;flex-direction:column;gap:2px;
+    padding:16px 22px;border-radius:10px;
+    background:var(--card);border:1px solid var(--border);
+    text-decoration:none;transition:all .2s;
+  }
+  .next-lesson:hover{
+    border-color:var(--emerald);transform:translateY(-1px);
+    box-shadow:0 4px 14px rgba(6,95,70,.06);
+  }
+  .next-lesson-label{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);font-weight:600;
+  }
+  .next-lesson-title{font-family:var(--display);font-weight:600;font-size:16px;color:var(--forest)}
+  .completion-status{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-mute)}
+  .completion-status.complete{color:var(--success)}
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AICraft Learning">
+      <svg class="brand-logo" viewBox="0 0 420 80" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="lesson-badge">Module 2 · Lesson 3</span>
+      <span class="sep">·</span>
+      <span>6 min read</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article>
+    <div class="lesson-meta">
+      <span>AI Fundamentals: From Zero to Confident</span>
+      <span class="dot"></span>
+      <span>How AI actually works</span>
+    </div>
+
+    <h1 class="lesson-title">Why outputs feel <em>generic</em>, and the fix</h1>
+
+    <p class="hook">Nine out of ten complaints about AI come down to one thing: generic outputs. Here's why, and the fix.</p>
+
+    <p>If you've ever typed "write a product description" into ChatGPT and read back something that could have been written by anyone, about anything, you already know the problem. The output is technically fine. It's also forgettable. It could belong to any business. It sounds like marketing copy from 2016.</p>
+
+    <p>This happens to everyone. And it has one cause, and one fix. Neither is a clever trick. Both are hiding in plain sight.</p>
+
+    <div class="misconception">
+      <div class="misconception-icon">!</div>
+      <div>
+        <div class="misconception-label">The common misconception</div>
+        <p class="misconception-text"><strong>"My outputs are bad because I need a better prompting technique."</strong> Sometimes, sure. But most of the time the problem isn't the technique. It's that you gave the AI nothing to work with. Generic in, generic out.</p>
+      </div>
+    </div>
+
+    <h2 id="section-1">Why outputs sound like they were written by nobody</h2>
+
+    <p>Think back to Lesson 2.1. An LLM predicts the most likely next words. "Most likely" is doing a lot of work in that sentence. If you type a bare prompt — "write a product description" — the model has almost nothing to pin its predictions to. So it predicts the most likely words for the most generic version of that request.</p>
+
+    <p>The result is an output that's average in the literal sense: it averages across every product description the model has ever seen. Amazon listings, grocery labels, Etsy bios, Apple marketing. All stirred together. Technically fluent, emotionally flat. It sounds like everyone because it's aimed at no one.</p>
+
+    <p>This isn't a flaw in the AI. It's the AI doing exactly what you asked. You asked for an average, so you got one.</p>
+
+    <h2 id="section-2">See it for yourself</h2>
+
+    <p>The same task below. The same AI. Two different prompts. Flip between the tabs and watch what changes.</p>
+
+    <div class="compare" id="compare">
+      <div class="compare-head">
+        <span class="compare-label">Before / after · same model, same task</span>
+        <span class="compare-hint">Click the tabs to switch</span>
+      </div>
+
+      <div class="compare-scenario">
+        <p class="compare-scenario-label">The scenario</p>
+        <p><strong>Jo runs a small leather-goods shop in Bristol.</strong> She makes hand-stitched weekender bags for people who want a nicer version of what they've seen in airports. Today she needs a 50-word product description for her new Highbury weekender.</p>
+      </div>
+
+      <div class="compare-tabs">
+        <button class="compare-tab active" data-panel="bad" onclick="switchPanel('bad')">
+          <span class="tab-dot"></span>
+          <span>Bare prompt</span>
+        </button>
+        <button class="compare-tab good" data-panel="good" onclick="switchPanel('good')">
+          <span class="tab-dot"></span>
+          <span>Context-loaded prompt</span>
+        </button>
+      </div>
+
+      <!-- Bad panel -->
+      <div class="compare-panel active" id="panel-bad">
+        <div class="compare-prompt-label">
+          <span>The prompt</span>
+          <span class="wordcount">7 words</span>
+        </div>
+        <div class="compare-prompt">Write a 50-word product description.</div>
+
+        <div class="compare-output-label">What AI produces</div>
+        <div class="compare-output bad">
+          <p>Introducing our premium weekender bag, crafted with quality materials and designed for the modern traveller. Perfect for short trips and weekend getaways, this versatile bag combines style and functionality. With ample storage and a sleek design, it's the ideal companion for your next adventure.</p>
+        </div>
+
+        <div class="compare-verdict bad">
+          <span class="compare-verdict-icon">!</span>
+          <div>
+            <strong style="font-family:var(--display);display:block;margin-bottom:3px;font-size:13px;letter-spacing:.04em">Fluent, but generic</strong>
+            Could describe any bag on earth. No mention of leather, hand-stitching, Bristol, or anything that sounds like Jo. It's the average of every product description the model has ever seen.
+          </div>
+        </div>
+      </div>
+
+      <!-- Good panel -->
+      <div class="compare-panel" id="panel-good">
+        <div class="compare-prompt-label">
+          <span>The prompt</span>
+          <span class="wordcount">71 words · same task, with context</span>
+        </div>
+        <div class="compare-prompt"><span class="highlight-context">I run a small leather-goods shop in Bristol making hand-stitched weekender bags. My customers are people in their 30s and 40s who want a nicer version of what they'd find in an airport — understated, built to last, not shouty. My voice is warm but direct, never salesy.</span>
+
+Write a 50-word product description for the Highbury weekender: full-grain English leather, solid brass hardware, fits three nights of kit.</div>
+
+        <div class="compare-output-label">What AI produces</div>
+        <div class="compare-output good">
+          <p>The Highbury is a weekender for people who've done the plastic-handle thing and want better. Full-grain English leather, solid brass hardware, hand-stitched in our Bristol workshop. Roomy enough for three nights away, small enough to sling over one shoulder. Built so you'll hand it down, not throw it out.</p>
+        </div>
+
+        <div class="compare-verdict good">
+          <span class="compare-verdict-icon">✓</span>
+          <div>
+            <strong style="font-family:var(--display);display:block;margin-bottom:3px;font-size:13px;letter-spacing:.04em">Specific, earned, hers</strong>
+            Same model, same task. Different prompt. The context gave it audience, voice, and detail to work with — so it predicted words for <em>Jo's</em> description, not a generic one.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p>This is the whole lesson in one picture. The bad output isn't wrong. It's just aimed at no one. The good output is aimed at Jo's customer, in Jo's voice, with Jo's details. The only thing that changed was what the model had to work with.</p>
+
+    <h2 id="section-3">The four ingredients of context</h2>
+
+    <p>When we say "add context," we don't mean write a novel. We mean answer four simple questions before you get to the task. Most good prompts include three or four of these. Most bad prompts include none.</p>
+
+    <div class="ingredients">
+      <div class="ingredient">
+        <span class="ingredient-num">1</span>
+        <p class="ingredient-label">Who you are</p>
+        <p class="ingredient-q">What do you do, what's your business?</p>
+        <p class="ingredient-eg">"I run a small leather-goods shop in Bristol…"</p>
+      </div>
+      <div class="ingredient">
+        <span class="ingredient-num">2</span>
+        <p class="ingredient-label">Who it's for</p>
+        <p class="ingredient-q">Who is the audience or reader?</p>
+        <p class="ingredient-eg">"…customers in their 30s and 40s, want nicer than airport tat…"</p>
+      </div>
+      <div class="ingredient">
+        <span class="ingredient-num">3</span>
+        <p class="ingredient-label">The tone or voice</p>
+        <p class="ingredient-q">How should it sound?</p>
+        <p class="ingredient-eg">"…warm but direct, never salesy…"</p>
+      </div>
+      <div class="ingredient">
+        <span class="ingredient-num">4</span>
+        <p class="ingredient-label">The specifics of the task</p>
+        <p class="ingredient-q">What exactly do you want, and what are the details?</p>
+        <p class="ingredient-eg">"…50-word description for the Highbury: full-grain leather, brass hardware, fits three nights."</p>
+      </div>
+    </div>
+
+    <p>You don't need all four every time. A quick rewording doesn't need a full biography. But any task where the output needs to sound like <em>you</em>, or land with <em>your</em> audience, lives or dies by these four.</p>
+
+    <div class="takeaway">
+      <div class="takeaway-label">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.5 7.5l-4 4a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06L9 11.94l3.44-3.44a.75.75 0 011.06 1.06z"/></svg>
+        The one thing to remember
+      </div>
+      <p class="takeaway-main">Bad output usually isn't an AI problem. It's a context problem.</p>
+      <p class="takeaway-sub">Before blaming the model, ask: did I give it enough to know who this is for, what tone it needs, and what matters about this task?</p>
+    </div>
+
+    <h2 id="section-4">Why this is the most useful skill in the course</h2>
+
+    <p>Prompting technique is genuinely a thing. There are frames and patterns (we'll hit one next module) that structure your prompts in useful ways. But technique is the sprinkle on top. Context is the meal.</p>
+
+    <p>Here's what that means in practice. Most of the people who complain that AI "doesn't work for my business" are pasting in nine-word prompts and getting back the average of the internet. They try a new tool, same result. They read a prompt guide, pick up some tricks, get a slightly better result. They never cross the gap that context closes in a single paragraph.</p>
+
+    <p>Everything else in this course — the ROLE/CONTEXT/TASK pattern in Module 3, knowing when to trust output, not wasting time on the wrong tasks — sits on top of this one skill. Miss this, and the rest doesn't compound. Get this, and everything else starts working the way you hoped AI would.</p>
+
+    <p>Remember the one-paragraph personal brief from Lesson 2.2? That's context ready to paste. You now have half the job done before you've even typed the task.</p>
+
+    <div class="action-box">
+      <div class="action-eyebrow">
+        ◆ Try this right now
+      </div>
+      <h3 class="action-title">Rewrite a generic prompt, right now</h3>
+      <p class="action-body">Think of a task you'd genuinely ask AI for help with today. A product description, an email, a LinkedIn post, a client update. Write the bare prompt you'd normally type. Then rewrite it with the four ingredients above at the top.</p>
+      <div class="action-prompt">
+        Bare version:<br>
+        _________________________________________<br><br>
+        Context-loaded version:<br>
+        I am / I run: __________________________<br>
+        This is for: ___________________________<br>
+        Tone: __________________________________<br>
+        Task: __________________________________
+      </div>
+      <p class="action-body" style="margin-bottom:8px">If you want to go further, paste both into ChatGPT or Claude and compare the outputs. The gap between them is the gap this course is built to close.</p>
+      <label class="action-check">
+        <input type="checkbox" id="actionDone" />
+        <span class="box"></span>
+        <span>I've done this — mark as complete</span>
+      </label>
+    </div>
+
+    <!-- QUIZ -->
+    <section class="quiz" id="quiz">
+      <div class="quiz-header">
+        <span class="quiz-eyebrow">Lesson check · 3 questions</span>
+      </div>
+      <h2 class="quiz-title" style="color:var(--slate);padding:0;margin-top:0">Did it stick?</h2>
+      <p class="quiz-sub">Takes about 30 seconds. Answers and explanations appear right away.</p>
+
+      <div class="quiz-progress" id="quizProgress">
+        <span class="active"></span><span></span><span></span>
+      </div>
+
+      <div id="quizQuestions"></div>
+
+      <div class="quiz-result" id="quizResult">
+        <div class="quiz-score"><span id="scoreNum">0</span><span>/3</span></div>
+        <h3 class="quiz-result-title" id="resultTitle">Nicely done</h3>
+        <p class="quiz-result-body" id="resultBody">You've reached the end of Module 2. Next up — a quick 5-question review to unlock Module 3.</p>
+        <button class="btn btn-ghost" onclick="resetQuiz()">↻ Retry questions</button>
+      </div>
+
+      <div class="quiz-nav" id="quizNav">
+        <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+      </div>
+    </section>
+
+    <div class="lesson-footer">
+      <div class="completion-status" id="completionStatus">
+        <span>◯</span>
+        <span>Lesson in progress</span>
+      </div>
+      <a href="module-2-review.html" class="next-lesson">
+        <span class="next-lesson-label">Module 2 review</span>
+        <span class="next-lesson-title">5 questions to unlock Module 3 →</span>
+      </a>
+    </div>
+  </article>
+
+  <aside class="toc">
+    <div class="toc-label">In this lesson</div>
+    <ul>
+      <li><a href="#section-1" class="active">Why outputs sound bland</a></li>
+      <li><a href="#section-2">See it for yourself</a></li>
+      <li><a href="#section-3">The four ingredients</a></li>
+      <li><a href="#section-4">Why this is the main skill</a></li>
+      <li><a href="#quiz">Lesson check</a></li>
+    </ul>
+  </aside>
+</main>
+
+<script>
+  // Progress bar
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+    progressBar.style.width = Math.min(100, Math.max(0, scrolled * 100)) + '%';
+  });
+
+  // TOC active state
+  const tocLinks = document.querySelectorAll('.toc a');
+  const sections = [...tocLinks].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY + 140;
+    let activeIdx = 0;
+    sections.forEach((s, i) => { if (s.offsetTop <= y) activeIdx = i; });
+    tocLinks.forEach((a,i) => a.classList.toggle('active', i === activeIdx));
+  });
+
+  // -------- Before/after tabs --------
+  function switchPanel(which) {
+    document.querySelectorAll('.compare-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.panel === which);
+    });
+    document.querySelectorAll('.compare-panel').forEach(p => {
+      p.classList.toggle('active', p.id === 'panel-' + which);
+    });
+  }
+
+  // -------- Quiz --------
+  const totalQuestions = 3;
+  let currentQ = 0;
+  let answers = [null, null, null];
+  let answered = [false, false, false];
+  let attemptCount = 0;
+
+  const questionBank = [
+    {
+      id: 1,
+      text: "According to this lesson, what's the root cause of most generic-sounding AI output?",
+      options: [
+        { text: "The AI tool you're using isn't powerful enough.", correct: false },
+        { text: "You haven't given the model enough context — it's producing the average of every similar piece of text it's ever seen.", correct: true },
+        { text: "You should be paying for the premium version.", correct: false },
+        { text: "Modern LLMs can't produce anything distinctive — that's a known limitation.", correct: false }
+      ],
+      explanation: "Generic in, generic out. With a bare prompt, the model has nothing to pin its predictions to, so it averages across every similar text it's seen. The fix isn't a better tool — it's more context."
+    },
+    {
+      id: 2,
+      text: 'The lesson lists four ingredients of context. Which set is closest to the four?',
+      options: [
+        { text: "Word count, format, language, deadline.", correct: false },
+        { text: "Who you are, who it's for, the tone or voice, the specifics of the task.", correct: true },
+        { text: "Your API key, your account tier, your country, your language.", correct: false },
+        { text: "Model name, temperature, maximum tokens, system message.", correct: false }
+      ],
+      explanation: "Who you are, who it's for, the tone, and the task specifics. Any task where the output needs to sound like you or land with your audience needs at least three of these four."
+    },
+    {
+      id: 3,
+      text: "You've used the same AI to write two product descriptions. The first is forgettable; the second sounds exactly like your brand. Based on this lesson, what most likely changed?",
+      options: [
+        { text: "The AI model quietly updated itself between the two prompts.", correct: false },
+        { text: "The second prompt contained enough context — who you are, who it's for, the tone, the product specifics — for the model to produce something tailored.", correct: true },
+        { text: "You used a cleverer technical prompting trick the second time.", correct: false },
+        { text: "The second one used a different, better model under the hood.", correct: false }
+      ],
+      explanation: "Same model, different prompt. Once the model has audience, voice, and detail to work with, its predictions pull toward something specific instead of the generic average. That's the whole lesson in one example."
+    },
+    {
+      id: 4,
+      text: 'Based on this lesson, which statement is most accurate?',
+      options: [
+        { text: "Prompting technique matters more than context.", correct: false },
+        { text: "Context is the meal; technique is the sprinkle on top. Without context, technique can only do so much.", correct: true },
+        { text: "Technique and context are unrelated — use whichever fits your mood.", correct: false },
+        { text: "Only paying users need to worry about context — free tiers handle it automatically.", correct: false }
+      ],
+      explanation: "Prompting patterns can structure your prompts usefully, but they're a multiplier on whatever context you've given the model. No context, no magic technique can save the output."
+    },
+    {
+      id: 5,
+      text: "A colleague complains: 'I've tried every prompting trick I've read about and ChatGPT still writes like a brochure.' Based on this lesson, what's the likeliest issue?",
+      options: [
+        { text: "They need to buy a different AI tool.", correct: false },
+        { text: "The tricks are loading technique onto prompts that still contain almost no context about who they are, who it's for, or what tone they need.", correct: true },
+        { text: "ChatGPT is simply incapable of producing anything but brochure writing.", correct: false },
+        { text: "They need to upgrade to the paid tier.", correct: false }
+      ],
+      explanation: "Clever techniques on top of no context produce slightly better generic output. The fix almost always sits in the four ingredients — not in discovering one more prompting trick."
+    },
+    {
+      id: 6,
+      text: 'Which of these prompts is most likely to produce a specific, on-brand output?',
+      options: [
+        { text: "\"Write a LinkedIn post about productivity.\"", correct: false },
+        { text: "\"I'm a solo accountant working with small UK hospitality businesses. My voice is plain and practical. Write a 120-word LinkedIn post arguing that chasing late invoices is a leadership problem, not a chasing problem.\"", correct: true },
+        { text: "\"Write a LinkedIn post — make it powerful, engaging, and optimised for reach.\"", correct: false },
+        { text: "\"Write a LinkedIn post. Use three hashtags. Be creative.\"", correct: false }
+      ],
+      explanation: "Option B hits all four ingredients: who you are (solo accountant, hospitality clients), voice (plain and practical), audience (implicit from the business), and specifics (120 words, exact angle). The others load adjectives onto a bare prompt."
+    },
+    {
+      id: 7,
+      text: "Why does the lesson call this the most useful skill in the course?",
+      options: [
+        { text: "Because it replaces every other AI skill you'd ever need.", correct: false },
+        { text: "Because everything else in the course — prompting patterns, judgement, choosing tools — sits on top of context, and without it the other skills don't compound.", correct: true },
+        { text: "Because it's the only skill genuinely unique to AI work.", correct: false },
+        { text: "Because it earns you a better certificate.", correct: false }
+      ],
+      explanation: "Context is the leverage point. Good prompting patterns, better tool choices, and sharper judgement all multiply the value of the context you've supplied — but none of them substitute for it."
+    },
+    {
+      id: 8,
+      text: 'The lesson references "the one-paragraph personal brief" from Lesson 2.2. Why is that brief so useful for prompting?',
+      options: [
+        { text: "It reduces your usage costs.", correct: false },
+        { text: "It's two of the four context ingredients — who you are and the tone you use — ready to paste at the start of any chat.", correct: true },
+        { text: "It unlocks a special AI mode when detected.", correct: false },
+        { text: "It's required by ChatGPT's terms of service for professional use.", correct: false }
+      ],
+      explanation: "The personal brief bakes in two of the four ingredients before you've even started typing the task. Pair it with 'who it's for' and 'the specifics,' and you've got a proper context-loaded prompt in under a minute."
+    }
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function pickQuestions() {
+    if (attemptCount === 0) {
+      const canonical = [1, 2, 3].map(id => questionBank.find(q => q.id === id));
+      return canonical.map(q => ({ ...q, options: q.options.slice() }));
+    }
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  function renderQuestions() {
+    const selected = pickQuestions();
+    const container = document.getElementById('quizQuestions');
+    container.innerHTML = '';
+
+    selected.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  const progressDots = document.querySelectorAll('#quizProgress span');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+
+  renderQuestions();
+
+  function getCards() { return document.querySelectorAll('.q-card'); }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    progressDots.forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < i) d.classList.add('done');
+      else if (idx === i) d.classList.add('active');
+    });
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('quiz').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) { currentQ++; showQuestion(currentQ); }
+    else { showResults(); }
+  }
+  function prevQuestion() {
+    if (currentQ > 0) { currentQ--; showQuestion(currentQ); }
+  }
+
+  function showResults() {
+    getCards().forEach(c => c.classList.remove('active'));
+    document.getElementById('quizNav').style.display = 'none';
+    progressDots.forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+
+    const score = answers.filter(a => a === true).length;
+    document.getElementById('scoreNum').textContent = score;
+
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+    if (score === 3) {
+      title.textContent = 'All three. Module 2 complete.';
+      body.textContent = attemptCount === 0
+        ? "You've got the single most practical skill in the course. One quick 5-question review stands between you and Module 3 — jump into it when you're ready."
+        : "Clean sweep on the retry. Properly sharp on this now.";
+    } else if (score === 2) {
+      title.textContent = 'Close — one to revisit.';
+      body.textContent = "Skim the section you missed. This is the skill everything else in the course builds on.";
+    } else {
+      title.textContent = 'Worth another pass.';
+      body.textContent = "Scroll up, flip through the before/after again, and retry when you're ready. Getting this right changes the rest of the course.";
+    }
+
+    document.getElementById('quizResult').classList.add('show');
+    updateCompletion(score);
+  }
+
+  function resetQuiz() {
+    attemptCount++;
+    currentQ = 0;
+    answers = [null, null, null];
+    answered = [false, false, false];
+    renderQuestions();
+    document.getElementById('quizResult').classList.remove('show');
+    document.getElementById('quizNav').style.display = 'flex';
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Next question →';
+    showQuestion(0);
+  }
+
+  // Action + completion
+  const actionCheck = document.getElementById('actionDone');
+  const statusEl = document.getElementById('completionStatus');
+  function updateCompletion(quizScore) {
+    const quizDone = answered.every(Boolean);
+    const actionDone = actionCheck.checked;
+    const score = quizScore ?? answers.filter(a=>a===true).length;
+    if (quizDone && actionDone && score >= 2) {
+      statusEl.classList.add('complete');
+      statusEl.innerHTML = '<span>✓</span><span>Lesson complete · Module 2 done</span>';
+    } else if (quizDone) {
+      statusEl.innerHTML = '<span>◐</span><span>Quiz done — finish your action</span>';
+    } else if (actionDone) {
+      statusEl.innerHTML = '<span>◐</span><span>Action done — take the quick check</span>';
+    }
+  }
+  actionCheck.addEventListener('change', () => updateCompletion());
+</script>
+
+</body>
+</html>

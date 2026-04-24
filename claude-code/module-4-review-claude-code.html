@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Module 4 review — 5 questions to finish the course | AI Craft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --warn:#F59E0B;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:var(--body);
+    font-size:17px;
+    line-height:1.7;
+    color:var(--text);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* Header */
+  header{
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(8px);
+    background:rgba(255,255,255,.85);
+  }
+  .header-inner{
+    max-width:1100px;margin:0 auto;
+    padding:18px 28px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;
+  }
+  .brand{
+    display:flex;align-items:center;
+    text-decoration:none;
+  }
+  .brand svg{
+    display:block;
+    height:34px;width:auto;
+  }
+  .header-meta{
+    display:flex;align-items:center;gap:20px;
+    font-size:13px;color:var(--text-mute);
+  }
+  .header-meta .sep{opacity:.4}
+  .lesson-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 10px;border-radius:999px;
+    background:var(--mint);color:var(--forest);
+    font-weight:600;font-size:12px;letter-spacing:.02em;
+  }
+  .lesson-badge::before{
+    content:"";width:6px;height:6px;border-radius:50%;
+    background:var(--emerald);
+  }
+
+  main{
+    max-width:760px;margin:0 auto;
+    padding:48px 28px 80px;
+  }
+
+  /* Intro section */
+  .review-meta{
+    display:flex;align-items:center;gap:10px;
+    font-size:13px;color:var(--text-mute);
+    margin-bottom:20px;font-weight:500;
+  }
+  .review-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.review-title{
+    font-family:var(--display);
+    font-weight:500;
+    font-size:clamp(34px,4.8vw,52px);
+    line-height:1.08;
+    letter-spacing:-.02em;
+    color:var(--slate);
+    margin:0 0 20px;
+  }
+  h1.review-title em{font-style:italic;color:var(--forest)}
+  .review-lede{
+    font-family:var(--display);
+    font-size:20px;line-height:1.55;
+    color:var(--text-soft);
+    font-style:italic;
+    padding:0 0 0 20px;
+    border-left:3px solid var(--emerald);
+    margin:28px 0 40px;
+  }
+
+  /* Recap cards */
+  .recap-label{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);margin:0 0 14px;
+  }
+  .recap-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);
+    gap:14px;margin:0 0 44px;
+  }
+  @media (max-width:700px){.recap-grid{grid-template-columns:1fr}}
+  .recap-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px 20px;
+    position:relative;
+  }
+  .recap-num{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;color:var(--emerald);
+    letter-spacing:.04em;margin-bottom:6px;
+  }
+  .recap-title{
+    font-family:var(--display);font-weight:600;
+    font-size:15.5px;color:var(--slate);line-height:1.3;
+    margin:0 0 8px;
+  }
+  .recap-summary{
+    font-size:13.5px;color:var(--text-soft);
+    line-height:1.55;margin:0;
+  }
+
+  /* Quiz shell */
+  .quiz{
+    padding:36px 36px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+  }
+  @media (max-width:600px){.quiz{padding:28px 22px}}
+
+  .quiz-header-row{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  .quiz-eyebrow{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);font-weight:700;
+  }
+  .quiz-rule{
+    font-size:12.5px;color:var(--text-mute);
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .quiz-rule strong{color:var(--forest);font-weight:600}
+  .quiz-title{
+    font-family:var(--display);font-weight:600;
+    font-size:26px;line-height:1.2;
+    color:var(--slate);margin:4px 0 8px;letter-spacing:-.01em;
+  }
+  .quiz-sub{color:var(--text-mute);margin:0 0 24px;font-size:15px}
+
+  .quiz-progress{
+    display:flex;gap:6px;margin-bottom:28px;
+  }
+  .quiz-progress span{
+    flex:1;height:4px;border-radius:2px;
+    background:var(--border);transition:background .3s;
+  }
+  .quiz-progress span.done{background:var(--emerald)}
+  .quiz-progress span.active{background:var(--forest)}
+
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(6px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .q-number{
+    font-family:var(--display);font-size:13px;color:var(--text-mute);
+    font-weight:500;letter-spacing:.04em;margin-bottom:8px;
+  }
+  .q-text{
+    font-family:var(--display);font-weight:500;
+    font-size:21px;line-height:1.4;color:var(--slate);
+    margin:0 0 24px;letter-spacing:-.005em;
+  }
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:16px 18px;
+    border:1.5px solid var(--border);
+    border-radius:10px;
+    cursor:pointer;
+    transition:all .2s;
+    background:var(--card);
+    font-size:15.5px;line-height:1.5;
+  }
+  .option:hover:not(.disabled){
+    border-color:var(--emerald);
+    background:var(--mint-soft);
+  }
+  .option.disabled{cursor:default}
+  .option-letter{
+    width:26px;height:26px;border-radius:7px;
+    background:var(--border-soft);color:var(--text-soft);
+    display:grid;place-items:center;
+    font-weight:700;font-size:13px;flex-shrink:0;
+    transition:all .2s;font-family:var(--display);
+  }
+  .option:hover:not(.disabled) .option-letter{
+    background:var(--emerald);color:#fff;
+  }
+  .option.correct{
+    border-color:var(--success);
+    background:#F0FDF4;
+  }
+  .option.correct .option-letter{
+    background:var(--success);color:#fff;
+  }
+  .option.incorrect{
+    border-color:var(--error);
+    background:#FEF2F2;
+  }
+  .option.incorrect .option-letter{
+    background:var(--error);color:#fff;
+  }
+  .option-check{
+    margin-left:auto;opacity:0;transition:opacity .2s;
+    font-size:20px;line-height:1;
+  }
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+
+  .explanation{
+    display:none;
+    margin-top:20px;padding:18px 20px;
+    border-radius:10px;
+    background:var(--mint-soft);
+    border-left:3px solid var(--emerald);
+    font-size:15px;line-height:1.6;color:var(--forest);
+  }
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{
+    display:block;
+    font-family:var(--display);font-size:13px;
+    letter-spacing:.1em;text-transform:uppercase;
+    color:var(--forest);margin-bottom:6px;
+  }
+  .explanation.wrong{
+    background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D;
+  }
+  .explanation.wrong strong{color:#7F1D1D}
+  .explanation .ref{
+    font-family:var(--body);font-size:12.5px;letter-spacing:0;
+    color:var(--text-mute);text-transform:none;font-weight:500;
+    margin-top:8px;display:block;
+  }
+
+  .quiz-nav{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:24px;gap:12px;
+  }
+  .btn{
+    border:0;cursor:pointer;font-family:var(--body);
+    font-weight:600;font-size:14.5px;
+    padding:11px 22px;border-radius:8px;
+    transition:all .18s;
+    display:inline-flex;align-items:center;gap:8px;
+    text-decoration:none;
+  }
+  .btn-primary{
+    background:var(--forest);color:#fff;
+  }
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{
+    background:var(--border);color:var(--text-mute);
+    cursor:not-allowed;transform:none;
+  }
+  .btn-ghost{
+    background:transparent;color:var(--text-mute);
+  }
+  .btn-ghost:hover{color:var(--forest)}
+  .btn-big{padding:14px 28px;font-size:15px}
+
+  /* Results */
+  .quiz-result{display:none}
+  .quiz-result.show{display:block;animation:fadeIn .4s ease}
+
+  .result-hero{
+    text-align:center;padding:16px 0 8px;
+  }
+  .result-score-wrap{
+    display:inline-flex;align-items:baseline;
+    gap:6px;
+    margin-bottom:10px;
+  }
+  .result-score{
+    font-family:var(--display);font-weight:500;
+    font-size:84px;line-height:1;
+    letter-spacing:-.03em;
+  }
+  .result-score-total{
+    font-family:var(--display);
+    font-size:36px;color:var(--text-mute);
+    font-weight:500;
+  }
+  .result-percent{
+    font-family:var(--body);
+    font-size:14px;color:var(--text-mute);
+    margin:0 0 6px;
+  }
+  .result-status{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 14px;border-radius:999px;
+    font-size:13px;font-weight:600;letter-spacing:.02em;
+    margin-bottom:16px;
+  }
+  .result-status.pass{background:var(--mint);color:var(--forest)}
+  .result-status.fail{background:#FEF2F2;color:var(--error)}
+
+  .result-title{
+    font-family:var(--display);font-weight:600;
+    font-size:26px;color:var(--slate);
+    margin:0 0 10px;letter-spacing:-.01em;
+  }
+  .result-body{
+    color:var(--text-soft);margin:0 auto 28px;max-width:480px;
+    font-size:15.5px;line-height:1.65;
+  }
+
+  .result-score.pass{color:var(--forest)}
+  .result-score.fail{color:var(--error)}
+
+  /* Per-question breakdown */
+  .breakdown{
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    margin:8px 0 28px;
+    background:var(--card);
+  }
+  .breakdown-title{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);
+    padding:14px 20px;
+    border-bottom:1px solid var(--border);
+    background:var(--bg);
+  }
+  .breakdown-row{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    gap:12px;align-items:center;
+    padding:12px 20px;
+    border-top:1px solid var(--border-soft);
+    font-size:14px;
+  }
+  .breakdown-row:first-of-type{border-top:0}
+  .breakdown-num{
+    font-family:var(--display);font-weight:600;
+    color:var(--text-mute);font-size:13px;
+    min-width:22px;
+  }
+  .breakdown-text{
+    color:var(--text);line-height:1.4;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .breakdown-status{
+    font-size:13px;font-weight:600;
+    display:inline-flex;align-items:center;gap:4px;
+  }
+  .breakdown-status.ok{color:var(--success)}
+  .breakdown-status.no{color:var(--error)}
+
+  .result-actions{
+    display:flex;gap:10px;justify-content:center;
+    flex-wrap:wrap;
+  }
+
+  /* Course-completion celebration (shown only on pass) */
+  .course-done{
+    display:none;
+    margin-top:32px;
+    padding:32px 32px 28px;
+    background:linear-gradient(135deg,#0F172A 0%,#065F46 100%);
+    border-radius:20px;
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+  }
+  .course-done.show{display:block;animation:fadeIn .4s ease}
+  @media (max-width:600px){.course-done{padding:26px 24px 24px}}
+  .course-done::before{
+    content:"";position:absolute;
+    top:-60px;right:-60px;
+    width:260px;height:260px;border-radius:50%;
+    background:radial-gradient(circle,rgba(16,185,129,.22),transparent 65%);
+    pointer-events:none;
+  }
+  .course-done::after{
+    content:"";position:absolute;
+    bottom:-80px;left:-80px;
+    width:280px;height:280px;border-radius:50%;
+    background:radial-gradient(circle,rgba(16,185,129,.14),transparent 70%);
+    pointer-events:none;
+  }
+  .course-done-inner{position:relative;z-index:2}
+  .course-done-mark{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 14px;border-radius:999px;
+    background:rgba(16,185,129,.2);
+    color:#A7F3D0;
+    font-family:var(--display);font-weight:700;
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    margin-bottom:16px;
+  }
+  .course-done-mark::before{
+    content:"✓";font-size:13px;color:var(--emerald);font-weight:700;
+  }
+  .course-done h3{
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(26px,3.8vw,36px);line-height:1.1;
+    margin:0 0 14px;letter-spacing:-.02em;color:#fff;
+  }
+  .course-done h3 em{font-style:italic;color:#A7F3D0}
+  .course-done p{
+    font-size:16px;line-height:1.65;color:#CBD5E1;
+    margin:0 0 20px;max-width:520px;
+  }
+  .course-done p strong{color:#fff}
+  .course-done-cta{
+    display:flex;gap:12px;flex-wrap:wrap;margin-top:4px;
+  }
+  .course-done-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:12px 22px;border-radius:10px;
+    font-family:var(--body);font-weight:600;font-size:14.5px;
+    text-decoration:none;
+    transition:all .2s;
+  }
+  .course-done-btn.primary{
+    background:var(--emerald);color:#0F172A;
+  }
+  .course-done-btn.primary:hover{
+    background:#A7F3D0;transform:translateY(-1px);
+  }
+  .course-done-btn.secondary{
+    background:rgba(255,255,255,.1);
+    color:#fff;
+    border:1px solid rgba(255,255,255,.2);
+  }
+  .course-done-btn.secondary:hover{
+    background:rgba(255,255,255,.15);
+    border-color:rgba(255,255,255,.3);
+  }
+
+  /* Footer nav */
+  .bottom-nav{
+    margin-top:32px;
+    padding-top:24px;border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:center;
+    gap:16px;flex-wrap:wrap;
+  }
+  .nav-back{
+    display:inline-flex;align-items:center;gap:8px;
+    color:var(--text-mute);font-size:14px;
+    text-decoration:none;
+  }
+  .nav-back:hover{color:var(--forest)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AI Craft Learning">
+      <svg viewBox="-10 0 430 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="lesson-badge">Module 4 · Review</span>
+      <span class="sep">·</span>
+      <span>5 questions</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div id="introScreen">
+    <div class="review-meta">
+      <span>Claude Code: Setup, Workflow &amp; Mastery</span>
+      <span class="dot"></span>
+      <span>The final module review</span>
+    </div>
+
+    <h1 class="review-title">Module 4 <em>review</em></h1>
+    <p class="review-lede">The last stretch. Five questions across the four mastery lessons — skills, scheduling, tool fit, and the 30-day plan. Pass this and the course is yours.</p>
+
+    <p class="recap-label">Quick recap of what you've covered</p>
+    <div class="recap-grid">
+      <div class="recap-card">
+        <div class="recap-num">Lesson 4.1</div>
+        <h3 class="recap-title">Skills — workflows as shortcuts</h3>
+        <p class="recap-summary">Facts in CLAUDE.md. Procedures in skills. Three repeats is the promotion threshold; a skill is a folder with one file.</p>
+      </div>
+      <div class="recap-card">
+        <div class="recap-num">Lesson 4.2</div>
+        <h3 class="recap-title">Scheduling Claude Code</h3>
+        <p class="recap-summary">Three options: /loop, Desktop tasks, Cloud routines. The three Rs: reversible, reviewable, recurring. Schedule skills, not prompts.</p>
+      </div>
+      <div class="recap-card">
+        <div class="recap-num">Lesson 4.3</div>
+        <h3 class="recap-title">When Claude Code is the wrong tool</h3>
+        <p class="recap-summary">Wrong shape, wrong stakes, wrong moment. Three-question self-check before every new task.</p>
+      </div>
+      <div class="recap-card">
+        <div class="recap-num">Lesson 4.4</div>
+        <h3 class="recap-title">Your 30-day plan</h3>
+        <p class="recap-summary">15 minutes daily for a month. Four weeks: foundations → one workflow → scale → skills and schedule.</p>
+      </div>
+    </div>
+
+    <section class="quiz">
+      <div class="quiz-header-row">
+        <span class="quiz-eyebrow">Module 4 quiz</span>
+        <span class="quiz-rule">Pass mark · <strong>60% (3 of 5)</strong> · unlimited retries</span>
+      </div>
+      <h2 class="quiz-title">Last five questions</h2>
+      <p class="quiz-sub">You've made it to the end. Answer these cleanly and the course is finished.</p>
+      <button class="btn btn-primary btn-big" onclick="startQuiz()">Start the final review →</button>
+    </section>
+  </div>
+
+  <!-- Quiz screen -->
+  <section class="quiz" id="quizScreen" style="display:none">
+    <div class="quiz-header-row">
+      <span class="quiz-eyebrow" id="quizEyebrow">Module 4 quiz</span>
+      <span class="quiz-rule">Pass mark · <strong>60% (3 of 5)</strong></span>
+    </div>
+
+    <div class="quiz-progress" id="quizProgress">
+      <span class="active"></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div id="quizQuestions"></div>
+
+    <!-- Results area -->
+    <div class="quiz-result" id="quizResult">
+      <div class="result-hero">
+        <div class="result-score-wrap">
+          <span class="result-score" id="scoreNum">0</span>
+          <span class="result-score-total">/5</span>
+        </div>
+        <p class="result-percent" id="scorePercent">0%</p>
+        <div class="result-status pass" id="resultStatus">
+          <span>✓</span><span id="resultStatusText">Passed</span>
+        </div>
+        <h3 class="result-title" id="resultTitle">Module 4 complete</h3>
+        <p class="result-body" id="resultBody">All four modules finished. A real working grasp of Claude Code for business work is genuinely meaningful — most people haven't got there yet.</p>
+      </div>
+
+      <div class="breakdown" id="breakdown">
+        <div class="breakdown-title">Your answers</div>
+        <!-- populated dynamically -->
+      </div>
+
+      <div class="result-actions" id="resultActions">
+        <!-- populated dynamically based on pass/fail -->
+      </div>
+
+      <!-- Course completion celebration, only shown on pass -->
+      <div class="course-done" id="courseDone">
+        <div class="course-done-inner">
+          <span class="course-done-mark">Course complete</span>
+          <h3>The whole course, <em>done.</em></h3>
+          <p>Four modules, fourteen lessons, a 30-day plan waiting in your calendar. You've got everything you need to turn Claude Code from "a thing I heard about" into "something that quietly runs a chunk of my week." <strong>Start Week 1, Day 1 tomorrow.</strong></p>
+          <div class="course-done-cta">
+            <a href="lesson-4-4-claude-code.html#section-2" class="course-done-btn primary">Revisit Week 1 →</a>
+            <a href="#" class="course-done-btn secondary">Explore AIOS</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-nav" id="quizNav">
+      <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+    </div>
+  </section>
+
+  <div class="bottom-nav">
+    <a href="lesson-4-4-claude-code.html" class="nav-back">← Back to Lesson 4.4</a>
+    <span style="font-size:13px;color:var(--text-mute)">Module 4 of 4 · The end</span>
+  </div>
+</main>
+
+<script>
+  const PASS_THRESHOLD = 0.6; // 60%
+  const totalQuestions = 5;
+  let currentQ = 0;
+  let answers = new Array(totalQuestions).fill(null);
+  let answered = new Array(totalQuestions).fill(false);
+  let attemptCount = 0;
+  let selectedQuestions = [];
+
+  // ---------- QUESTION BANK ----------
+  // 8 questions covering Module 4. Canonical 5 chosen to span all four lessons.
+  const questionBank = [
+    {
+      id: 1,
+      text: "You've been running the same invoice-processing prompt four weeks in a row. Every Friday you scroll back to find last month's version. Based on Module 4, what's the right next move?",
+      ref: 'Lesson 4.1',
+      options: [
+        { text: "Keep doing it — eventually you'll memorise the prompt.", correct: false },
+        { text: "Paste the prompt into a Google Doc for easy copy-paste.", correct: false },
+        { text: "Promote it to a skill at ~/.claude/skills/process-invoices/SKILL.md. Two-line header, your instructions, save. From now on it runs from /process-invoices or from a natural-language request like 'sort out this month's invoices.' Facts go in CLAUDE.md, procedures go in skills.", correct: true },
+        { text: "Switch to doing it manually — simpler to track.", correct: false }
+      ],
+      explanation: "Classic skill-promotion moment. Three repeats is the graduation threshold; four is past due. Scrolling back to find old prompts is one of the core 'graduation signals' from Lesson 4.1. The skill turns a 150-word prompt into a slash-command, and now you can update the workflow by editing the SKILL.md rather than rewriting the prompt every month."
+    },
+    {
+      id: 2,
+      text: "You're thinking of scheduling a Claude Code workflow to run every Monday morning. Based on Module 4, which of these is the BEST candidate?",
+      ref: 'Lessons 4.2, 4.3',
+      options: [
+        { text: "A task that sends automatic client emails based on project status.", correct: false },
+        { text: "A /research-sources skill that reads last week's customer feedback and produces a weekly-themes.md report in your outputs folder — ready to read with your first coffee.", correct: true },
+        { text: "A one-off 'remind me Thursday at 3pm to call Sarah' reminder.", correct: false },
+        { text: "A task that writes to a folder you rarely open.", correct: false }
+      ],
+      explanation: "The three-R test, applied. Reversible (produces a report, doesn't contact anyone). Reviewable (lands as a file you'll see on Monday morning). Recurring (weekly rhythm earns the setup). Automated emails fail on 'reversible' — one misfire damages a real relationship. One-offs belong in a calendar. Output nobody checks is digital compost."
+    },
+    {
+      id: 3,
+      text: "A client asks you to write a heartfelt apology for a mistake your team made. You've got a well-tuned voice folder and a /draft-posts skill. Based on Module 4, what should you do?",
+      ref: 'Lesson 4.3',
+      options: [
+        { text: "Run the voice-matched drafting skill — it'll sound just like you.", correct: false },
+        { text: "Write it yourself, even if it's rougher. Difficult personal messages sit in the 'wrong moment' category — the human care in the message is the entire point, and people can tell the difference between words you chose and words an AI chose for you.", correct: true },
+        { text: "Let the skill write a draft, polish it with Claude, then send.", correct: false },
+        { text: "Schedule the apology to send at a time the client is most likely to read it.", correct: false }
+      ],
+      explanation: "Lesson 4.3's 'wrong moment' category, straight up. The point of an apology isn't the prose — it's the fact that you wrote it. Even a rougher version in your own words lands better than a polished AI version. Use Claude for the work around the relationship; keep the relationship itself firmly in your hands."
+    },
+    {
+      id: 4,
+      text: "You want to actually use Claude Code after the course, not just know about it. Based on Module 4's 30-day plan, what's the recommended commitment?",
+      ref: 'Lesson 4.4',
+      options: [
+        { text: "A 3-hour session every weekend — serious skills need real time.", correct: false },
+        { text: "15 minutes a day, most days, for four weeks. Week 1 foundations, Week 2 one real workflow, Week 3 scale to 3-4 workflows, Week 4 promote the best to skills and schedule one.", correct: true },
+        { text: "A 2-hour daily practice until it becomes second nature.", correct: false },
+        { text: "Whenever inspiration strikes — don't force a schedule.", correct: false }
+      ],
+      explanation: "Fifteen minutes repeated twenty-five times beats three hours repeated never. Small and daily is the only shape that survives normal working life. The four-week arc mirrors the course modules — so you're applying what you already know rather than learning new material while also finding time to use the tool."
+    },
+    {
+      id: 5,
+      text: "Why does Module 4 describe 'skills plus schedules' as the moment Claude Code becomes 'a real assistant' rather than 'a tool you use'?",
+      ref: 'Lessons 4.1, 4.2',
+      options: [
+        { text: "Because only skills and schedules cost extra — everything before was a trial.", correct: false },
+        { text: "Because a skill turns your workflow into a one-line shortcut, and scheduling means that shortcut fires itself at the right time — the output is waiting when you sit down, without you having to remember, invoke, or run anything. That combination is actual automation.", correct: true },
+        { text: "Because skills require scheduling to work.", correct: false },
+        { text: "Because schedules always run on Anthropic's servers.", correct: false }
+      ],
+      explanation: "The progression across Module 4: prompts → skills (a shortcut you invoke) → scheduled skills (fires itself). Without the scheduling step, you still have to remember to run the thing. With it, you don't. That's the difference between 'a tool I use' and 'a small system quietly running in the background of my week' — and it's where the month's time savings compound into something you actually feel."
+    },
+    {
+      id: 6,
+      text: "Claude extracted 12 financial figures from client PDFs for the quarterly board report. Based on Module 4, what should you do before quoting them?",
+      ref: 'Lesson 4.3',
+      options: [
+        { text: "Nothing — Claude is accurate enough to trust on extraction.", correct: false },
+        { text: "Spot-check 3-4 of the key figures against the source PDFs. Financial figures for a client-facing report sit in the 'wrong stakes' zone for blind trust — a plausible-but-wrong number quoted to a board is a real reputational risk.", correct: true },
+        { text: "Re-run the extraction to see if the numbers come back identical.", correct: false },
+        { text: "Only quote figures you can remember off the top of your head.", correct: false }
+      ],
+      explanation: "The 10-minute spot-check from Lesson 3.3, applied at Module 4's 'wrong stakes' level. Open the source files, confirm three or four of the numbers that matter. Trust the rest. Takes ten minutes; prevents a quiet career-damaging moment when someone in the meeting queries a figure you can't defend."
+    },
+    {
+      id: 7,
+      text: "You're four days into your 30-day plan and you miss three days in a row because of a bad work week. Based on Module 4, what's the right response?",
+      ref: 'Lesson 4.4',
+      options: [
+        { text: "Give up — you've already broken the habit.", correct: false },
+        { text: "Restart from Day 1 next Monday — a clean reset.", correct: false },
+        { text: "Drop to the minimum viable action — open Claude Code in one existing project, type anything, close. Momentum restored in 60 seconds. Then pick up where you left off. The plan moves; you don't.", correct: true },
+        { text: "Cram all three missed days into one weekend binge to catch up.", correct: false }
+      ],
+      explanation: "The bad-day protocol is the part of the plan that actually makes it survive reality. Missed days are normal; shame kills habits more than lost time does. The minimum viable action is deliberately tiny — 60 seconds of contact with the tool — because that's enough to restore the pattern without triggering the 'I've already broken it, forget it' response."
+    },
+    {
+      id: 8,
+      text: "You want a skill that's available across every project on your machine — the classic workhorse /clean-csv or /draft-posts. Based on Module 4, where should its SKILL.md live?",
+      ref: 'Lesson 4.1',
+      options: [
+        { text: "In the root of every project folder you care about.", correct: false },
+        { text: "At ~/.claude/skills/&lt;skill-name&gt;/SKILL.md — the personal skills location, available in every project on your machine.", correct: true },
+        { text: "On Anthropic's servers, uploaded via a special portal.", correct: false },
+        { text: "Inside the Claude Code application files.", correct: false }
+      ],
+      explanation: "Personal skills at ~/.claude/skills/ are available everywhere, which is what you want for workhorses like /clean-csv. Project skills (.claude/skills/ inside a specific project folder) are better for client-specific workflows like /richardson-weekly-update. Personal is the right default for almost all solo business users."
+    }
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function pickQuestions() {
+    if (attemptCount === 0) {
+      // First attempt: canonical 5 questions in order
+      const canonical = [1, 2, 3, 4, 5].map(id => questionBank.find(q => q.id === id));
+      return canonical.map(q => ({ ...q, options: q.options.slice() }));
+    }
+    // Retries: shuffle bank, pick 5, shuffle options within each
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  function renderQuestions() {
+    selectedQuestions = pickQuestions();
+    const container = document.getElementById('quizQuestions');
+    container.innerHTML = '';
+
+    selectedQuestions.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+          <span class="ref">Covered in ${q.ref}</span>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  const progressDots = document.querySelectorAll('#quizProgress span');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+
+  function startQuiz() {
+    document.getElementById('introScreen').style.display = 'none';
+    document.getElementById('quizScreen').style.display = 'block';
+    renderQuestions();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function getCards() {
+    return document.querySelectorAll('.q-card');
+  }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    progressDots.forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < i) d.classList.add('done');
+      else if (idx === i) d.classList.add('active');
+    });
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('quizScreen').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) {
+      currentQ++;
+      showQuestion(currentQ);
+    } else {
+      showResults();
+    }
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) {
+      currentQ--;
+      showQuestion(currentQ);
+    }
+  }
+
+  function showResults() {
+    getCards().forEach(c => c.classList.remove('active'));
+    document.getElementById('quizNav').style.display = 'none';
+    progressDots.forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+
+    const score = answers.filter(a => a === true).length;
+    const pct = Math.round((score / totalQuestions) * 100);
+    const passed = (score / totalQuestions) >= PASS_THRESHOLD;
+
+    // Score display
+    const scoreEl = document.getElementById('scoreNum');
+    scoreEl.textContent = score;
+    scoreEl.classList.toggle('pass', passed);
+    scoreEl.classList.toggle('fail', !passed);
+    document.getElementById('scorePercent').textContent = pct + '%';
+
+    // Status pill
+    const statusEl = document.getElementById('resultStatus');
+    const statusText = document.getElementById('resultStatusText');
+    statusEl.classList.toggle('pass', passed);
+    statusEl.classList.toggle('fail', !passed);
+    statusEl.querySelector('span:first-child').textContent = passed ? '✓' : '✕';
+    statusText.textContent = passed ? 'Course complete' : 'Not quite there yet';
+
+    // Title + body copy
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+
+    if (passed && score === 5) {
+      title.textContent = 'Five for five. Course done.';
+      body.textContent = "Clean run on the final module. You've got skills, scheduling, the three-category wrong-tool self-check, and a 30-day plan. Below — the course completion, and Week 1, Day 1 waiting.";
+    } else if (passed) {
+      title.textContent = 'Nicely done — course complete.';
+      body.textContent = `You scored ${score} out of 5 — above the 60% pass mark. Have a quick look at the questions you missed below, then scroll down for the course wrap.`;
+    } else if (score === 2) {
+      title.textContent = 'Close — one more correct answer and you\'re through.';
+      body.textContent = 'You need 3 out of 5 to finish the course. Review the questions you missed, skim the relevant lessons, and try again when you\'re ready. No limits on retries.';
+    } else {
+      title.textContent = 'Worth another pass through Module 4.';
+      body.textContent = 'You need 3 out of 5 to finish. The review below shows which ideas to go back to — the lesson references will point you straight to them.';
+    }
+
+    // Breakdown
+    const breakdown = document.getElementById('breakdown');
+    breakdown.querySelectorAll('.breakdown-row').forEach(r => r.remove());
+    selectedQuestions.forEach((q, i) => {
+      const row = document.createElement('div');
+      row.className = 'breakdown-row';
+      const ok = answers[i] === true;
+      const shortText = q.text.length > 70 ? q.text.slice(0, 68) + '…' : q.text;
+      row.innerHTML = `
+        <span class="breakdown-num">Q${i+1}</span>
+        <span class="breakdown-text" title="${q.text.replace(/"/g,'&quot;')}">${shortText}</span>
+        <span class="breakdown-status ${ok ? 'ok' : 'no'}">${ok ? '✓ Correct' : '✕ Missed'}</span>
+      `;
+      breakdown.appendChild(row);
+    });
+
+    // Actions
+    const actions = document.getElementById('resultActions');
+    const courseDone = document.getElementById('courseDone');
+    if (passed) {
+      actions.innerHTML = `
+        <button class="btn btn-ghost" onclick="resetQuiz()">↻ Retake the quiz</button>
+      `;
+      courseDone.classList.add('show');
+    } else {
+      actions.innerHTML = `
+        <button class="btn btn-primary btn-big" onclick="resetQuiz()">↻ Retake the quiz</button>
+        <a href="lesson-4-1-claude-code.html" class="btn btn-ghost">Revisit Lesson 4.1</a>
+        <a href="lesson-4-2-claude-code.html" class="btn btn-ghost">Revisit Lesson 4.2</a>
+        <a href="lesson-4-3-claude-code.html" class="btn btn-ghost">Revisit Lesson 4.3</a>
+        <a href="lesson-4-4-claude-code.html" class="btn btn-ghost">Revisit Lesson 4.4</a>
+      `;
+      courseDone.classList.remove('show');
+    }
+
+    document.getElementById('quizResult').classList.add('show');
+    document.getElementById('quizResult').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function resetQuiz() {
+    attemptCount++;
+    currentQ = 0;
+    answers = new Array(totalQuestions).fill(null);
+    answered = new Array(totalQuestions).fill(false);
+
+    renderQuestions();
+
+    document.getElementById('quizResult').classList.remove('show');
+    document.getElementById('courseDone').classList.remove('show');
+    document.getElementById('quizNav').style.display = 'flex';
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Next question →';
+    showQuestion(0);
+  }
+</script>
+
+</body>
+</html>

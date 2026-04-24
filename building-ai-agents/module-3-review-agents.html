@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Module 3 review | AICraft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--body);font-size:17px;line-height:1.7;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+
+  header{border-bottom:1px solid var(--border);background:var(--card);position:sticky;top:0;z-index:50;backdrop-filter:blur(8px);background:rgba(255,255,255,.85)}
+  .header-inner{max-width:1100px;margin:0 auto;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:inline-flex;align-items:center;text-decoration:none;transition:opacity .15s}
+  .brand:hover{opacity:.85}
+  .brand-logo{height:36px;width:auto;display:block}
+  .header-meta{display:flex;align-items:center;gap:20px;font-size:13px;color:var(--text-mute)}
+  .header-meta .sep{opacity:.4}
+  .lesson-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--mint);color:var(--forest);font-weight:600;font-size:12px;letter-spacing:.02em}
+  .lesson-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald)}
+
+  main{max-width:760px;margin:0 auto;padding:56px 28px 80px}
+
+  .review-meta{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-mute);margin-bottom:16px;font-weight:500}
+  .review-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.review-title{font-family:var(--display);font-weight:500;font-size:clamp(34px,4.6vw,48px);line-height:1.08;letter-spacing:-.02em;color:var(--slate);margin:0 0 16px}
+  h1.review-title em{font-style:italic;color:var(--forest)}
+
+  .review-lede{font-family:var(--display);font-size:19px;line-height:1.55;color:var(--text-soft);font-style:italic;font-weight:400;padding:0 0 0 20px;border-left:3px solid var(--emerald);margin:12px 0 36px}
+
+  .rules{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:26px 30px;margin:0 0 32px}
+  .rules-title{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute);margin:0 0 18px}
+  .rules-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:18px}
+  @media (max-width:640px){.rules-grid{grid-template-columns:repeat(2, 1fr);gap:20px}}
+  .rule-item-num{font-family:var(--display);font-weight:500;font-size:32px;line-height:1;color:var(--forest);letter-spacing:-.02em;margin-bottom:4px}
+  .rule-item-label{font-size:13px;line-height:1.4;color:var(--text-mute)}
+  .rule-item-label strong{color:var(--slate);font-weight:600;display:block}
+
+  .covered{background:var(--mint-soft);border:1px solid #A7F3D0;border-radius:12px;padding:20px 24px;margin:0 0 36px}
+  .covered-label{font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--forest);margin-bottom:10px}
+  .covered ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+  .covered li{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--text);line-height:1.5}
+  .covered li::before{content:"✓";color:var(--emerald);font-weight:700;flex-shrink:0}
+  .covered li strong{color:var(--slate);font-weight:600}
+
+  .milestone{margin:0 0 32px;padding:20px 24px;background:var(--slate);border-radius:12px;color:#fff;position:relative;overflow:hidden}
+  .milestone::after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.22),transparent 70%);pointer-events:none}
+  .milestone-label{display:inline-block;font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--emerald);margin-bottom:8px;position:relative;z-index:2}
+  .milestone-title{font-family:var(--display);font-weight:600;font-size:17px;line-height:1.35;color:#fff;margin:0 0 4px;position:relative;z-index:2}
+  .milestone-sub{font-size:14px;color:#CBD5E1;margin:0;line-height:1.5;position:relative;z-index:2}
+
+  .start-wrap{text-align:center;padding:12px 0 4px}
+  .btn-start{display:inline-flex;align-items:center;gap:10px;background:var(--forest);color:#fff;font-family:var(--body);font-weight:600;font-size:16px;padding:16px 32px;border-radius:10px;border:0;cursor:pointer;transition:all .18s;letter-spacing:.01em}
+  .btn-start:hover{background:var(--slate);transform:translateY(-1px);box-shadow:0 6px 20px rgba(6,95,70,.18)}
+  .btn-start-hint{display:block;margin-top:10px;font-size:13px;color:var(--text-mute)}
+
+  .review-area{display:none}
+  .review-area.show{display:block;animation:fadeIn .35s ease}
+
+  .progress-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;font-size:13px;color:var(--text-mute);font-weight:500}
+  .progress-header strong{color:var(--slate)}
+
+  .progress-dots{display:flex;gap:6px;margin-bottom:32px}
+  .progress-dots span{flex:1;height:5px;border-radius:3px;background:var(--border);transition:background .3s}
+  .progress-dots span.done{background:var(--emerald)}
+  .progress-dots span.active{background:var(--forest)}
+
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .q-number{font-family:var(--display);font-size:13px;color:var(--text-mute);font-weight:500;letter-spacing:.04em;margin-bottom:10px}
+  .q-text{font-family:var(--display);font-weight:500;font-size:23px;line-height:1.4;color:var(--slate);margin:0 0 28px;letter-spacing:-.005em}
+
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;background:var(--card);font-size:15.5px;line-height:1.5}
+  .option:hover:not(.disabled){border-color:var(--emerald);background:var(--mint-soft)}
+  .option.disabled{cursor:default}
+  .option-letter{width:26px;height:26px;border-radius:7px;background:var(--border-soft);color:var(--text-soft);display:grid;place-items:center;font-weight:700;font-size:13px;flex-shrink:0;transition:all .2s;font-family:var(--display)}
+  .option:hover:not(.disabled) .option-letter{background:var(--emerald);color:#fff}
+  .option.correct{border-color:var(--success);background:#F0FDF4}
+  .option.correct .option-letter{background:var(--success);color:#fff}
+  .option.incorrect{border-color:var(--error);background:#FEF2F2}
+  .option.incorrect .option-letter{background:var(--error);color:#fff}
+  .option-check{margin-left:auto;opacity:0;transition:opacity .2s;font-size:20px;line-height:1}
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+
+  .explanation{display:none;margin-top:20px;padding:18px 20px;border-radius:10px;background:var(--mint-soft);border-left:3px solid var(--emerald);font-size:15px;line-height:1.6;color:var(--forest)}
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{display:block;font-family:var(--display);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--forest);margin-bottom:6px}
+  .explanation.wrong{background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D}
+  .explanation.wrong strong{color:#7F1D1D}
+  .explanation .ref{display:block;margin-top:8px;font-size:12.5px;color:var(--text-mute);font-style:italic;letter-spacing:.01em}
+  .explanation.wrong .ref{color:#9B6262}
+
+  .review-nav{display:flex;justify-content:space-between;align-items:center;margin-top:28px;gap:12px}
+  .btn{border:0;cursor:pointer;font-family:var(--body);font-weight:600;font-size:14.5px;padding:11px 22px;border-radius:8px;transition:all .18s;display:inline-flex;align-items:center;gap:8px}
+  .btn-primary{background:var(--forest);color:#fff}
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{background:var(--border);color:var(--text-mute);cursor:not-allowed;transform:none}
+  .btn-ghost{background:transparent;color:var(--text-mute)}
+  .btn-ghost:hover{color:var(--forest)}
+
+  .result-area{display:none;padding:20px 0 0}
+  .result-area.show{display:block;animation:fadeIn .4s ease}
+
+  .result-card{padding:40px 36px;border-radius:20px;text-align:center;position:relative;overflow:hidden}
+  .result-card.pass{background:linear-gradient(135deg,var(--mint-soft) 0%,var(--mint) 100%);border:1px solid #A7F3D0}
+  .result-card.fail{background:var(--card);border:1px solid var(--border)}
+  .result-card::before{content:"";position:absolute;top:-80px;right:-80px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.22),transparent 70%);pointer-events:none}
+  .result-card.fail::before{background:radial-gradient(circle,rgba(100,116,139,.1),transparent 70%)}
+
+  .result-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px;position:relative;z-index:2}
+  .result-badge.pass{background:var(--forest);color:#fff}
+  .result-badge.fail{background:var(--border-soft);color:var(--text-soft)}
+  .result-badge svg{width:13px;height:13px}
+
+  .score-display{font-family:var(--display);font-weight:500;font-size:88px;line-height:1;color:var(--forest);letter-spacing:-.03em;margin:0 0 4px;position:relative;z-index:2}
+  .score-display span{color:var(--text-mute);font-size:40px}
+
+  .score-label{font-size:13px;color:var(--text-mute);letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:22px;position:relative;z-index:2}
+
+  .result-title{font-family:var(--display);font-weight:600;font-size:28px;line-height:1.25;color:var(--slate);margin:0 0 10px;position:relative;z-index:2;letter-spacing:-.01em}
+  .result-body{font-size:16px;line-height:1.6;color:var(--text-soft);max-width:460px;margin:0 auto 28px;position:relative;z-index:2}
+
+  .result-cta{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:var(--forest);color:#fff;text-decoration:none;font-family:var(--body);font-weight:600;font-size:15.5px;border-radius:10px;transition:all .18s;position:relative;z-index:2}
+  .result-cta:hover{background:var(--slate);transform:translateY(-1px);box-shadow:0 6px 20px rgba(6,95,70,.18)}
+  .result-cta-ghost{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:transparent;color:var(--text-mute);border:0;cursor:pointer;font-family:var(--body);font-weight:600;font-size:14.5px;border-radius:8px;transition:all .18s;position:relative;z-index:2}
+  .result-cta-ghost:hover{color:var(--forest)}
+
+  .result-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;position:relative;z-index:2}
+
+  .breakdown{margin-top:32px;padding:24px 28px;background:var(--card);border:1px solid var(--border);border-radius:12px;text-align:left}
+  .breakdown-title{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute);margin:0 0 14px}
+  .breakdown ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+  .breakdown li{display:flex;gap:12px;align-items:flex-start;font-size:14.5px;line-height:1.55;color:var(--text-soft)}
+  .breakdown li .mark{flex-shrink:0;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:13px;font-weight:700}
+  .breakdown li .mark.right{background:#F0FDF4;color:var(--success)}
+  .breakdown li .mark.wrong{background:#FEF2F2;color:var(--error)}
+  .breakdown li strong{color:var(--slate);font-weight:600}
+
+  .unlocked{margin-top:28px;padding:20px 24px;border-radius:12px;background:var(--slate);color:#fff;display:flex;align-items:center;gap:16px;position:relative;overflow:hidden}
+  .unlocked::after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.25),transparent 70%);pointer-events:none}
+  .unlocked-icon{flex-shrink:0;width:44px;height:44px;border-radius:11px;background:var(--emerald);display:grid;place-items:center;color:#fff;position:relative;z-index:2}
+  .unlocked-icon svg{width:22px;height:22px}
+  .unlocked-text{position:relative;z-index:2}
+  .unlocked-label{font-family:var(--display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--emerald);font-weight:700;margin-bottom:2px}
+  .unlocked-main{font-family:var(--display);font-weight:600;font-size:17px;color:#fff;line-height:1.3}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AICraft Learning — home">
+      <svg class="brand-logo" viewBox="0 0 420 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="lesson-badge">Module 3 · Review</span>
+      <span class="sep">·</span>
+      <span>~7 min</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- START VIEW -->
+  <section id="startView">
+    <div class="review-meta">
+      <span>Building AI Agents &amp; Workflows</span>
+      <span class="dot"></span>
+      <span>Module 3 checkpoint</span>
+    </div>
+
+    <h1 class="review-title">Module 3 review — <em>unlock Module 4</em></h1>
+
+    <p class="review-lede">You've crossed the biggest boundary in this course — from systems that follow instructions to systems that make choices. Five questions now to make sure the judgement behind that move is solid.</p>
+
+    <div class="milestone">
+      <div class="milestone-label">◆ What you've built so far</div>
+      <p class="milestone-title">A research agent with memory and full production guardrails</p>
+      <p class="milestone-sub">Build #2 — weekly competitive intelligence agent with a decision loop, session memory, long-term memory via Sheet lookup, budget caps, action gates, runtime monitoring, and a kill switch shared with Build #1. Module 4's third build inherits this pattern.</p>
+    </div>
+
+    <div class="rules">
+      <div class="rules-title">How this works</div>
+      <div class="rules-grid">
+        <div>
+          <div class="rule-item-num">5</div>
+          <div class="rule-item-label"><strong>Questions</strong>Judgement calls and scenarios</div>
+        </div>
+        <div>
+          <div class="rule-item-num">3/5</div>
+          <div class="rule-item-label"><strong>To pass</strong>60% — unlocks Module 4</div>
+        </div>
+        <div>
+          <div class="rule-item-num">∞</div>
+          <div class="rule-item-label"><strong>Retakes</strong>Unlimited, fresh questions each try</div>
+        </div>
+        <div>
+          <div class="rule-item-num">~7</div>
+          <div class="rule-item-label"><strong>Minutes</strong>A short coffee break</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="covered">
+      <div class="covered-label">What this review covers</div>
+      <ul>
+        <li><strong>Lesson 3.1</strong> — Workflow vs. agent, the three ingredients, the craft-first principle</li>
+        <li><strong>Lesson 3.2</strong> — Build #2: tools, memory sub-node, system prompt, stop conditions</li>
+        <li><strong>Lesson 3.3</strong> — Session memory vs long-term memory, retrieval-before-reasoning</li>
+        <li><strong>Lesson 3.4</strong> — Four-layer guardrails: budget, action, monitoring, kill switch</li>
+      </ul>
+    </div>
+
+    <div class="start-wrap">
+      <button class="btn-start" onclick="startReview()">
+        Start the review →
+      </button>
+      <span class="btn-start-hint">Explanations appear after each answer</span>
+    </div>
+  </section>
+
+  <!-- REVIEW AREA -->
+  <section class="review-area" id="reviewArea">
+    <div class="progress-header">
+      <span>Module 3 review</span>
+      <span>Question <strong id="qCurrent">1</strong> of <strong>5</strong></span>
+    </div>
+
+    <div class="progress-dots" id="progressDots">
+      <span class="active"></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div id="questionsContainer"></div>
+
+    <div class="review-nav" id="reviewNav">
+      <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+    </div>
+  </section>
+
+  <!-- RESULT AREA -->
+  <section class="result-area" id="resultArea">
+    <div class="result-card" id="resultCard">
+      <div class="result-badge" id="resultBadge">
+        <svg viewBox="0 0 20 20" fill="currentColor" id="resultBadgeIcon"></svg>
+        <span id="resultBadgeText"></span>
+      </div>
+      <div class="score-display"><span id="scoreNum">0</span><span>/5</span></div>
+      <div class="score-label" id="scoreLabel">Your score</div>
+      <h2 class="result-title" id="resultTitle"></h2>
+      <p class="result-body" id="resultBody"></p>
+      <div class="result-actions">
+        <a href="#" class="result-cta" id="resultCta"></a>
+        <button class="result-cta-ghost" onclick="resetReview()">↻ Retry review</button>
+      </div>
+    </div>
+
+    <div class="unlocked" id="unlockedBanner" style="display:none">
+      <div class="unlocked-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div class="unlocked-text">
+        <div class="unlocked-label">Module 3 complete</div>
+        <div class="unlocked-main">Module 4 — Beyond building: connecting, scaling, knowing when to stop — is unlocked.</div>
+      </div>
+    </div>
+
+    <div class="breakdown" id="breakdown">
+      <div class="breakdown-title">Question-by-question</div>
+      <ul id="breakdownList"></ul>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  const totalQuestions = 5;
+  let currentQ = 0;
+  let answers = new Array(totalQuestions).fill(null);
+  let answered = new Array(totalQuestions).fill(false);
+  let attemptCount = 0;
+  let currentSelection = [];
+
+  // ---------- QUESTION BANK (10 questions) ----------
+  // Canonical first attempt: ids 1-5 trace the module's arc.
+  // Q1: identify when a task needs an agent (3.1 mental model)
+  // Q2: Build #2 architecture reasoning (3.2)
+  // Q3: diagnose a symptom and pick the memory fix (3.3)
+  // Q4: map a real incident to its preventing guardrail (3.4)
+  // Q5: synthesis across all four — a full deployment scenario
+
+  const questionBank = [
+    {
+      id: 1,
+      ref: 'Lesson 3.1',
+      text: "A colleague is about to automate a task: when a new inbound lead arrives, investigate the company — read their website, check their latest blog post, look at their LinkedIn — and produce a one-paragraph brief tailored to what that specific company seems to care about. Workflow or agent?",
+      options: [
+        { text: "Workflow. Every step can be scripted in advance.", correct: false },
+        { text: "Agent. The path through the research can't be written down in advance — which pages matter depends on what each one reveals. A workflow would require pre-scripting every possible branch, which defeats the point. This is classic agent territory: flexible investigation with multiple tools.", correct: true },
+        { text: "Neither — this task can't be automated at all.", correct: false },
+        { text: "Agent, but only because LinkedIn is involved.", correct: false }
+      ],
+      explanation: "The sticky-note test from Module 1 says: if you can write every step in advance, it's a workflow. Here you can't — what matters on Acme Corp's site is different from what matters on Beta Co's site. The agent's decision loop (reason → search → read → decide next) is exactly what the task needs. The craft-first call from Lesson 3.1 applies: use a workflow where you can, use an agent where you genuinely can't."
+    },
+    {
+      id: 2,
+      ref: 'Lesson 3.2',
+      text: "Build #2 uses a hybrid architecture — a workflow that <em>contains</em> one agent step, rather than being a pure agent end-to-end. The Schedule Trigger, Edit Fields (competitor list), and final Gmail Send are deterministic workflow nodes; only the research step is an agent. Why?",
+      options: [
+        { text: "Pure agents can't send emails in n8n — it's a technical limitation.", correct: false },
+        { text: "The deterministic parts (schedule, competitor list, final email) are predictable and don't need agent reasoning. Using an agent only for the research step — where the path genuinely varies — keeps the bounded parts cheap, reliable, and easy to debug, while getting the agent's flexibility exactly where it's needed. Workflows for the predictable edges, agent for the fuzzy middle.", correct: true },
+        { text: "It makes the workflow faster to run than a pure agent would be.", correct: false },
+        { text: "n8n requires every workflow to start with a non-agent node.", correct: false }
+      ],
+      explanation: "This is the craft-first principle from 3.1 made concrete in 3.2. Industry data puts agent architectures at roughly 10× the cost and debug time of equivalent workflows. Using an agent only where the path can't be scripted keeps you paying that premium in the right place. The schedule, the competitor list, and the email delivery don't need intelligence — so they stay deterministic. The research does need intelligence — so that step is the agent. This hybrid pattern is the one you'll use again for every future agent build."
+    },
+    {
+      id: 3,
+      ref: 'Lesson 3.3',
+      text: "Your research agent has been running for a month. You notice it keeps reporting the same findings — the 'Widget Pro 3 launch' from four weeks ago shows up in every briefing. You want to fix it. What's the right move?",
+      options: [
+        { text: "Upgrade to a bigger LLM — the current model must be forgetting things.", correct: false },
+        { text: "Insert a Google Sheets Get Rows node before the AI Agent to pull recent entries from the competitive_intel sheet, update the agent's user-message expression to include those entries as context, and add one new rule to the system prompt asking the agent to check history before writing new summaries.", correct: true },
+        { text: "Add Window Buffer Memory with a bigger context window.", correct: false },
+        { text: "Set up a vector database with semantic search over all past findings.", correct: false }
+      ],
+      explanation: "The retrieval-before-reasoning pattern from 3.3. LLMs have no memory between runs — bigger models don't change that. Window Buffer (session memory) only lasts within one run; it won't remember what happened last week. A vector database is fancier RAG, which is overkill for a sheet with a few dozen rows. The simple, right answer: three small changes — Sheet lookup node, updated user-message expression, one new system-prompt rule. Ten minutes, transforms behaviour."
+    },
+    {
+      id: 4,
+      ref: 'Lesson 3.4',
+      text: "In November 2025, a multi-agent system at a startup entered a silent recursive loop — agents calling each other, each triggering new tool calls — and consumed around $47,000 in API costs before anyone caught it. Which guardrail layer from Lesson 3.4 would have most directly prevented this specific failure?",
+      options: [
+        { text: "Action guardrails — the agents shouldn't have been allowed to send emails.", correct: false },
+        { text: "Budget cap plus iteration limit (Layers 1 and 3). A provider-level monthly cap would have capped losses at whatever the organisation had set. A per-run iteration limit (Max Iterations on the AI Agent node) would have stopped the individual agent before the loop spun further. Neither was in place; either alone would have contained the damage.", correct: true },
+        { text: "Better prompts — the system prompts must have been poorly written.", correct: false },
+        { text: "A human-in-the-loop approval step on every tool call.", correct: false }
+      ],
+      explanation: "This was a cost and runtime failure, not an action-category failure. The agents weren't doing something dangerous — they were doing normal things in a loop, consuming tokens. A £50 or $100 monthly provider cap would have hard-stopped the API at whatever limit was set. A Max Iterations setting of 20 on the agent node would have broken the loop per-run. Five minutes of configuration per layer, measured against a $47K loss. The question isn't whether you can afford the guardrails; it's whether you can afford not to have them."
+    },
+    {
+      id: 5,
+      ref: 'All four lessons',
+      text: "A colleague is about to deploy an agent that monitors support ticket categories each morning, drafts reply templates for common issues, and optionally escalates unusual tickets to a human. They ask what has to be in place before they activate it. Based on Module 3, what's the minimum honest answer?",
+      options: [
+        { text: "A working system prompt — that's the core of any agent.", correct: false },
+        { text: "Six things: (1) confirm the task genuinely needs an agent (path varies), (2) the hybrid architecture — workflow for schedule and delivery, agent only for the reading-and-drafting step, (3) drafts-only action guardrail — the agent never sends replies directly, (4) provider-level monthly budget cap with 80% alert, (5) Max Iterations, workflow timeout, and an Error Handler that includes the execution URL, (6) a kill switch in the shared Sheet. Everything else is optional; these six are non-negotiable.", correct: true },
+        { text: "A working prompt, plus Window Buffer Memory for context retention.", correct: false },
+        { text: "An agent framework like LangChain or CrewAI for reliability.", correct: false }
+      ],
+      explanation: "This is Module 3 in one answer. 3.1 gave you the judgement call: agent or workflow? 3.2 gave you the hybrid build pattern and craft defaults. 3.3 covered memory (session and long-term, though this task may not need cross-run memory). 3.4 gave the four-layer guardrail structure — which matters especially here because the agent is customer-facing. The drafts-only rule in particular prevents the Cursor-style disaster where an agent replied directly to paying customers with hallucinated policy. Everything on the list is something Module 3 taught; none of it is optional for production."
+    },
+    {
+      id: 6,
+      ref: 'Lesson 3.2',
+      text: "Your research agent has been running cleanly, but you notice in the execution trace that it searches the web successfully, reads the URLs it finds, but then stops without ever calling the Google Sheets tool to save findings. Based on Module 3, what's the most likely cause?",
+      options: [
+        { text: "Claude is too small a model — upgrade to Opus.", correct: false },
+        { text: "The Google Sheets tool description is too vague. The agent reads each tool's description to decide when to use it; a weak description means the agent doesn't connect 'save your findings' in the system prompt with the Sheets tool. Rewrite the description to be specific about when to use it.", correct: true },
+        { text: "The Sheet's column headers are in the wrong order.", correct: false },
+        { text: "n8n's AI Agent node doesn't support Google Sheets as a tool.", correct: false }
+      ],
+      explanation: "From Lesson 3.2: tool descriptions do the same job for the agent that the system prompt does — they tell the agent when to act. An agent with a brilliant system prompt and a vague tool description will reason through the task but never call that tool. The fix is almost always rewriting the description to be concrete: 'Use this to save your final findings about a competitor. Call this tool once per competitor after research. The summary should be 2-4 sentences…' The habit that fixes 80% of 'the agent ignored my tool' problems."
+    },
+    {
+      id: 7,
+      ref: 'Lesson 3.3',
+      text: "What's the difference between 'session memory' (the Window Buffer Memory sub-node you added in Build #2) and 'long-term memory' (what Lesson 3.3 added via the Sheet lookup)?",
+      options: [
+        { text: "They're two names for the same thing — both let the agent remember previous runs.", correct: false },
+        { text: "Session memory remembers what the agent did within a single run — 'I already checked the homepage, now try the blog.' It lives inside the agent and disappears when the run ends. Long-term memory lets the agent see what happened in <em>previous</em> runs — it's stored outside the agent (in a Sheet, database, or file) and read back as input each time. Different scopes, both useful, often needed together.", correct: true },
+        { text: "Session memory is for chatbots; long-term memory is for research agents.", correct: false },
+        { text: "Session memory is token-efficient; long-term memory is only needed for agents that need to impress users.", correct: false }
+      ],
+      explanation: "Two different concepts under the same word. Session memory (Window Buffer) lasts the current run only — it's what makes multi-step reasoning possible within one session. Long-term memory lives in external storage and is read back into the agent's input each run — that's the retrieval-before-reasoning pattern from 3.3. Keeping them distinct in your mental model saves hours of 'why isn't my agent remembering' confusion. They solve different problems; most production agents need both."
+    },
+    {
+      id: 8,
+      ref: 'Lesson 3.4',
+      text: "Lesson 3.4 recommends a monthly spending cap at the LLM provider level (Anthropic/OpenAI console), <em>and</em> a per-run cost check in the workflow itself. Why both? Don't they do the same job?",
+      options: [
+        { text: "They do the same job — you only need one. Pick whichever is more convenient.", correct: false },
+        { text: "They catch different categories of failure. The per-run workflow check catches individual bad runs early (one run that cost more than £2). The provider-level cap is the last line of defence against runaway behaviour that bypasses workflow logic — a loop making tool calls faster than the IF check can run, for example. Defence in depth.", correct: true },
+        { text: "The workflow check is for small builds; the provider cap is for enterprises.", correct: false },
+        { text: "The provider cap only works with OpenAI, not Anthropic.", correct: false }
+      ],
+      explanation: "Defence in depth. A normal bad run gets caught by the per-run workflow check — single expensive run, alert fires, kill switch trips. But a pathological failure (say, a recursive tool-calling loop inside the agent node) can burn through tokens faster than n8n can evaluate IF conditions between runs. The provider cap runs at the API level, outside n8n entirely, and hard-stops the billing. Two minutes to set up. Caught the $47K loop before it reached $50K."
+    },
+    {
+      id: 9,
+      ref: 'Lesson 3.1 + 3.4',
+      text: "Lesson 3.1 said 'agents don't really think — they predict.' Lesson 3.4 showed three real 2025 incidents where agents caused real damage. What's the practical lesson these two framings, together, point to?",
+      options: [
+        { text: "Agents are too unreliable to use in business contexts at all.", correct: false },
+        { text: "Because agents are prediction wrapped in a loop, the quality of their behaviour depends almost entirely on what you give them to predict from — system prompts, tool descriptions, and the context in their input. When those are vague or permissive, the predicted actions get vague or dangerous. Guardrails, approvals, and budgets aren't compensating for bad agents; they're compensating for the fact that prediction has no reliable ceiling on its own.", correct: true },
+        { text: "Only use agents on top of the largest available LLM for best results.", correct: false },
+        { text: "Always use workflows; agents are a passing trend.", correct: false }
+      ],
+      explanation: "The two framings reinforce each other. An agent is prediction in a loop — it does what it thinks the instructions and tools suggest it should do. When the instructions are crisp and the guardrails are tight, that works well. When they're loose, prediction goes wherever the loss function leads, which isn't always the right place. The Cursor agent's hallucinated policy wasn't a model failure — it was an architecture failure (no draft-only rule). This is why Module 3's guardrails aren't an optional extra: they bound the space in which prediction operates."
+    },
+    {
+      id: 10,
+      ref: 'Lesson 3.2 + 3.4',
+      text: "In the AI Agent node's Options, you can set 'Max Iterations' to a number. Module 3 suggests 20. What's the craft reasoning for that specific number?",
+      options: [
+        { text: "n8n doesn't support values above 20.", correct: false },
+        { text: "Healthy agent runs for typical tasks complete in 10-15 iterations. A cap of 20 is enough for almost any honest task but small enough that runaway loops stop quickly. If an agent routinely needs more than 20, the system prompt is usually too vague — tighten the prompt rather than raise the cap.", correct: true },
+        { text: "20 is the maximum number of tools an n8n agent can have.", correct: false },
+        { text: "Larger numbers make agents smarter; 20 is a conservative compromise.", correct: false }
+      ],
+      explanation: "The craft call isn't just 'set a cap' — it's 'set one small enough that a misbehaving agent notices.' 20 iterations covers Build #2's healthy range with margin. Hitting 20 is itself a useful signal: something's wrong — a stuck page, an ambiguous instruction, a loop the agent can't escape. If you raise the cap without investigating why, you're papering over a design problem with a bigger budget. The honest fix is usually a clearer system prompt, not a higher ceiling."
+    }
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function pickQuestions() {
+    if (attemptCount === 0) {
+      const canonical = [1,2,3,4,5].map(id => questionBank.find(q => q.id === id));
+      return canonical.map(q => ({ ...q, options: q.options.slice() }));
+    }
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  function renderQuestions() {
+    currentSelection = pickQuestions();
+    const container = document.getElementById('questionsContainer');
+    container.innerHTML = '';
+
+    currentSelection.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A','B','C','D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+          <span class="ref">Draws on: ${q.ref}</span>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  const progressDots = document.querySelectorAll('#progressDots span');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+
+  function startReview() {
+    document.getElementById('startView').style.display = 'none';
+    document.getElementById('reviewArea').classList.add('show');
+    renderQuestions();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function getCards() { return document.querySelectorAll('.q-card'); }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    progressDots.forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < i) d.classList.add('done');
+      else if (idx === i) d.classList.add('active');
+    });
+    document.getElementById('qCurrent').textContent = i + 1;
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('reviewArea').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) { currentQ++; showQuestion(currentQ); }
+    else { showResults(); }
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) { currentQ--; showQuestion(currentQ); }
+  }
+
+  function showResults() {
+    getCards().forEach(c => c.classList.remove('active'));
+    document.getElementById('reviewNav').style.display = 'none';
+    progressDots.forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+
+    const score = answers.filter(a => a === true).length;
+    const passed = score >= 3;
+
+    document.getElementById('scoreNum').textContent = score;
+    document.getElementById('reviewArea').style.display = 'none';
+    document.getElementById('resultArea').classList.add('show');
+
+    const card = document.getElementById('resultCard');
+    const badge = document.getElementById('resultBadge');
+    const badgeIcon = document.getElementById('resultBadgeIcon');
+    const badgeText = document.getElementById('resultBadgeText');
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+    const cta = document.getElementById('resultCta');
+    const unlocked = document.getElementById('unlockedBanner');
+
+    if (passed) {
+      card.classList.remove('fail');
+      card.classList.add('pass');
+      badge.classList.remove('fail');
+      badge.classList.add('pass');
+      badgeIcon.innerHTML = '<path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.5 7.5l-4 4a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06L9 11.94l3.44-3.44a.75.75 0 011.06 1.06z"/>';
+      badgeText.textContent = 'Passed';
+
+      if (score === 5) {
+        title.textContent = 'Perfect. Agent instincts are sharp.';
+        body.textContent = "Five from five on Module 3 means you can genuinely reason about when to build an agent, how to harden it, and what will break if you skip the craft. Module 4 is the last stretch — connecting this to your real business tools.";
+      } else if (score === 4) {
+        title.textContent = 'Strong pass.';
+        body.textContent = "Four from five is a confident pass. Skim the breakdown below for the one you missed — Module 4 builds on the same patterns, so sharpening up here pays off. On to Build #3.";
+      } else {
+        title.textContent = 'Passed — just.';
+        body.textContent = "You cleared the bar. A look at the questions you missed is worth your time before Module 4 — Build #3 will assume you've internalised the Module 3 patterns, not just brushed past them.";
+      }
+
+      cta.href = '#';
+      cta.innerHTML = 'Start Module 4 — Beyond building →';
+      unlocked.style.display = 'flex';
+    } else {
+      card.classList.remove('pass');
+      card.classList.add('fail');
+      badge.classList.remove('pass');
+      badge.classList.add('fail');
+      badgeIcon.innerHTML = '<path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11a1 1 0 11-2 0 1 1 0 012 0zM9 5a1 1 0 112 0v4a1 1 0 11-2 0V5z"/>';
+      badgeText.textContent = 'Not yet';
+
+      if (score === 2) {
+        title.textContent = 'So close.';
+        body.textContent = "One answer away from the pass mark. The breakdown below shows which lesson each question came from — fifteen minutes of re-reading and you'll clear it easily.";
+      } else if (score === 1) {
+        title.textContent = 'Worth another pass.';
+        body.textContent = "Module 4 assumes the Module 3 patterns are internalised — not just the steps, but the reasoning behind each choice. Go back to the lessons flagged below, then retry.";
+      } else {
+        title.textContent = 'Time for a re-read.';
+        body.textContent = "Module 3 is the conceptual pivot of the whole course — from systems that follow instructions to systems that make choices. Worth spending real time here. Re-read, come back to the review when ready.";
+      }
+
+      cta.href = '#';
+      cta.innerHTML = '← Back to Module 3 lessons';
+      unlocked.style.display = 'none';
+    }
+
+    renderBreakdown();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderBreakdown() {
+    const list = document.getElementById('breakdownList');
+    list.innerHTML = '';
+    currentSelection.forEach((q, idx) => {
+      const right = answers[idx] === true;
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span class="mark ${right ? 'right' : 'wrong'}">${right ? '✓' : '✗'}</span>
+        <span><strong>Q${idx + 1}</strong> — ${q.ref}${right ? '' : ' · revisit this lesson'}</span>
+      `;
+      list.appendChild(li);
+    });
+  }
+
+  function resetReview() {
+    attemptCount++;
+    currentQ = 0;
+    answers = new Array(totalQuestions).fill(null);
+    answered = new Array(totalQuestions).fill(false);
+
+    renderQuestions();
+
+    document.getElementById('resultArea').classList.remove('show');
+    document.getElementById('reviewArea').style.display = 'block';
+    document.getElementById('reviewNav').style.display = 'flex';
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Next question →';
+    showQuestion(0);
+  }
+</script>
+
+</body>
+</html>

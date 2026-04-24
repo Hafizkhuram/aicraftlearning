@@ -1,0 +1,22 @@
+<svg viewBox="0 0 420 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- AICraft Learning - Primary Logo (Light Background) -->
+  <g transform="translate(8, 8)">
+    <!-- Central AI node -->
+    <circle cx="24" cy="28" r="12" fill="#10B981"/>
+    <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+    <!-- Circuit connections and satellite nodes -->
+    <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+    <circle cx="52" cy="6" r="5" fill="#34D399"/>
+    <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+    <circle cx="52" cy="50" r="5" fill="#34D399"/>
+    <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+    <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+    <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+    <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+    <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+  </text>
+  <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+</svg>

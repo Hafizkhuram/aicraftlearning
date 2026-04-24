@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lesson 3.2 — Build #2: Research agent | AICraft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--body);font-size:17px;line-height:1.7;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+
+  .progress-track{position:fixed;top:0;left:0;right:0;height:3px;background:transparent;z-index:100}
+  .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--emerald),var(--forest));transition:width .15s ease-out}
+
+  header{border-bottom:1px solid var(--border);background:var(--card);position:sticky;top:0;z-index:50;backdrop-filter:blur(8px);background:rgba(255,255,255,.85)}
+  .header-inner{max-width:1100px;margin:0 auto;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:inline-flex;align-items:center;text-decoration:none;transition:opacity .15s}
+  .brand:hover{opacity:.85}
+  .brand-logo{height:36px;width:auto;display:block}
+  .header-meta{display:flex;align-items:center;gap:20px;font-size:13px;color:var(--text-mute)}
+  .header-meta .sep{opacity:.4}
+  .lesson-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--mint);color:var(--forest);font-weight:600;font-size:12px;letter-spacing:.02em}
+  .lesson-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald)}
+
+  main{max-width:1100px;margin:0 auto;padding:0 28px 80px;display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:56px}
+  @media (max-width:900px){main{grid-template-columns:1fr;gap:0;padding-bottom:48px}aside.toc{display:none}}
+
+  article{max-width:680px;padding-top:48px}
+
+  .lesson-meta{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-mute);margin-bottom:20px;font-weight:500}
+  .lesson-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.lesson-title{font-family:var(--display);font-weight:500;font-size:clamp(34px,4.8vw,52px);line-height:1.08;letter-spacing:-.02em;color:var(--slate);margin:0 0 20px}
+  h1.lesson-title em{font-style:italic;color:var(--forest)}
+
+  .hook{font-family:var(--display);font-size:21px;line-height:1.5;color:var(--text-soft);font-style:italic;font-weight:400;padding:0 0 0 20px;border-left:3px solid var(--emerald);margin:28px 0 48px}
+
+  article h2{font-family:var(--display);font-weight:600;font-size:28px;line-height:1.25;letter-spacing:-.015em;color:var(--forest);margin:56px 0 16px;position:relative;padding-left:18px}
+  article h2::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:2px;background:var(--emerald)}
+  article h3{font-family:var(--display);font-weight:600;font-size:20px;color:var(--slate);margin:32px 0 10px;letter-spacing:-.005em}
+
+  article p{margin:0 0 18px}
+  article p strong{color:var(--slate);font-weight:600}
+  article ul, article ol{margin:0 0 20px;padding-left:22px}
+  article li{margin:0 0 8px}
+  article li::marker{color:var(--emerald)}
+
+  article code{font-family:"SFMono-Regular",Consolas,monospace;background:var(--mint-soft);color:var(--forest);padding:1px 6px;border-radius:4px;font-size:.92em}
+
+  /* Misconception */
+  .misconception{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:20px 22px;background:#FEF7EC;border:1px solid #F4E0BB;border-radius:10px;margin:28px 0}
+  .misconception-icon{width:32px;height:32px;border-radius:8px;background:#F59E0B;color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:18px;flex-shrink:0}
+  .misconception-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#92400E;font-weight:700;margin-bottom:4px}
+  .misconception-text{margin:0;color:#78350F;font-size:15.5px;line-height:1.6}
+  .misconception-text strong{color:#78350F}
+
+  /* Takeaway */
+  .takeaway{margin:40px 0;padding:28px 32px;background:linear-gradient(135deg,var(--mint-soft) 0%,var(--mint) 100%);border:1px solid #A7F3D0;border-radius:14px;position:relative;overflow:hidden}
+  .takeaway::before{content:"";position:absolute;top:0;bottom:0;left:0;width:4px;background:var(--emerald)}
+  .takeaway-label{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--forest);font-weight:700;margin-bottom:12px}
+  .takeaway-label svg{width:14px;height:14px}
+  .takeaway-main{font-family:var(--display);font-size:22px;line-height:1.4;color:var(--slate);font-weight:600;margin:0 0 10px;letter-spacing:-.01em}
+  .takeaway-sub{font-size:15.5px;color:var(--forest);margin:0;line-height:1.6}
+
+  /* Build spec (reused from 2.2) */
+  .build-spec{margin:28px 0 32px;padding:24px 28px;background:var(--card);border:1px solid var(--border);border-radius:14px}
+  .build-spec-label{font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-mute);margin-bottom:14px}
+  .build-spec-title{font-family:var(--display);font-weight:600;font-size:19px;color:var(--slate);margin:0 0 14px;line-height:1.3}
+  .build-spec ul{margin:0;padding-left:22px}
+  .build-spec li{font-size:15px;line-height:1.55;color:var(--text-soft);margin-bottom:6px}
+  .build-spec li strong{color:var(--slate)}
+
+  /* Agent architecture diagram — specific to Build #2 (root node + sub-nodes) */
+  .agent-arch{
+    margin:28px 0;
+    padding:28px 24px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+  }
+  .agent-arch-label{
+    font-family:var(--display);font-weight:600;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);
+    margin-bottom:20px;text-align:center;
+  }
+  .arch-root{
+    padding:16px 20px;
+    border-radius:12px;
+    background:var(--slate);
+    color:#fff;
+    text-align:center;
+    max-width:320px;
+    margin:0 auto 14px;
+    border:2px solid var(--emerald);
+  }
+  .arch-root .arch-role{
+    font-family:var(--display);
+    font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+    font-weight:700;color:var(--emerald);
+    margin-bottom:4px;
+  }
+  .arch-root .arch-title{
+    font-family:var(--display);font-weight:600;
+    font-size:16px;color:#fff;line-height:1.3;
+  }
+  .arch-stems{
+    display:flex;justify-content:center;
+    margin-bottom:14px;
+    color:var(--border);
+    font-size:20px;line-height:1;
+  }
+  .arch-subs{
+    display:grid;
+    grid-template-columns:repeat(5, 1fr);
+    gap:10px;
+  }
+  @media (max-width:640px){.arch-subs{grid-template-columns:repeat(2, 1fr)}}
+  .arch-sub{
+    padding:12px 10px;
+    border-radius:10px;
+    background:var(--mint-soft);
+    border:1.5px solid #A7F3D0;
+    text-align:center;
+  }
+  .arch-sub.tool{
+    background:var(--card);
+    border-color:var(--border);
+  }
+  .arch-sub-role{
+    font-family:var(--display);
+    font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+    font-weight:700;color:var(--forest);
+    margin-bottom:3px;
+  }
+  .arch-sub.tool .arch-sub-role{color:var(--text-mute)}
+  .arch-sub-title{
+    font-family:var(--display);font-weight:600;
+    font-size:12.5px;line-height:1.25;
+    color:var(--slate);
+  }
+  .arch-sub-hint{
+    font-size:10.5px;color:var(--text-mute);
+    margin-top:2px;
+  }
+
+  /* Step cards */
+  .steps{margin:28px 0;display:flex;flex-direction:column;gap:14px;counter-reset:step}
+  .step{display:grid;grid-template-columns:44px 1fr;gap:18px;padding:20px 22px;background:var(--card);border:1px solid var(--border);border-radius:12px;position:relative}
+  .step::before{counter-increment:step;content:counter(step);width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--emerald),var(--forest));color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.01em}
+  .step-title{font-family:var(--display);font-weight:600;font-size:17.5px;color:var(--slate);margin:4px 0 6px;letter-spacing:-.005em}
+  .step-body{font-size:15.5px;line-height:1.6;color:var(--text-soft)}
+  .step-body p{margin:0 0 10px}
+  .step-body p:last-child{margin:0}
+  .step-body code{font-size:13.5px}
+  .step-body ul{padding-left:20px;margin:8px 0 10px}
+  .step-body li{margin-bottom:4px;font-size:14.5px}
+
+  /* Config-list */
+  .config-list{margin:12px 0 14px;padding:14px 18px;background:var(--bg);border-radius:8px;border:1px solid var(--border-soft)}
+  .config-list dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 16px}
+  .config-list dt{font-family:"SFMono-Regular",Consolas,monospace;font-size:13px;color:var(--text-mute);white-space:nowrap}
+  .config-list dd{margin:0;font-size:14.5px;color:var(--text);font-family:var(--body)}
+  .config-list dd code{background:var(--card);color:var(--slate);padding:1px 5px;border-radius:3px;font-size:12.5px;border:1px solid var(--border)}
+
+  /* Prompt */
+  .prompt{margin:16px 0;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--card)}
+  .prompt-head{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--border-soft);border-bottom:1px solid var(--border)}
+  .prompt-label{font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute)}
+  .prompt-copy-hint{font-size:11px;color:var(--text-mute)}
+  .prompt-body{padding:16px 18px;font-family:"SFMono-Regular",Consolas,monospace;font-size:13.5px;line-height:1.65;color:var(--text);white-space:pre-wrap;background:var(--card)}
+  .prompt-body .p-comment{color:var(--text-mute);font-style:italic}
+  .prompt-body .p-var{color:var(--forest);font-weight:600}
+  .prompt-body .p-heading{color:var(--forest);font-weight:700}
+
+  /* Screenshot */
+  .screenshot{margin:14px 0 6px;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--card)}
+  .screenshot-frame{background:#F8FAFC;background-image:linear-gradient(45deg,var(--border-soft) 25%,transparent 25%),linear-gradient(-45deg,var(--border-soft) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,var(--border-soft) 75%),linear-gradient(-45deg,transparent 75%,var(--border-soft) 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,10px 0;aspect-ratio:16/9;display:grid;place-items:center;position:relative}
+  .screenshot-frame::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.7),rgba(255,255,255,.4))}
+  .screenshot-label{position:relative;z-index:2;font-family:var(--display);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-mute);font-weight:600;padding:6px 14px;background:rgba(255,255,255,.9);border:1px solid var(--border);border-radius:999px}
+  .screenshot-caption{padding:10px 14px;font-size:13px;color:var(--text-mute);border-top:1px solid var(--border-soft);background:var(--border-soft);line-height:1.5}
+  .screenshot-caption strong{color:var(--slate);font-weight:600}
+
+  /* Tip */
+  .tip{margin:18px 0;padding:14px 18px;background:var(--mint-soft);border-left:3px solid var(--emerald);border-radius:6px;font-size:14.5px;line-height:1.55;color:var(--text)}
+  .tip strong{color:var(--forest);font-weight:700}
+  .tip.warn{background:#FEF7EC;border-left-color:#F59E0B}
+  .tip.warn strong{color:#92400E}
+
+  /* Reasoning trace — show the agent's inner monologue across loop iterations */
+  .trace{
+    margin:28px 0;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    overflow:hidden;
+  }
+  .trace-header{
+    padding:14px 18px;
+    background:var(--slate);
+    color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .trace-header .trace-title{
+    font-family:var(--display);font-weight:600;
+    font-size:14px;color:#fff;
+  }
+  .trace-header .trace-meta{
+    font-size:12px;color:#CBD5E1;
+    font-family:"SFMono-Regular",Consolas,monospace;
+  }
+  .trace-body{padding:8px 0}
+  .trace-step{
+    display:grid;
+    grid-template-columns:80px 1fr;
+    gap:16px;
+    padding:14px 22px;
+    border-bottom:1px solid var(--border-soft);
+  }
+  .trace-step:last-child{border-bottom:0}
+  .trace-label{
+    font-family:var(--display);font-weight:700;
+    font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--text-mute);
+    padding-top:4px;
+  }
+  .trace-label.thought{color:var(--forest)}
+  .trace-label.action{color:#92400E}
+  .trace-label.observe{color:var(--text-mute)}
+  .trace-label.final{color:var(--emerald)}
+  .trace-text{
+    font-size:14.5px;line-height:1.6;
+    color:var(--text);
+  }
+  .trace-text.code{
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  .trace-text em{color:var(--text-mute);font-style:italic}
+  .trace-text strong{color:var(--slate);font-weight:600}
+
+  /* Tool description block — emphasised because it matters so much */
+  .tool-desc{
+    margin:16px 0;
+    padding:16px 20px;
+    background:var(--mint-soft);
+    border:1px solid #A7F3D0;
+    border-radius:10px;
+  }
+  .tool-desc-label{
+    display:inline-block;
+    font-family:var(--display);font-weight:700;
+    font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--forest);
+    margin-bottom:8px;
+  }
+  .tool-desc-text{
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:13.5px;line-height:1.6;
+    color:var(--text);
+    margin:0;
+    padding:10px 14px;
+    background:var(--card);
+    border-radius:6px;
+    border:1px solid var(--border);
+  }
+
+  /* Action box */
+  .action-box{margin:48px 0 0;padding:32px;background:var(--slate);border-radius:16px;color:#fff;position:relative;overflow:hidden}
+  .action-box::after{content:"";position:absolute;right:-60px;bottom:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.18),transparent 70%);pointer-events:none}
+  .action-eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--emerald);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:14px}
+  .action-title{font-family:var(--display);font-weight:500;font-size:26px;line-height:1.25;margin:0 0 12px;color:#fff;letter-spacing:-.01em}
+  .action-body{color:#CBD5E1;font-size:16px;line-height:1.65;margin:0 0 20px}
+  .action-prompt{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:14px 16px;font-family:"SFMono-Regular",Consolas,monospace;font-size:14px;color:#E2E8F0;margin:0 0 20px;white-space:pre-wrap;line-height:1.6}
+  .action-check{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;padding:10px 0;color:#CBD5E1;font-size:15px;position:relative;z-index:2}
+  .action-check input{display:none}
+  .action-check .box{width:20px;height:20px;border-radius:5px;border:1.5px solid #475569;display:grid;place-items:center;transition:all .2s;flex-shrink:0}
+  .action-check input:checked + .box{background:var(--emerald);border-color:var(--emerald)}
+  .action-check input:checked + .box::after{content:"✓";color:#fff;font-size:13px;font-weight:700}
+  .action-check input:checked ~ span{color:#fff;text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3)}
+
+  /* Quiz */
+  .quiz{margin-top:72px;padding:40px 36px;background:var(--card);border:1px solid var(--border);border-radius:16px}
+  .quiz-header{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .quiz-eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--forest);font-weight:700}
+  .quiz-title{font-family:var(--display);font-weight:600;font-size:26px;line-height:1.2;color:var(--slate);margin:4px 0 8px;letter-spacing:-.01em}
+  .quiz-sub{color:var(--text-mute);margin:0 0 28px;font-size:15px}
+  .quiz-progress{display:flex;gap:6px;margin-bottom:28px}
+  .quiz-progress span{flex:1;height:4px;border-radius:2px;background:var(--border);transition:background .3s}
+  .quiz-progress span.done{background:var(--emerald)}
+  .quiz-progress span.active{background:var(--forest)}
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .q-number{font-family:var(--display);font-size:13px;color:var(--text-mute);font-weight:500;letter-spacing:.04em;margin-bottom:8px}
+  .q-text{font-family:var(--display);font-weight:500;font-size:21px;line-height:1.4;color:var(--slate);margin:0 0 24px;letter-spacing:-.005em}
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;background:var(--card);font-size:15.5px;line-height:1.5}
+  .option:hover:not(.disabled){border-color:var(--emerald);background:var(--mint-soft)}
+  .option.disabled{cursor:default}
+  .option-letter{width:26px;height:26px;border-radius:7px;background:var(--border-soft);color:var(--text-soft);display:grid;place-items:center;font-weight:700;font-size:13px;flex-shrink:0;transition:all .2s;font-family:var(--display)}
+  .option:hover:not(.disabled) .option-letter{background:var(--emerald);color:#fff}
+  .option.correct{border-color:var(--success);background:#F0FDF4}
+  .option.correct .option-letter{background:var(--success);color:#fff}
+  .option.incorrect{border-color:var(--error);background:#FEF2F2}
+  .option.incorrect .option-letter{background:var(--error);color:#fff}
+  .option-check{margin-left:auto;opacity:0;transition:opacity .2s;font-size:20px;line-height:1}
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+  .explanation{display:none;margin-top:20px;padding:18px 20px;border-radius:10px;background:var(--mint-soft);border-left:3px solid var(--emerald);font-size:15px;line-height:1.6;color:var(--forest)}
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{display:block;font-family:var(--display);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--forest);margin-bottom:6px}
+  .explanation.wrong{background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D}
+  .explanation.wrong strong{color:#7F1D1D}
+  .quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px}
+  .btn{border:0;cursor:pointer;font-family:var(--body);font-weight:600;font-size:14.5px;padding:11px 22px;border-radius:8px;transition:all .18s;display:inline-flex;align-items:center;gap:8px}
+  .btn-primary{background:var(--forest);color:#fff}
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{background:var(--border);color:var(--text-mute);cursor:not-allowed;transform:none}
+  .btn-ghost{background:transparent;color:var(--text-mute)}
+  .btn-ghost:hover{color:var(--forest)}
+  .quiz-result{display:none;text-align:center;padding:20px 0}
+  .quiz-result.show{display:block;animation:fadeIn .4s ease}
+  .quiz-score{font-family:var(--display);font-weight:500;font-size:72px;line-height:1;color:var(--forest);margin:0 0 8px;letter-spacing:-.03em}
+  .quiz-score span{color:var(--text-mute);font-size:32px}
+  .quiz-result-title{font-family:var(--display);font-weight:600;font-size:24px;color:var(--slate);margin:0 0 8px}
+  .quiz-result-body{color:var(--text-mute);margin:0 auto 24px;max-width:420px;font-size:15.5px;line-height:1.6}
+
+  aside.toc{padding-top:56px;position:sticky;top:80px;align-self:start;max-height:calc(100vh - 100px);overflow-y:auto}
+  .toc-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute);font-weight:700;margin-bottom:14px}
+  .toc ul{list-style:none;padding:0;margin:0;border-left:1px solid var(--border)}
+  .toc li{margin:0}
+  .toc a{display:block;padding:7px 16px;font-size:13.5px;color:var(--text-mute);text-decoration:none;border-left:2px solid transparent;margin-left:-1px;transition:all .15s;line-height:1.4}
+  .toc a:hover{color:var(--forest)}
+  .toc a.active{color:var(--forest);font-weight:600;border-left-color:var(--emerald)}
+
+  .lesson-footer{max-width:680px;margin:56px 0 0;padding-top:32px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+  .next-lesson{display:flex;flex-direction:column;gap:2px;padding:16px 22px;border-radius:10px;background:var(--card);border:1px solid var(--border);text-decoration:none;transition:all .2s}
+  .next-lesson:hover{border-color:var(--emerald);transform:translateY(-1px);box-shadow:0 4px 14px rgba(6,95,70,.06)}
+  .next-lesson-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute);font-weight:600}
+  .next-lesson-title{font-family:var(--display);font-weight:600;font-size:16px;color:var(--forest)}
+  .completion-status{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-mute)}
+  .completion-status.complete{color:var(--success)}
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AICraft Learning — home">
+      <svg class="brand-logo" viewBox="0 0 420 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="lesson-badge">Module 3 · Lesson 2</span>
+      <span class="sep">·</span>
+      <span>14 min read</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article>
+    <div class="lesson-meta">
+      <span>Building AI Agents &amp; Workflows</span>
+      <span class="dot"></span>
+      <span>Build your first agent</span>
+    </div>
+
+    <h1 class="lesson-title">Build #2 — <em>research agent</em></h1>
+
+    <p class="hook">By Monday morning, a small machine you built is reading your competitors' websites and writing you a briefing. That's not a demo. That's Build #2 — your first real agent, doing weekly competitive intelligence while you sleep.</p>
+
+    <p>This is the big one for Module 3. Build #1 ran a fixed pipeline. Build #2 is a genuine agent — it decides what to look up, which pages to read, and when it's seen enough to stop. The anatomy from Lesson 3.1 becomes a real thing you can inspect, debug, and tune.</p>
+
+    <p>Expect this lesson to take 45-60 minutes of hands-on time. Longer than Build #1, mostly because the agent node has more sub-parts and each one matters.</p>
+
+    <div class="misconception">
+      <div class="misconception-icon">!</div>
+      <div>
+        <div class="misconception-label">The common misconception</div>
+        <p class="misconception-text"><strong>"The system prompt is the whole agent — write a good prompt and you're done."</strong> Half right. The prompt matters enormously, but so do the <em>tool descriptions</em>. The agent reads both when deciding what to do next, and it ignores tools with vague descriptions. An agent with a brilliant system prompt and three badly-described tools will reason beautifully then refuse to act. Write both carefully.</p>
+      </div>
+    </div>
+
+    <h2 id="section-1">What you're building</h2>
+
+    <div class="build-spec">
+      <div class="build-spec-label">Build #2 spec</div>
+      <h3 class="build-spec-title">Weekly competitive intelligence agent</h3>
+      <ul>
+        <li><strong>When:</strong> every Monday at 7am, automatically.</li>
+        <li><strong>Given:</strong> a list of three competitors you care about (their names and website URLs).</li>
+        <li><strong>For each one</strong>, the agent investigates recent activity — searches the web for news, reads their homepage and blog, notes what's new.</li>
+        <li><strong>Writes findings</strong> as rows in a <code>competitive_intel</code> Google Sheet — one row per competitor per week.</li>
+        <li><strong>Emails you a summary</strong> when it's done, so Monday morning you open one email and see the week's competitive landscape.</li>
+      </ul>
+    </div>
+
+    <p>Architecturally this is the hybrid pattern from Lesson 3.1: a <strong>workflow</strong> provides the predictable edges (schedule trigger, competitor list, final email), and a single <strong>agent node</strong> does the fuzzy middle (the actual research).</p>
+
+    <h2 id="section-2">The agent architecture</h2>
+
+    <p>n8n's AI Agent node isn't a single node like the ones you've used so far. It's a <strong>root node</strong> with multiple <strong>sub-nodes</strong> plugged into it — one for the LLM, one for memory, and one for each tool. Here's the shape:</p>
+
+    <div class="agent-arch">
+      <div class="agent-arch-label">Build #2 — agent node architecture</div>
+      <div class="arch-root">
+        <div class="arch-role">Root node</div>
+        <div class="arch-title">AI Agent (Tools Agent)</div>
+      </div>
+      <div class="arch-stems">↑ &nbsp;&nbsp; ↑ &nbsp;&nbsp; ↑ &nbsp;&nbsp; ↑ &nbsp;&nbsp; ↑</div>
+      <div class="arch-subs">
+        <div class="arch-sub">
+          <div class="arch-sub-role">Chat model</div>
+          <div class="arch-sub-title">Claude</div>
+          <div class="arch-sub-hint">the brain</div>
+        </div>
+        <div class="arch-sub">
+          <div class="arch-sub-role">Memory</div>
+          <div class="arch-sub-title">Window Buffer</div>
+          <div class="arch-sub-hint">session scope</div>
+        </div>
+        <div class="arch-sub tool">
+          <div class="arch-sub-role">Tool</div>
+          <div class="arch-sub-title">Web search</div>
+          <div class="arch-sub-hint">SerpAPI</div>
+        </div>
+        <div class="arch-sub tool">
+          <div class="arch-sub-role">Tool</div>
+          <div class="arch-sub-title">URL reader</div>
+          <div class="arch-sub-hint">HTTP Request</div>
+        </div>
+        <div class="arch-sub tool">
+          <div class="arch-sub-role">Tool</div>
+          <div class="arch-sub-title">Write to sheet</div>
+          <div class="arch-sub-hint">Google Sheets</div>
+        </div>
+      </div>
+    </div>
+
+    <p>On the canvas this renders as the AI Agent node in the middle, with five smaller nodes connecting into its underside. The root node runs the reasoning loop; sub-nodes provide capabilities. Change a sub-node and the agent's behaviour changes — swap Claude for GPT, swap SerpAPI for Brave Search, add a calendar tool. The root stays the same.</p>
+
+    <div class="tip">
+      <strong>Why three tools and not ten?</strong> Agents get confused by too many tools — 10+ and tool selection starts to misfire. Two to four is the sweet spot for most use cases. We're using three. Resist the temptation to add more until you need them.
+    </div>
+
+    <h2 id="section-3">Step 1 — Set up the outer workflow</h2>
+
+    <p>Start with the deterministic wrapper — the workflow that will feed the agent its inputs and handle what happens after.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div>
+          <h3 class="step-title">Create a new workflow and add the Schedule Trigger</h3>
+          <div class="step-body">
+            <p>Workflows → Add Workflow → name it <code>Competitive intelligence agent</code>. Add a <strong>Schedule Trigger</strong> node as the first step.</p>
+            <div class="config-list">
+              <dl>
+                <dt>Trigger Interval</dt><dd><code>Weeks</code></dd>
+                <dt>Weeks Between Triggers</dt><dd><code>1</code></dd>
+                <dt>Trigger on Weekdays</dt><dd>Monday</dd>
+                <dt>Trigger at Hour</dt><dd><code>7</code></dd>
+                <dt>Trigger at Minute</dt><dd><code>0</code></dd>
+              </dl>
+            </div>
+            <p>This fires once a week, Mondays at 7am local time to your n8n workspace. Adjust the timezone in workspace settings if you're testing across boundaries.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div>
+          <h3 class="step-title">Add an Edit Fields (Set) node for your competitor list</h3>
+          <div class="step-body">
+            <p>Connect an <strong>Edit Fields</strong> node after the trigger. This is where you define the three competitors you want the agent to research. Keep it text-first — the agent will read this as input.</p>
+            <div class="config-list">
+              <dl>
+                <dt>Mode</dt><dd><code>Manual Mapping</code></dd>
+                <dt>Add field</dt><dd>Name: <code>competitors</code></dd>
+                <dt>Value</dt><dd>Type a multi-line string, one competitor per line. Example:<br /><code>Acme Widgets — acmewidgets.com<br />Beta Co — betaco.io<br />Gamma Systems — gammasystems.com</code></dd>
+              </dl>
+            </div>
+            <div class="tip">
+              <strong>Why not a Google Sheet?</strong> You could. For three competitors, a Set node is faster and easier to edit. If you want to manage the list without opening n8n — or share it with a team — pull the list from a Sheet instead. Swap-able later. Start simple.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="section-4">Step 2 — Drop in the AI Agent node</h2>
+
+    <p>Now the main event. After the Edit Fields node, add the <strong>AI Agent</strong> node. This is where the agent lives.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div>
+          <h3 class="step-title">Add the AI Agent node</h3>
+          <div class="step-body">
+            <p>Click the "+" after Edit Fields. Search for <code>AI Agent</code>. Pick the one under the <strong>Advanced AI</strong> category (not the older "Basic LLM Chain").</p>
+            <div class="screenshot">
+              <div class="screenshot-frame"><span class="screenshot-label">Screenshot · AI Agent node added</span></div>
+              <div class="screenshot-caption"><strong>Screenshot to add:</strong> the canvas showing Schedule → Edit Fields → AI Agent, with the AI Agent node larger and showing connection points for Chat Model / Memory / Tool.</div>
+            </div>
+            <p>Open the node. Core settings:</p>
+            <div class="config-list">
+              <dl>
+                <dt>Agent</dt><dd><code>Tools Agent</code> — the ReAct-pattern agent from Lesson 3.1. This is the default and the right choice.</dd>
+                <dt>Source for Prompt (User Message)</dt><dd><code>Define below</code></dd>
+                <dt>Prompt (User Message)</dt><dd>Expression: <code>Research these competitors this week: {{ $json.competitors }}</code></dd>
+                <dt>Require Specific Output Format</dt><dd>Off — we want natural text, not enforced structure, for a first build.</dd>
+              </dl>
+            </div>
+            <p>Leave the <em>System Message</em> field for the moment — we'll write the full system prompt in Step 4, once the sub-nodes are in place. The node will show warnings about missing connections until you add the Chat Model sub-node. That's expected.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="section-5">Step 3 — Add the sub-nodes</h2>
+
+    <p>The AI Agent node has five connection points underneath it — one for the chat model, one for memory, and up to three tools (you can add more, but we're deliberately keeping it to three).</p>
+
+    <div class="steps">
+      <div class="step">
+        <div>
+          <h3 class="step-title">Connect an Anthropic Chat Model</h3>
+          <div class="step-body">
+            <p>Click the <strong>Chat Model</strong> connector under the AI Agent. Pick <strong>Anthropic Chat Model</strong>.</p>
+            <div class="config-list">
+              <dl>
+                <dt>Credential</dt><dd>The Claude credential you saved back in Lesson 1.4.</dd>
+                <dt>Model</dt><dd><code>claude-sonnet-4-6</code> — reliable for tool use, well-priced.</dd>
+                <dt>Max Tokens</dt><dd><code>2048</code> — plenty for a research summary; caps runaway responses.</dd>
+                <dt>Temperature</dt><dd><code>0.3</code> — low enough to be consistent, high enough to handle variation in page content.</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div>
+          <h3 class="step-title">Connect Window Buffer Memory</h3>
+          <div class="step-body">
+            <p>Click the <strong>Memory</strong> connector. Pick <strong>Window Buffer Memory</strong>.</p>
+            <div class="config-list">
+              <dl>
+                <dt>Context Window Length</dt><dd><code>20</code> — keeps the last 20 exchanges, more than enough for a single research session across three competitors.</dd>
+              </dl>
+            </div>
+            <div class="tip">
+              <strong>Why session memory, not long-term?</strong> We want the agent to remember "I've already checked Acme's homepage, now try their blog" <em>within</em> this week's run. We don't need it to remember last week — that data lives in the Sheet already. Simple is better here.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div>
+          <h3 class="step-title">Connect Tool 1 — SerpAPI (web search)</h3>
+          <div class="step-body">
+            <p>Click the <strong>Tool</strong> connector. Search for <code>SerpApi</code>. Pick the <strong>SerpApi Official Tool</strong> (not the older one).</p>
+            <p>Sign up at <code>serpapi.com</code> if you haven't — free tier is 100 searches/month, enough for weekly research on three competitors. Paste the API key as a new credential.</p>
+            <div class="config-list">
+              <dl>
+                <dt>Operation</dt><dd><code>Google Search</code> (default)</dd>
+                <dt>Search Query (q)</dt><dd>Click the icon on the right → <strong>"Let the model define this parameter"</strong>. The agent decides what to search for.</dd>
+                <dt>Tool Description</dt><dd>Set Manually — see below, this matters.</dd>
+              </dl>
+            </div>
+
+            <p>Now the critical bit — the tool description. This is what the agent reads when deciding whether to use this tool. Vague description → agent never searches.</p>
+
+            <div class="tool-desc">
+              <span class="tool-desc-label">◆ Tool description — paste this into the "Tool Description" field</span>
+              <p class="tool-desc-text">Use this to search Google for recent news, press releases, product announcements, and blog posts about a specific company. Pass a focused search query like "AcmeWidgets 2026 product launch" or "BetaCo pricing changes recent". Returns structured search results with titles, snippets, and URLs. Use this first to find out what's new; then use the URL reader tool to dig into specific pages.</p>
+            </div>
+
+            <p>Notice what this description does: <strong>tells the agent when to use it</strong> ("recent news, press releases, product announcements"), <strong>gives an example query format</strong>, and <strong>suggests how this tool pairs with the next one</strong>. That last sentence is the difference between an agent that searches once and stops versus one that searches, reads, and investigates.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div>
+          <h3 class="step-title">Connect Tool 2 — HTTP Request (URL reader)</h3>
+          <div class="step-body">
+            <p>Click the <strong>Tool</strong> connector again. Pick <strong>HTTP Request Tool</strong>.</p>
+            <div class="config-list">
+              <dl>
+                <dt>Method</dt><dd><code>GET</code></dd>
+                <dt>URL</dt><dd>Click the right-side icon → <strong>"Let the model define this parameter"</strong>. Agent chooses which URL.</dd>
+                <dt>Response Format</dt><dd><code>Text</code></dd>
+                <dt>Tool Description</dt><dd>Set Manually — see below.</dd>
+              </dl>
+            </div>
+
+            <div class="tool-desc">
+              <span class="tool-desc-label">◆ Tool description</span>
+              <p class="tool-desc-text">Use this to fetch and read the full content of a specific webpage when you have its URL. Best for reading a competitor's homepage, blog post, pricing page, or press release after you've found the URL via a search. Returns the page as plain text. Do NOT use this for Google search queries — use the search tool for those. If a page is very long, focus on the first several thousand characters which usually contain the most important content.</p>
+            </div>
+
+            <div class="tip warn">
+              <strong>One honest limitation:</strong> HTTP Request returns the raw HTML as plain text, which can be huge — some pages are 40,000+ tokens. On very long pages, the agent may only see the top portion. For a first build this is fine; in Module 4 we'll look at trimming the input. Flag it, don't fix it yet.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div>
+          <h3 class="step-title">Connect Tool 3 — Google Sheets (write findings)</h3>
+          <div class="step-body">
+            <p>Click the <strong>Tool</strong> connector one more time. Pick <strong>Google Sheets Tool</strong>.</p>
+            <p>Before configuring, create a Google Sheet called <code>competitive_intel</code> with these column headers: <code>date</code>, <code>competitor</code>, <code>summary</code>, <code>sources</code>. One row per competitor per week.</p>
+            <div class="config-list">
+              <dl>
+                <dt>Credential</dt><dd>The Google Sheets credential from Module 2.</dd>
+                <dt>Resource</dt><dd><code>Sheet Within Document</code></dd>
+                <dt>Operation</dt><dd><code>Append Row</code></dd>
+                <dt>Document</dt><dd>Your <code>competitive_intel</code> sheet.</dd>
+                <dt>Columns</dt><dd>For each column, click the icon → <strong>"Let the model define this parameter"</strong>. The agent fills each field.</dd>
+                <dt>Tool Description</dt><dd>Set Manually — see below.</dd>
+              </dl>
+            </div>
+
+            <div class="tool-desc">
+              <span class="tool-desc-label">◆ Tool description</span>
+              <p class="tool-desc-text">Use this to save your final findings about a competitor. Call this tool once per competitor after you've finished researching them. The summary should be 2-4 sentences covering the most notable recent activity — product launches, pricing changes, news, blog themes. The sources field should list the specific URLs you used, separated by commas. This is the final step for each competitor; after writing, move on to the next one.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="section-6">Step 4 — The system prompt</h2>
+
+    <p>Now the single most important piece of text in the entire build. The system prompt tells the agent who it is, what it's doing, and how to behave. Open the AI Agent node → <strong>System Message</strong> field → paste this:</p>
+
+    <div class="prompt">
+      <div class="prompt-head">
+        <span class="prompt-label">Build #2 system prompt</span>
+        <span class="prompt-copy-hint">Paste into System Message field</span>
+      </div>
+      <div class="prompt-body"><span class="p-comment"># Role</span>
+You are a <span class="p-var">competitive intelligence analyst</span>. Your job is to produce a concise weekly briefing on named competitors — what's new, what's notable, what a founder should know.
+
+<span class="p-comment"># Task</span>
+For each competitor in the input list, do the following:
+
+1. Search the web for recent activity in the last 2-4 weeks (product launches, pricing changes, funding announcements, notable blog posts, press coverage).
+2. Read the 1-3 most promising URLs from the search results. Focus on the competitor's own site and credible industry coverage.
+3. Summarise the most notable findings in 2-4 sentences. If nothing notable happened, say so — don't invent.
+4. Write one row to the competitive_intel sheet using the Google Sheets tool. Include today's date, the competitor name, the summary, and the URLs you used as sources.
+5. Move on to the next competitor.
+
+<span class="p-comment"># Rules</span>
+- Work through the competitors one at a time, completely, before moving to the next.
+- Never invent facts. If the search returns no recent activity, the summary should reflect that honestly.
+- Keep summaries short and specific. "Launched a new pricing tier on Oct 15" beats "has been making interesting changes."
+- If a page fails to load or returns garbage, try one alternative URL. Don't loop indefinitely.
+- When you've written all three competitors to the sheet, output a one-paragraph summary of the overall week and stop.
+
+<span class="p-comment"># Output</span>
+Your final message should be a one-paragraph human-readable summary of the week's competitive landscape, suitable to email to a busy founder.</div>
+    </div>
+
+    <p>Two things this prompt does that matter:</p>
+
+    <ul>
+      <li><strong>It defines when to stop.</strong> "When you've written all three competitors to the sheet" — agents without a stop condition can loop forever. This one-liner is what turns the ReAct loop into a bounded task.</li>
+      <li><strong>It names the tools by what they do, not what they're called.</strong> "Search the web" and "read URLs" — the agent matches these to the tool descriptions you wrote in Step 3. The system prompt and tool descriptions have to speak the same language.</li>
+    </ul>
+
+    <h2 id="section-7">Step 5 — Add the final email</h2>
+
+    <p>After the AI Agent node, add one more step: send yourself the briefing via Gmail.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div>
+          <h3 class="step-title">Add a Gmail Send Message node</h3>
+          <div class="step-body">
+            <p>Connect a Gmail node after the AI Agent. Configure:</p>
+            <div class="config-list">
+              <dl>
+                <dt>Resource</dt><dd><code>Message</code></dd>
+                <dt>Operation</dt><dd><code>Send</code></dd>
+                <dt>To</dt><dd>Your email</dd>
+                <dt>Subject</dt><dd><code>Weekly competitive briefing — {{ $now.format('yyyy-MM-dd') }}</code></dd>
+                <dt>Email Type</dt><dd><code>Text</code></dd>
+                <dt>Message</dt><dd>Expression: <code>{{ $('AI Agent').item.json.output }}</code></dd>
+              </dl>
+            </div>
+            <p>The AI Agent's final message — the one-paragraph summary from the system prompt — becomes the body of the email. You get one email per week with the briefing. Full details (summary per competitor, source URLs) live in the Sheet if you want to dig in.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="section-8">Step 6 — Test it and read the reasoning trace</h2>
+
+    <p>Hit <strong>Test workflow</strong> (top right). This runs the whole thing once, now — you don't have to wait until Monday.</p>
+
+    <p>The agent will take anywhere from 30 seconds to three minutes, depending on how many pages it reads. Watch it on the canvas — you'll see the nodes light up as the agent calls each tool. Then open the <strong>Executions</strong> tab and click the run you just made.</p>
+
+    <p>This is where you see the full agent trace — the thing Lesson 3.1 promised would be the gold standard of agent observability. Click into the AI Agent node in the execution view and you'll see every turn of the loop:</p>
+
+    <div class="trace">
+      <div class="trace-header">
+        <span class="trace-title">Sample execution trace — Acme Widgets investigation</span>
+        <span class="trace-meta">Turn 1 of ~12</span>
+      </div>
+      <div class="trace-body">
+        <div class="trace-step">
+          <div class="trace-label thought">Thought</div>
+          <div class="trace-text"><em>I need to research Acme Widgets. Start with a web search for their recent activity.</em></div>
+        </div>
+        <div class="trace-step">
+          <div class="trace-label action">Action</div>
+          <div class="trace-text code">SerpApi: { query: "Acme Widgets 2026 product launch announcement" }</div>
+        </div>
+        <div class="trace-step">
+          <div class="trace-label observe">Observation</div>
+          <div class="trace-text">3 results — top one is a press release on acmewidgets.com/blog from 12 days ago titled <em>"Introducing Widget Pro 3"</em>.</div>
+        </div>
+        <div class="trace-step">
+          <div class="trace-label thought">Thought</div>
+          <div class="trace-text"><em>The press release looks like the most notable thing. Read it in full.</em></div>
+        </div>
+        <div class="trace-step">
+          <div class="trace-label action">Action</div>
+          <div class="trace-text code">HTTPRequest: { url: "https://acmewidgets.com/blog/widget-pro-3" }</div>
+        </div>
+        <div class="trace-step">
+          <div class="trace-label observe">Observation</div>
+          <div class="trace-text">Full blog post. Key facts: new product tier aimed at enterprise, 40% price increase over previous tier, launches Nov 1st.</div>
+        </div>
+        <div class="trace-step">
+          <div class="trace-label thought">Thought</div>
+          <div class="trace-text"><em>Enough on Acme. Write the sheet row and move to Beta Co.</em></div>
+        </div>
+        <div class="trace-step">
+          <div class="trace-label action">Action</div>
+          <div class="trace-text code">GoogleSheets: { date: "2026-04-22", competitor: "Acme Widgets", summary: "Launched Widget Pro 3, an enterprise tier priced 40% above their existing top tier. Announced Nov 1. First move upmarket since 2024.", sources: "acmewidgets.com/blog/widget-pro-3" }</div>
+        </div>
+        <div class="trace-step">
+          <div class="trace-label final">Final ↓</div>
+          <div class="trace-text">Agent loops back to <strong>Thought</strong> for Beta Co, repeats the pattern, then Gamma Systems, then emits the final one-paragraph summary.</div>
+        </div>
+      </div>
+    </div>
+
+    <p>Read that trace carefully. <strong>Every decision the agent made is visible.</strong> If a competitor gets a weak summary, you can see exactly why — maybe the search returned nothing useful, maybe the agent read the wrong page. The trace is the single most important thing when debugging agents, and n8n gives it to you for free.</p>
+
+    <div class="tip">
+      <strong>If the agent didn't use a tool you expected.</strong> That's almost always the tool description, not the system prompt. Open the tool's node, read its description through the agent's eyes, and ask: "If I'd never seen this system before, would this description tell me when to use this tool?" If no, rewrite it. This one habit fixes 80% of "the agent ignored my tool" problems.
+    </div>
+
+    <div class="takeaway">
+      <div class="takeaway-label">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.5 7.5l-4 4a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06L9 11.94l3.44-3.44a.75.75 0 011.06 1.06z"/></svg>
+        The one thing to remember
+      </div>
+      <p class="takeaway-main">An agent is only as good as its system prompt and its tools. Write both carefully; skim neither.</p>
+      <p class="takeaway-sub">The system prompt defines what to do. Tool descriptions define what can be done. The agent reads both, picks tools it understands, and follows instructions it believes. Weak on either side and the whole thing gets vague.</p>
+    </div>
+
+    <h2 id="section-9">What to watch for in the first month</h2>
+
+    <p>Three things to keep an eye on over the first 3-4 weekly runs:</p>
+
+    <p><strong>Summary quality.</strong> The first week's summary will probably be decent. If weeks 2-3 are worse, look at the trace — the agent is likely searching too narrowly or reading low-quality pages. Tweak the system prompt to be more specific about the kinds of pages worth reading ("prefer the competitor's own site and credible industry coverage over forum posts and aggregator sites").</p>
+
+    <p><strong>Cost.</strong> A single weekly run of this agent costs roughly 50p-£1.50 in Claude tokens plus ~3-10 SerpAPI searches. Watch the execution time — an agent running for 8+ minutes is usually stuck in a loop; cap it with max iterations (AI Agent node → Options → Max Iterations, set to 20).</p>
+
+    <p><strong>The hallucination test.</strong> Pick one week's summary. For each claim in it, ask: "Can I find this in one of the source URLs?" If yes, great. If no, that's a hallucination and the prompt needs tightening on the "never invent facts" rule.</p>
+
+    <div class="action-box">
+      <div class="action-eyebrow">
+        ◆ Let it run
+      </div>
+      <h3 class="action-title">Before Lesson 3.3, confirm your agent is running weekly</h3>
+      <p class="action-body">The agent is new territory. The point of this build isn't perfection — it's having a running agent whose reasoning you can read, so Module 3's next two lessons have something real to work with.</p>
+      <div class="action-prompt">Checklist before Lesson 3.3:
+
+□ Workflow is activated (Active toggle on)
+□ First manual test run completed successfully
+□ You've opened the AI Agent execution and read the full trace
+□ At least one row has landed in the competitive_intel sheet
+□ You've received the weekly-briefing email
+□ You've spotted one thing you'd tune (tool description, system prompt, or competitor list)</div>
+      <p class="action-body" style="margin-bottom:8px">That last box matters. No first version of an agent is perfect — noticing what to tune is the first step in owning it.</p>
+      <label class="action-check">
+        <input type="checkbox" id="actionDone" />
+        <span class="box"></span>
+        <span>All six boxes ticked — mark as complete</span>
+      </label>
+    </div>
+
+    <!-- QUIZ -->
+    <section class="quiz" id="quiz">
+      <div class="quiz-header">
+        <span class="quiz-eyebrow">Lesson check · 2 questions</span>
+      </div>
+      <h2 class="quiz-title" style="color:var(--slate);padding:0;margin-top:0">Did it stick?</h2>
+      <p style="padding-left:0;margin-left:0">&nbsp;</p>
+      <p class="quiz-sub" style="margin-top:-20px">Takes about 30 seconds. Answers and explanations appear right away.</p>
+
+      <div class="quiz-progress" id="quizProgress">
+        <span class="active"></span><span></span>
+      </div>
+
+      <div id="quizQuestions"></div>
+
+      <div class="quiz-result" id="quizResult">
+        <div class="quiz-score"><span id="scoreNum">0</span><span>/2</span></div>
+        <h3 class="quiz-result-title" id="resultTitle">Nicely done</h3>
+        <p class="quiz-result-body" id="resultBody">Your agent is running. On to Lesson 3.3 — giving agents memory and context.</p>
+        <button class="btn btn-ghost" onclick="resetQuiz()">↻ Retry questions</button>
+      </div>
+
+      <div class="quiz-nav" id="quizNav">
+        <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+      </div>
+    </section>
+
+    <div class="lesson-footer">
+      <div class="completion-status" id="completionStatus">
+        <span>◯</span>
+        <span>Lesson in progress</span>
+      </div>
+      <a href="#" class="next-lesson">
+        <span class="next-lesson-label">Next · Lesson 3.3</span>
+        <span class="next-lesson-title">Giving agents memory and context →</span>
+      </a>
+    </div>
+  </article>
+
+  <aside class="toc">
+    <div class="toc-label">In this lesson</div>
+    <ul>
+      <li><a href="#section-1" class="active">What you're building</a></li>
+      <li><a href="#section-2">The architecture</a></li>
+      <li><a href="#section-3">1. Outer workflow</a></li>
+      <li><a href="#section-4">2. AI Agent node</a></li>
+      <li><a href="#section-5">3. Sub-nodes and tools</a></li>
+      <li><a href="#section-6">4. System prompt</a></li>
+      <li><a href="#section-7">5. Final email</a></li>
+      <li><a href="#section-8">6. Test and read the trace</a></li>
+      <li><a href="#section-9">Watch for in month 1</a></li>
+      <li><a href="#quiz">Lesson check</a></li>
+    </ul>
+  </aside>
+</main>
+
+<script>
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+    progressBar.style.width = Math.min(100, Math.max(0, scrolled * 100)) + '%';
+  });
+
+  const tocLinks = document.querySelectorAll('.toc a');
+  const sections = [...tocLinks].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY + 140;
+    let activeIdx = 0;
+    sections.forEach((s, i) => { if (s.offsetTop <= y) activeIdx = i; });
+    tocLinks.forEach((a,i) => a.classList.toggle('active', i === activeIdx));
+  });
+
+  const totalQuestions = 2;
+  let currentQ = 0;
+  let answers = [null, null];
+  let answered = [false, false];
+  let attemptCount = 0;
+
+  const questionBank = [
+    {
+      id: 1,
+      text: "You've built your Build #2 research agent and the trace shows it's searching the web successfully, but it never calls the Google Sheets tool to save findings. Based on this lesson, what's the most likely cause?",
+      options: [
+        { text: "Claude is too small a model — upgrade to Opus.", correct: false },
+        { text: "The Google Sheets tool description is too vague. The agent reads tool descriptions to decide which tool to use; a weak description means the agent doesn't realise Sheets is the right answer. Rewrite the description to be specific about when to use it.", correct: true },
+        { text: "n8n's AI Agent node doesn't support Google Sheets as a tool.", correct: false },
+        { text: "The system prompt is fine — the tool just randomly misfired.", correct: false }
+      ],
+      explanation: "Tool descriptions do the same job for the agent that the system prompt does — they tell the agent when to act. An agent with a brilliant system prompt and a vague tool description will still ignore that tool. The fix is almost always rewriting the description to be concrete about <em>when</em> to use the tool (and, ideally, how it pairs with the other tools). This is the single biggest lever on agent behaviour after the system prompt itself."
+    },
+    {
+      id: 2,
+      text: "Why does Build #2 use a hybrid architecture — a workflow that contains one agent step — rather than making the entire thing an agent?",
+      options: [
+        { text: "n8n requires every workflow to start with a non-agent node.", correct: false },
+        { text: "The deterministic parts (schedule trigger, competitor list, final email) don't need agent reasoning — they're predictable. Using an agent only for the research step keeps the bounded parts cheap, reliable, and easy to debug, while getting the agent's flexibility exactly where the path can't be predicted in advance.", correct: true },
+        { text: "It's simpler to build than a pure-agent version.", correct: false },
+        { text: "Pure agents can't send emails in n8n.", correct: false }
+      ],
+      explanation: "This is the craft-first principle from Lesson 3.1 applied. The schedule trigger, the competitor list, and the final email are fixed and cheap to automate deterministically. The actual research is where the path varies — you don't know which pages will matter until you start. So: workflow for the edges, agent for the fuzzy middle. You get flexibility without paying the 10× cost and 10× debug-time penalty across the whole pipeline."
+    },
+    {
+      id: 3,
+      text: "What's the purpose of the 'when you've written all three competitors to the sheet, output a one-paragraph summary and stop' line in the system prompt?",
+      options: [
+        { text: "To make the output more readable — the agent would work fine without it.", correct: false },
+        { text: "It defines the stop condition. Without an explicit stop condition, agent loops can run indefinitely — looping back to reason about what to do next without ever deciding the task is done. A single clear sentence converts an open-ended loop into a bounded task.", correct: true },
+        { text: "It controls the email subject line.", correct: false },
+        { text: "It's a legal requirement for AI agents.", correct: false }
+      ],
+      explanation: "Stop conditions are one of the most commonly-missed agent best practices. The ReAct loop naturally wants to keep going — there's always something else that could be searched, another page to read. An explicit stop condition in the system prompt ('when you've done X, output Y and stop') is what turns an open-ended reasoning loop into a task with a defined end. Without it, you get runaway cost and runaway latency."
+    },
+    {
+      id: 4,
+      text: "The lesson advises using Claude Sonnet 4.6 with a temperature of 0.3 for the chat model. Why those values?",
+      options: [
+        { text: "They're required by the n8n AI Agent node.", correct: false },
+        { text: "Sonnet 4.6 is reliable for tool use at reasonable cost — the sweet spot for agents. Temperature 0.3 is low enough that the agent reasons consistently, but high enough that it can handle variation in the page content it reads without becoming rigid.", correct: true },
+        { text: "Higher temperatures are more creative, which is always better.", correct: false },
+        { text: "Claude doesn't support agent tools at lower temperatures.", correct: false }
+      ],
+      explanation: "Model choice matters for agents because tool use and long reasoning chains stress the model harder than simple prompting. Sonnet 4.6 is the cost/quality sweet spot for tool use in 2026 — Opus is better but several times more expensive, Haiku is faster but less reliable with tools. Temperature 0.3 gives consistent reasoning without turning the agent into a rigid pattern-matcher. Both defaults are worth changing only if you have a specific reason."
+    },
+    {
+      id: 5,
+      text: "Looking at the sample execution trace in this lesson, what's the pattern that repeats across every 'turn' of the agent's loop?",
+      options: [
+        { text: "Input → Output, always in one step.", correct: false },
+        { text: "Thought → Action → Observation — the ReAct pattern. The agent reasons about what to do, takes an action (calls a tool), reads the result, and loops back to reason about the next step until the task is done.", correct: true },
+        { text: "Search → Write — the agent always searches once then writes.", correct: false },
+        { text: "Random — agents don't follow a predictable pattern.", correct: false }
+      ],
+      explanation: "Every turn is Thought → Action → Observation, and the agent loops this pattern until it decides the task is done. This is the ReAct pattern from Lesson 3.1, made concrete in the execution trace. Reading these traces is the debugging skill for agents — each step is visible, so when something goes wrong you can see the exact thought that led to the wrong action."
+    },
+    {
+      id: 6,
+      text: "The research agent hasn't been told how many pages to read per competitor. How does it decide when to stop researching one and move on?",
+      options: [
+        { text: "It reads a fixed number of pages per competitor (three) regardless of content.", correct: false },
+        { text: "The system prompt instructs it to read '1-3 of the most promising URLs' and then write to the sheet before moving on. The agent's judgement, shaped by that instruction, decides when it has enough. The 'max iterations' setting is a safety cap if it loops too long.", correct: true },
+        { text: "It reads every page it finds until it runs out of tokens.", correct: false },
+        { text: "A separate timer tool tells it when to stop.", correct: false }
+      ],
+      explanation: "This is the craft behind agent design: the system prompt shapes judgement calls the agent has to make. '1-3 promising URLs' is permissive enough that the agent can adapt to how much content exists, but specific enough that it won't read 20 pages per competitor. Combined with 'Max Iterations' as a hard cap in the node settings, you get a bounded, judgement-driven loop — which is exactly what an agent should be."
+    }
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function pickQuestions() {
+    if (attemptCount === 0) {
+      const canonical = [1, 2].map(id => questionBank.find(q => q.id === id));
+      return canonical.map(q => ({ ...q, options: q.options.slice() }));
+    }
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  function renderQuestions() {
+    const selected = pickQuestions();
+    const container = document.getElementById('quizQuestions');
+    container.innerHTML = '';
+
+    selected.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  const progressDots = document.querySelectorAll('#quizProgress span');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+
+  renderQuestions();
+
+  function getCards() { return document.querySelectorAll('.q-card'); }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    progressDots.forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < i) d.classList.add('done');
+      else if (idx === i) d.classList.add('active');
+    });
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('quiz').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) { currentQ++; showQuestion(currentQ); }
+    else { showResults(); }
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) { currentQ--; showQuestion(currentQ); }
+  }
+
+  function showResults() {
+    getCards().forEach(c => c.classList.remove('active'));
+    document.getElementById('quizNav').style.display = 'none';
+    progressDots.forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+
+    const score = answers.filter(a => a === true).length;
+    document.getElementById('scoreNum').textContent = score;
+
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+    if (score === 2) {
+      title.textContent = 'Both right. Agent is solid.';
+      body.textContent = attemptCount === 0
+        ? "You understand why this agent works, not just how to build one. On to Lesson 3.3 — giving agents better memory and context."
+        : "Clean sweep on the retry too. You've genuinely got this.";
+    } else if (score === 1) {
+      title.textContent = 'Halfway there.';
+      body.textContent = "Worth a re-read of the section you missed. Agents are where details matter most — the reasoning behind tool descriptions and stop conditions is what separates a working agent from a stuck one.";
+    } else {
+      title.textContent = 'Worth another pass.';
+      body.textContent = "Lesson 3.3 refines this agent with better memory and context. It assumes you've internalised why each piece of Build #2 is there. Scroll back, re-read, retry when ready.";
+    }
+
+    document.getElementById('quizResult').classList.add('show');
+    updateCompletion(score);
+  }
+
+  function resetQuiz() {
+    attemptCount++;
+    currentQ = 0;
+    answers = [null, null];
+    answered = [false, false];
+
+    renderQuestions();
+
+    document.getElementById('quizResult').classList.remove('show');
+    document.getElementById('quizNav').style.display = 'flex';
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Next question →';
+    showQuestion(0);
+  }
+
+  const actionCheck = document.getElementById('actionDone');
+  const statusEl = document.getElementById('completionStatus');
+  function updateCompletion(quizScore) {
+    const quizDone = answered.every(Boolean);
+    const actionDone = actionCheck.checked;
+    if (quizDone && actionDone && (quizScore ?? answers.filter(a=>a===true).length) >= 1) {
+      statusEl.classList.add('complete');
+      statusEl.innerHTML = '<span>✓</span><span>Lesson complete</span>';
+    } else if (quizDone) {
+      statusEl.innerHTML = '<span>◐</span><span>Quiz done — finish your action</span>';
+    } else if (actionDone) {
+      statusEl.innerHTML = '<span>◐</span><span>Action done — take the quick check</span>';
+    }
+  }
+  actionCheck.addEventListener('change', () => updateCompletion());
+</script>
+
+</body>
+</html>

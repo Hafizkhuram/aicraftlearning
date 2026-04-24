@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lesson 4.3 — Running AI systems over time: the maintenance reality | AICraft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--body);font-size:17px;line-height:1.7;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+
+  .progress-track{position:fixed;top:0;left:0;right:0;height:3px;background:transparent;z-index:100}
+  .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--emerald),var(--forest));transition:width .15s ease-out}
+
+  header{border-bottom:1px solid var(--border);background:var(--card);position:sticky;top:0;z-index:50;backdrop-filter:blur(8px);background:rgba(255,255,255,.85)}
+  .header-inner{max-width:1100px;margin:0 auto;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:inline-flex;align-items:center;text-decoration:none;transition:opacity .15s}
+  .brand:hover{opacity:.85}
+  .brand-logo{height:36px;width:auto;display:block}
+  .header-meta{display:flex;align-items:center;gap:20px;font-size:13px;color:var(--text-mute)}
+  .header-meta .sep{opacity:.4}
+  .lesson-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--mint);color:var(--forest);font-weight:600;font-size:12px;letter-spacing:.02em}
+  .lesson-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald)}
+
+  main{max-width:1100px;margin:0 auto;padding:0 28px 80px;display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:56px}
+  @media (max-width:900px){main{grid-template-columns:1fr;gap:0;padding-bottom:48px}aside.toc{display:none}}
+
+  article{max-width:680px;padding-top:48px}
+
+  .lesson-meta{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-mute);margin-bottom:20px;font-weight:500}
+  .lesson-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.lesson-title{font-family:var(--display);font-weight:500;font-size:clamp(34px,4.8vw,52px);line-height:1.08;letter-spacing:-.02em;color:var(--slate);margin:0 0 20px}
+  h1.lesson-title em{font-style:italic;color:var(--forest)}
+
+  .hook{font-family:var(--display);font-size:21px;line-height:1.5;color:var(--text-soft);font-style:italic;font-weight:400;padding:0 0 0 20px;border-left:3px solid var(--emerald);margin:28px 0 48px}
+
+  article h2{font-family:var(--display);font-weight:600;font-size:28px;line-height:1.25;letter-spacing:-.015em;color:var(--forest);margin:56px 0 16px;position:relative;padding-left:18px}
+  article h2::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:2px;background:var(--emerald)}
+  article h3{font-family:var(--display);font-weight:600;font-size:20px;color:var(--slate);margin:32px 0 10px;letter-spacing:-.005em}
+
+  article p{margin:0 0 18px}
+  article p strong{color:var(--slate);font-weight:600}
+  article ul, article ol{margin:0 0 20px;padding-left:22px}
+  article li{margin:0 0 8px}
+  article li::marker{color:var(--emerald)}
+
+  article code{font-family:"SFMono-Regular",Consolas,monospace;background:var(--mint-soft);color:var(--forest);padding:1px 6px;border-radius:4px;font-size:.92em}
+
+  .misconception{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:20px 22px;background:#FEF7EC;border:1px solid #F4E0BB;border-radius:10px;margin:28px 0}
+  .misconception-icon{width:32px;height:32px;border-radius:8px;background:#F59E0B;color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:18px;flex-shrink:0}
+  .misconception-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#92400E;font-weight:700;margin-bottom:4px}
+  .misconception-text{margin:0;color:#78350F;font-size:15.5px;line-height:1.6}
+  .misconception-text strong{color:#78350F}
+
+  .takeaway{margin:40px 0;padding:28px 32px;background:linear-gradient(135deg,var(--mint-soft) 0%,var(--mint) 100%);border:1px solid #A7F3D0;border-radius:14px;position:relative;overflow:hidden}
+  .takeaway::before{content:"";position:absolute;top:0;bottom:0;left:0;width:4px;background:var(--emerald)}
+  .takeaway-label{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--forest);font-weight:700;margin-bottom:12px}
+  .takeaway-label svg{width:14px;height:14px}
+  .takeaway-main{font-family:var(--display);font-size:22px;line-height:1.4;color:var(--slate);font-weight:600;margin:0 0 10px;letter-spacing:-.01em}
+  .takeaway-sub{font-size:15.5px;color:var(--forest);margin:0;line-height:1.6}
+
+  /* Drift trio — three kinds of drift in a three-column grid */
+  .drift{margin:28px 0;display:grid;grid-template-columns:repeat(3, 1fr);gap:12px}
+  @media (max-width:720px){.drift{grid-template-columns:1fr}}
+  .drift-card{padding:20px 22px;border-radius:12px;background:var(--card);border:1px solid var(--border);position:relative}
+  .drift-label{display:inline-block;font-family:var(--display);font-weight:700;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:var(--mint);color:var(--forest);margin-bottom:10px}
+  .drift-card h4{font-family:var(--display);font-weight:600;font-size:16px;color:var(--slate);margin:0 0 8px;line-height:1.3}
+  .drift-card p{font-size:14px;line-height:1.55;color:var(--text-soft);margin:0 0 8px}
+  .drift-card p:last-of-type{margin:0}
+  .drift-cadence{display:inline-block;margin-top:8px;font-family:var(--display);font-style:italic;font-size:12.5px;color:var(--forest);border-top:1px dashed var(--border);padding-top:8px;width:100%}
+
+  /* Cadence block — the three checkable cadences, in vertical stack */
+  .cadence{margin:28px 0;display:flex;flex-direction:column;gap:10px}
+  .cadence-row{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:18px 22px;background:var(--card);border:1px solid var(--border);border-radius:12px;align-items:start}
+  @media (max-width:640px){.cadence-row{grid-template-columns:1fr;gap:10px}}
+  .cadence-when{font-family:var(--display);font-weight:600;font-size:15px;color:var(--slate);text-align:right;padding-top:2px}
+  @media (max-width:640px){.cadence-when{text-align:left}}
+  .cadence-when .time{display:block;font-size:11.5px;font-weight:500;color:var(--text-mute);letter-spacing:.04em;margin-top:3px;font-style:italic}
+  .cadence-content{border-left:2px solid var(--mint);padding-left:18px}
+  @media (max-width:640px){.cadence-content{border-left:0;border-top:2px solid var(--mint);padding-left:0;padding-top:8px}}
+  .cadence-content h4{font-family:var(--display);font-weight:600;font-size:15.5px;color:var(--forest);margin:0 0 6px;line-height:1.3}
+  .cadence-content ul{margin:0;padding-left:18px;font-size:14px;line-height:1.55;color:var(--text-soft)}
+  .cadence-content li{margin-bottom:4px}
+  .cadence-content li::marker{color:var(--emerald)}
+
+  /* Calendar-event styled block — concrete example reminders */
+  .reminders{margin:28px 0;padding:24px 26px;background:var(--card);border:1px solid var(--border);border-radius:14px}
+  .reminders-label{font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute);margin-bottom:4px}
+  .reminders-title{font-family:var(--display);font-weight:600;font-size:17px;color:var(--slate);margin:0 0 16px;line-height:1.3}
+  .reminder-item{display:grid;grid-template-columns:32px 1fr;gap:14px;padding:12px 0;border-bottom:1px solid var(--border-soft)}
+  .reminder-item:last-child{border-bottom:0;padding-bottom:0}
+  .reminder-item:first-of-type{padding-top:0}
+  .reminder-icon{width:28px;height:28px;border-radius:7px;background:var(--mint);color:var(--forest);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.02em}
+  .reminder-title{font-family:var(--display);font-weight:600;font-size:14.5px;color:var(--slate);line-height:1.3}
+  .reminder-meta{font-size:12px;color:var(--text-mute);font-family:"SFMono-Regular",Consolas,monospace;margin-top:2px}
+  .reminder-desc{font-size:13.5px;color:var(--text-soft);line-height:1.5;margin:3px 0 0}
+
+  .reality{margin:28px 0;padding:22px 26px;background:#FEF7EC;border:1px solid #F4E0BB;border-radius:12px}
+  .reality-label{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#92400E;margin-bottom:10px}
+  .reality h3{font-family:var(--display);font-weight:600;font-size:18px;color:#78350F;margin:0 0 10px;line-height:1.3}
+  .reality p{margin:0 0 10px;font-size:15px;line-height:1.6;color:#78350F}
+  .reality p:last-child{margin:0}
+  .reality p strong{color:#78350F;font-weight:700}
+
+  .tip{margin:18px 0;padding:14px 18px;background:var(--mint-soft);border-left:3px solid var(--emerald);border-radius:6px;font-size:14.5px;line-height:1.55;color:var(--text)}
+  .tip strong{color:var(--forest);font-weight:700}
+  .tip.warn{background:#FEF7EC;border-left-color:#F59E0B}
+  .tip.warn strong{color:#92400E}
+
+  .note{margin:24px 0;padding:18px 22px;background:var(--border-soft);border-radius:10px;font-size:14.5px;line-height:1.6;color:var(--text)}
+  .note-label{display:inline-block;font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-mute);margin-right:6px}
+  .note strong{color:var(--slate);font-weight:600}
+  .note em{color:var(--text-soft);font-style:italic}
+
+  .action-box{margin:48px 0 0;padding:32px;background:var(--slate);border-radius:16px;color:#fff;position:relative;overflow:hidden}
+  .action-box::after{content:"";position:absolute;right:-60px;bottom:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.18),transparent 70%);pointer-events:none}
+  .action-eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--emerald);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:14px}
+  .action-title{font-family:var(--display);font-weight:500;font-size:26px;line-height:1.25;margin:0 0 12px;color:#fff;letter-spacing:-.01em}
+  .action-body{color:#CBD5E1;font-size:16px;line-height:1.65;margin:0 0 20px}
+  .action-prompt{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:14px 16px;font-family:"SFMono-Regular",Consolas,monospace;font-size:14px;color:#E2E8F0;margin:0 0 20px;white-space:pre-wrap;line-height:1.6}
+  .action-check{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;padding:10px 0;color:#CBD5E1;font-size:15px;position:relative;z-index:2}
+  .action-check input{display:none}
+  .action-check .box{width:20px;height:20px;border-radius:5px;border:1.5px solid #475569;display:grid;place-items:center;transition:all .2s;flex-shrink:0}
+  .action-check input:checked + .box{background:var(--emerald);border-color:var(--emerald)}
+  .action-check input:checked + .box::after{content:"✓";color:#fff;font-size:13px;font-weight:700}
+  .action-check input:checked ~ span{color:#fff;text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3)}
+
+  .quiz{margin-top:72px;padding:40px 36px;background:var(--card);border:1px solid var(--border);border-radius:16px}
+  .quiz-header{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .quiz-eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--forest);font-weight:700}
+  .quiz-title{font-family:var(--display);font-weight:600;font-size:26px;line-height:1.2;color:var(--slate);margin:4px 0 8px;letter-spacing:-.01em}
+  .quiz-sub{color:var(--text-mute);margin:0 0 28px;font-size:15px}
+  .quiz-progress{display:flex;gap:6px;margin-bottom:28px}
+  .quiz-progress span{flex:1;height:4px;border-radius:2px;background:var(--border);transition:background .3s}
+  .quiz-progress span.done{background:var(--emerald)}
+  .quiz-progress span.active{background:var(--forest)}
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .q-number{font-family:var(--display);font-size:13px;color:var(--text-mute);font-weight:500;letter-spacing:.04em;margin-bottom:8px}
+  .q-text{font-family:var(--display);font-weight:500;font-size:21px;line-height:1.4;color:var(--slate);margin:0 0 24px;letter-spacing:-.005em}
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;background:var(--card);font-size:15.5px;line-height:1.5}
+  .option:hover:not(.disabled){border-color:var(--emerald);background:var(--mint-soft)}
+  .option.disabled{cursor:default}
+  .option-letter{width:26px;height:26px;border-radius:7px;background:var(--border-soft);color:var(--text-soft);display:grid;place-items:center;font-weight:700;font-size:13px;flex-shrink:0;transition:all .2s;font-family:var(--display)}
+  .option:hover:not(.disabled) .option-letter{background:var(--emerald);color:#fff}
+  .option.correct{border-color:var(--success);background:#F0FDF4}
+  .option.correct .option-letter{background:var(--success);color:#fff}
+  .option.incorrect{border-color:var(--error);background:#FEF2F2}
+  .option.incorrect .option-letter{background:var(--error);color:#fff}
+  .option-check{margin-left:auto;opacity:0;transition:opacity .2s;font-size:20px;line-height:1}
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+  .explanation{display:none;margin-top:20px;padding:18px 20px;border-radius:10px;background:var(--mint-soft);border-left:3px solid var(--emerald);font-size:15px;line-height:1.6;color:var(--forest)}
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{display:block;font-family:var(--display);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--forest);margin-bottom:6px}
+  .explanation.wrong{background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D}
+  .explanation.wrong strong{color:#7F1D1D}
+  .quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px}
+  .btn{border:0;cursor:pointer;font-family:var(--body);font-weight:600;font-size:14.5px;padding:11px 22px;border-radius:8px;transition:all .18s;display:inline-flex;align-items:center;gap:8px}
+  .btn-primary{background:var(--forest);color:#fff}
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{background:var(--border);color:var(--text-mute);cursor:not-allowed;transform:none}
+  .btn-ghost{background:transparent;color:var(--text-mute)}
+  .btn-ghost:hover{color:var(--forest)}
+  .quiz-result{display:none;text-align:center;padding:20px 0}
+  .quiz-result.show{display:block;animation:fadeIn .4s ease}
+  .quiz-score{font-family:var(--display);font-weight:500;font-size:72px;line-height:1;color:var(--forest);margin:0 0 8px;letter-spacing:-.03em}
+  .quiz-score span{color:var(--text-mute);font-size:32px}
+  .quiz-result-title{font-family:var(--display);font-weight:600;font-size:24px;color:var(--slate);margin:0 0 8px}
+  .quiz-result-body{color:var(--text-mute);margin:0 auto 24px;max-width:420px;font-size:15.5px;line-height:1.6}
+
+  aside.toc{padding-top:56px;position:sticky;top:80px;align-self:start;max-height:calc(100vh - 100px);overflow-y:auto}
+  .toc-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute);font-weight:700;margin-bottom:14px}
+  .toc ul{list-style:none;padding:0;margin:0;border-left:1px solid var(--border)}
+  .toc li{margin:0}
+  .toc a{display:block;padding:7px 16px;font-size:13.5px;color:var(--text-mute);text-decoration:none;border-left:2px solid transparent;margin-left:-1px;transition:all .15s;line-height:1.4}
+  .toc a:hover{color:var(--forest)}
+  .toc a.active{color:var(--forest);font-weight:600;border-left-color:var(--emerald)}
+
+  .lesson-footer{max-width:680px;margin:56px 0 0;padding-top:32px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+  .next-lesson{display:flex;flex-direction:column;gap:2px;padding:16px 22px;border-radius:10px;background:var(--card);border:1px solid var(--border);text-decoration:none;transition:all .2s}
+  .next-lesson:hover{border-color:var(--emerald);transform:translateY(-1px);box-shadow:0 4px 14px rgba(6,95,70,.06)}
+  .next-lesson-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute);font-weight:600}
+  .next-lesson-title{font-family:var(--display);font-weight:600;font-size:16px;color:var(--forest)}
+  .completion-status{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-mute)}
+  .completion-status.complete{color:var(--success)}
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AICraft Learning — home">
+      <svg class="brand-logo" viewBox="0 0 420 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="lesson-badge">Module 4 · Lesson 3</span>
+      <span class="sep">·</span>
+      <span>8 min read</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article>
+    <div class="lesson-meta">
+      <span>Building AI Agents &amp; Workflows</span>
+      <span class="dot"></span>
+      <span>Beyond building</span>
+    </div>
+
+    <h1 class="lesson-title">Running AI systems <em>over time</em></h1>
+
+    <p class="hook">Building a system takes a week. Keeping it running takes forever. Plan accordingly — or don't, and discover the hard way that the unglamorous half of the work is where all the real value actually lives.</p>
+
+    <p>This is the lesson almost no one teaches. Courses are full of "build your first agent" tutorials; almost none of them come back six months later to say what happened to the agent. The honest answer, for most of them, is that they broke quietly and nobody noticed — because the people who built them never set up a way to notice. This lesson is how you become someone who notices.</p>
+
+    <div class="misconception">
+      <div class="misconception-icon">!</div>
+      <div>
+        <div class="misconception-label">The common misconception</div>
+        <p class="misconception-text"><strong>"Once it's built, it'll just keep working."</strong> It won't. The models change under you. The tools change under you. Your business changes around you. Every AI system you've built is sitting on three moving platforms, and the cost of <em>not</em> noticing the drift compounds over weeks and months. The fix isn't complicated — it's three calendar reminders and the discipline to actually honour them.</p>
+      </div>
+    </div>
+
+    <h2 id="section-1">Three kinds of drift</h2>
+
+    <p>Your AI systems drift in three different ways, on three different timescales. Knowing which is which is the mental model that makes maintenance tractable.</p>
+
+    <div class="drift">
+      <div class="drift-card">
+        <span class="drift-label">◆ Model drift</span>
+        <h4>The LLM changes under you</h4>
+        <p>Providers update their models. Claude 4.6 gets replaced by 4.7. Older models get deprecated. Even "the same model" can shift behaviour subtly between versions. Prompts that worked yesterday produce slightly different outputs tomorrow, even with no code change on your side.</p>
+        <div class="drift-cadence">Check quarterly</div>
+      </div>
+      <div class="drift-card">
+        <span class="drift-label">◆ Tool drift</span>
+        <h4>Integrations break at the edges</h4>
+        <p>OAuth tokens expire. API fields get renamed. Rate limits tighten. Google alone has been known to expire personal OAuth tokens after seven days — no error, just a silently failing workflow. The tool you depend on doesn't care if your automation works.</p>
+        <div class="drift-cadence">Check monthly</div>
+      </div>
+      <div class="drift-card">
+        <span class="drift-label">◆ Business drift</span>
+        <h4>Your own needs change</h4>
+        <p>The workflow that triaged 30 emails a day stops making sense at 300. The competitor list that mattered six months ago is half-obsolete. The "routine" email category from Module 2 doesn't match what your inbox looks like anymore.</p>
+        <div class="drift-cadence">Review annually</div>
+      </div>
+    </div>
+
+    <p>None of these is anyone's fault. It's just what happens when you build on top of a stack that's moving independently of you. The craft skill isn't avoiding drift — it's <em>expecting</em> it, and knowing which timescale each kind sits on.</p>
+
+    <div class="reality">
+      <div class="reality-label">◆ The 2026 industry reality</div>
+      <h3>Prompts that worked yesterday can fail tomorrow</h3>
+      <p>In 2026, one enterprise team documented their regression test suite — carefully built against one Claude version — dropping to <strong>95.1% pass rate</strong> when tested against the next. Nothing had changed in their code. The model's behaviour had shifted subtly, and only an explicit test caught it. Without that test, the degradation would have been invisible until customer complaints surfaced weeks later.</p>
+      <p>The same year, Google blocked new access to Gemini 2.0 Flash for new projects. Teams who'd built on it had no choice but to migrate. Announcements happen weeks in advance; the teams who survive them are the ones already checking for this kind of news on a regular cadence.</p>
+    </div>
+
+    <h2 id="section-2">Weekly — the execution review</h2>
+
+    <p>The highest-leverage habit, and the cheapest. Every Monday morning, spend ten minutes looking at your n8n Executions tab.</p>
+
+    <div class="cadence">
+      <div class="cadence-row">
+        <div class="cadence-when">
+          Weekly
+          <span class="time">~10 min · Mondays</span>
+        </div>
+        <div class="cadence-content">
+          <h4>What to look at</h4>
+          <ul>
+            <li>Any red (failed) executions from the past week — open them, skim the error</li>
+            <li>Total run count per workflow — big drop vs the week before usually means a trigger failed silently</li>
+            <li>Runtime drift — if Build #2 used to finish in 90 seconds and is now hitting 6 minutes, something changed</li>
+            <li>The run log sheets from Build #1 and #2 — a 30-second scroll tells you if anything looks off</li>
+            <li>Your kill-switch Sheet — make sure everything is still set to <code>active</code></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <p>Ten minutes. Maybe fifteen if you spot something worth investigating. The difference between this habit and nothing is the difference between catching a broken workflow on Monday and discovering it on Friday when someone asks you why the weekly briefing didn't arrive.</p>
+
+    <div class="tip">
+      <strong>Make the executions tab a tab you open on Monday.</strong> Bookmark it. Put it in your browser tab group for work-first-hour. The habit is the entire point — the execution view itself is already doing the hard work of surfacing problems. Your job is to look.
+    </div>
+
+    <h2 id="section-3">Monthly — costs, credentials, and API changes</h2>
+
+    <p>Once a month, twenty minutes, a bit more depth. This is where most of the "silent rot" happens in AI systems — the stuff weekly checks don't catch.</p>
+
+    <div class="cadence">
+      <div class="cadence-row">
+        <div class="cadence-when">
+          Monthly
+          <span class="time">~20 min · 1st of the month</span>
+        </div>
+        <div class="cadence-content">
+          <h4>What to review</h4>
+          <ul>
+            <li><strong>LLM spend</strong> — open Anthropic Console. Compare this month to last. A 2× jump with no new workflows means one of your prompts has drifted into using more tokens, or one of your agents is looping longer. Investigate before it doubles again.</li>
+            <li><strong>Tool spend</strong> — SerpAPI usage, any other per-call tools. Same logic. A spike without a clear business reason is worth a look.</li>
+            <li><strong>OAuth credentials</strong> — open your n8n credentials list. Look for anything flagged as expired or "reconnection required." Google in particular can silently expire personal-account OAuth tokens weekly. Reconnect proactively rather than waiting for a workflow to fail.</li>
+            <li><strong>Provider announcements</strong> — five minutes on Anthropic's news page (or OpenAI's, or whichever you use). Any model deprecations coming up? Any new models worth testing? Put significant announcements in your calendar for the quarterly review.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip warn">
+      <strong>Honest craft note:</strong> OAuth expiry is genuinely annoying. For Google services in particular, personal accounts can expire every 7 days; Google Workspace accounts are more stable. If you run multiple workflows on personal credentials and find yourself reconnecting constantly, it's worth migrating to a Google Workspace account or — for heavier use — a Google service account. Neither is glamorous. Both save real time.
+    </div>
+
+    <h2 id="section-4">Quarterly — the model and prompt review</h2>
+
+    <p>Once a quarter, one hour, the deepest pass. This is where you catch model drift before it catches you.</p>
+
+    <div class="cadence">
+      <div class="cadence-row">
+        <div class="cadence-when">
+          Quarterly
+          <span class="time">~1 hour · first week of Jan/Apr/Jul/Oct</span>
+        </div>
+        <div class="cadence-content">
+          <h4>What to check</h4>
+          <ul>
+            <li><strong>Output quality spot-check.</strong> Pull three real recent outputs from each system. Are they still as good as the ones you remember from when you built it? If any look noticeably worse, the prompt may have drifted — or the model's default behaviour may have shifted.</li>
+            <li><strong>Prompt review.</strong> Re-read your system prompts and tool descriptions with fresh eyes. Anything vague? Anything you'd write differently now? Module 2 and 3 craft patterns still apply — this is your chance to polish what you rushed past when you were building.</li>
+            <li><strong>Model version check.</strong> Are you still on <code>claude-sonnet-4-6</code>, or is there a newer default worth testing? The Anthropic-recommended default shifts over time. Test the new one against a recent real input before switching.</li>
+            <li><strong>Is this system still worth running?</strong> The honest question. Which of your workflows actually saved you time this quarter? Which ones haven't triggered in a month? Retire the ones that aren't earning their cost — more on this below.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <span class="note-label">When you test a new model version</span>
+      <strong>Don't switch without comparing.</strong> Take five representative inputs from the past quarter. Run them through the current model and the proposed new one. Compare outputs side by side. <em>Most of the time</em> they'll be similar enough that the newer model is a safe upgrade. Occasionally they won't be — maybe the new model hedges where the old one was direct, or structures JSON slightly differently. Catch that in a planned test, not in a broken production run.
+    </div>
+
+    <h2 id="section-5">The three calendar reminders</h2>
+
+    <p>Here's the entire lesson in three calendar events. Add them now, before you close this tab. They take two minutes to set up and they're what separate a working AI stack from a quietly rotting one.</p>
+
+    <div class="reminders">
+      <div class="reminders-label">◆ Copy this into your calendar</div>
+      <p class="reminders-title">Three recurring events that save hours of surprise-fixing</p>
+
+      <div class="reminder-item">
+        <div class="reminder-icon">W</div>
+        <div>
+          <div class="reminder-title">AI systems — weekly review</div>
+          <div class="reminder-meta">Repeats: every Monday at 9:00am · Duration: 15 min</div>
+          <p class="reminder-desc">Open n8n Executions tab. Check for red rows, runtime drift, kill-switch status. Skim run logs for Build #1 and Build #2. Write one note if anything's worth revisiting.</p>
+        </div>
+      </div>
+
+      <div class="reminder-item">
+        <div class="reminder-icon">M</div>
+        <div>
+          <div class="reminder-title">AI systems — monthly health check</div>
+          <div class="reminder-meta">Repeats: 1st of the month · Duration: 30 min</div>
+          <p class="reminder-desc">Check LLM spend vs last month. Review OAuth credentials for expiry. Read latest provider announcements (Anthropic news). Reconnect anything that needs it.</p>
+        </div>
+      </div>
+
+      <div class="reminder-item">
+        <div class="reminder-icon">Q</div>
+        <div>
+          <div class="reminder-title">AI systems — quarterly review</div>
+          <div class="reminder-meta">Repeats: 1st of Jan/Apr/Jul/Oct · Duration: 1 hour</div>
+          <p class="reminder-desc">Spot-check recent outputs for quality. Re-read system prompts and tool descriptions. Check for new model versions worth testing. Decide which systems to retire.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="section-6">Retire with discipline</h2>
+
+    <p>One final piece of craft that most courses skip: <strong>a system you don't use anymore is a system that's still costing you money and attention.</strong> Every n8n workflow on an active schedule consumes polling cycles, API calls, and your mental overhead when it errors. Every agent with a live credential is a small risk surface. Every kill-switch row is one more thing to keep an eye on.</p>
+
+    <p>Once a quarter, look at each of your systems and ask, honestly: <em>"If I were starting from scratch today, would I build this?"</em> If the answer is no, retire it. Deactivate the workflow. Archive the Sheet. Revoke the credentials it no longer needs. Update your kill-switch tab. This takes five minutes per system and it genuinely removes weight from your operational load.</p>
+
+    <p>Retirement is a craft skill, not a failure. Most working AI practitioners run fewer systems over time, not more — because they've learned which ones genuinely earn their cost, and they're confident enough to let the rest go.</p>
+
+    <div class="takeaway">
+      <div class="takeaway-label">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.5 7.5l-4 4a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06L9 11.94l3.44-3.44a.75.75 0 011.06 1.06z"/></svg>
+        The one thing to remember
+      </div>
+      <p class="takeaway-main">A system you don't check is a system that's quietly failing. Put it in the calendar.</p>
+      <p class="takeaway-sub">Three recurring events — weekly 15 min, monthly 30 min, quarterly 1 hour — are the difference between AI systems that keep earning and AI systems that quietly rot. Unglamorous, reliable, and the part that actually separates practitioners from tutorial-finishers.</p>
+    </div>
+
+    <div class="action-box">
+      <div class="action-eyebrow">
+        ◆ Do it now
+      </div>
+      <h3 class="action-title">Add the three reminders to your calendar before closing this tab</h3>
+      <p class="action-body">This is the shortest possible action in the course, and the one most people skip — which is exactly why the systems quietly fail six months later. Two minutes now.</p>
+      <div class="action-prompt">Open your calendar. Create three recurring events:
+
+□ "AI systems — weekly review"
+  Mondays at 9:00am, 15 minutes
+  Description: "Open n8n Executions. Red rows. Runtime drift.
+  Kill-switch status. Skim run logs."
+
+□ "AI systems — monthly health check"
+  1st of the month, 30 minutes
+  Description: "LLM spend vs last month. OAuth credential expiry.
+  Provider announcements. Reconnect what needs it."
+
+□ "AI systems — quarterly review"
+  1st of Jan/Apr/Jul/Oct, 1 hour
+  Description: "Output quality spot-check. Re-read prompts + tool
+  descriptions. Test new model versions. Retire systems that
+  aren't earning their cost."</div>
+      <p class="action-body" style="margin-bottom:8px">Two minutes. Then you're done with this lesson properly, not just conceptually.</p>
+      <label class="action-check">
+        <input type="checkbox" id="actionDone" />
+        <span class="box"></span>
+        <span>Three reminders added to my calendar — mark as complete</span>
+      </label>
+    </div>
+
+    <!-- QUIZ -->
+    <section class="quiz" id="quiz">
+      <div class="quiz-header">
+        <span class="quiz-eyebrow">Lesson check · 2 questions</span>
+      </div>
+      <h2 class="quiz-title" style="color:var(--slate);padding:0;margin-top:0">Did it stick?</h2>
+      <p style="padding-left:0;margin-left:0">&nbsp;</p>
+      <p class="quiz-sub" style="margin-top:-20px">Takes about 30 seconds. Answers and explanations appear right away.</p>
+
+      <div class="quiz-progress" id="quizProgress">
+        <span class="active"></span><span></span>
+      </div>
+
+      <div id="quizQuestions"></div>
+
+      <div class="quiz-result" id="quizResult">
+        <div class="quiz-score"><span id="scoreNum">0</span><span>/2</span></div>
+        <h3 class="quiz-result-title" id="resultTitle">Nicely done</h3>
+        <p class="quiz-result-body" id="resultBody">Maintenance mindset in place. On to Lesson 4.4 — your 30/60/90 plan and the close of the course.</p>
+        <button class="btn btn-ghost" onclick="resetQuiz()">↻ Retry questions</button>
+      </div>
+
+      <div class="quiz-nav" id="quizNav">
+        <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+      </div>
+    </section>
+
+    <div class="lesson-footer">
+      <div class="completion-status" id="completionStatus">
+        <span>◯</span>
+        <span>Lesson in progress</span>
+      </div>
+      <a href="#" class="next-lesson">
+        <span class="next-lesson-label">Next · Lesson 4.4</span>
+        <span class="next-lesson-title">Your agent portfolio — the 30/60/90 plan →</span>
+      </a>
+    </div>
+  </article>
+
+  <aside class="toc">
+    <div class="toc-label">In this lesson</div>
+    <ul>
+      <li><a href="#section-1" class="active">Three kinds of drift</a></li>
+      <li><a href="#section-2">Weekly review</a></li>
+      <li><a href="#section-3">Monthly check</a></li>
+      <li><a href="#section-4">Quarterly review</a></li>
+      <li><a href="#section-5">The three reminders</a></li>
+      <li><a href="#section-6">Retire with discipline</a></li>
+      <li><a href="#quiz">Lesson check</a></li>
+    </ul>
+  </aside>
+</main>
+
+<script>
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+    progressBar.style.width = Math.min(100, Math.max(0, scrolled * 100)) + '%';
+  });
+
+  const tocLinks = document.querySelectorAll('.toc a');
+  const sections = [...tocLinks].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY + 140;
+    let activeIdx = 0;
+    sections.forEach((s, i) => { if (s.offsetTop <= y) activeIdx = i; });
+    tocLinks.forEach((a,i) => a.classList.toggle('active', i === activeIdx));
+  });
+
+  const totalQuestions = 2;
+  let currentQ = 0;
+  let answers = [null, null];
+  let answered = [false, false];
+  let attemptCount = 0;
+
+  const questionBank = [
+    {
+      id: 1,
+      text: "Your Build #2 research agent ran fine for three months. This morning's weekly briefing is half as useful as previous ones — the summaries feel flatter, more generic. You check the Executions tab: no errors, no runtime drift, costs are normal. Based on Lesson 4.3, what's the most likely cause and the right next move?",
+      options: [
+        { text: "It's a random bad day — don't worry until it happens three weeks in a row.", correct: false },
+        { text: "This is the signature pattern of <strong>model drift</strong> — the LLM has been silently updated or behaves subtly differently on a model version switch. Pull 3-5 recent real outputs, compare them to outputs you remember from the first month the system ran, and if they feel systematically weaker, re-read your system prompt with fresh eyes. Tighten instructions that were relying on the older model's defaults.", correct: true },
+        { text: "Rebuild the whole agent from scratch.", correct: false },
+        { text: "Upgrade to the largest available model regardless of cost.", correct: false }
+      ],
+      explanation: "Model drift is one of the three drift types from Lesson 4.3, and it's the sneakiest — everything looks healthy in monitoring, but output quality has quietly shifted. The 2026 Tursio case study showed a 4-5% regression in pass rate when the same prompts were tested against a new model version, with zero code changes. The fix is exactly the quarterly review practice: spot-check real outputs, re-read prompts with fresh eyes, and tighten anything that was relying on implicit defaults."
+    },
+    {
+      id: 2,
+      text: "Which of these is the single highest-leverage maintenance habit described in Lesson 4.3?",
+      options: [
+        { text: "Setting up a dedicated LLM observability platform with automated regression tests.", correct: false },
+        { text: "Ten to fifteen minutes every Monday looking at the n8n Executions tab — checking for red rows, runtime drift, and kill-switch status. Cheapest, highest leverage, and the habit that catches most silent failures before they become visible problems.", correct: true },
+        { text: "Checking model leaderboards daily for the newest releases.", correct: false },
+        { text: "Rebuilding each workflow quarterly to incorporate improvements.", correct: false }
+      ],
+      explanation: "The weekly execution review is the cheapest discipline and the one that catches most problems. n8n already shows you what's failing — your job is simply to look. Fancy observability platforms are valuable at larger scale, but for a portfolio of 3-5 working systems, fifteen minutes of Monday review outperforms any tooling. The lesson is disciplined, not complicated: the difference between a working AI stack and one that quietly rots is the habit of actually looking."
+    },
+    {
+      id: 3,
+      text: "The lesson identifies three distinct kinds of drift. Match each kind with the right check cadence from the options below.",
+      options: [
+        { text: "Model drift → daily; Tool drift → weekly; Business drift → monthly.", correct: false },
+        { text: "Model drift → quarterly (LLM providers update models roughly this often); Tool drift → monthly (OAuth, API, cost changes happen on monthly-ish cadences); Business drift → annually (your own needs evolve on longer timescales).", correct: true },
+        { text: "All three → weekly, to stay maximally vigilant.", correct: false },
+        { text: "All three → annually, because drift is slow.", correct: false }
+      ],
+      explanation: "Matching cadence to drift type is the mental model of the whole lesson. Model updates happen quarterly-ish — it's wasteful to check for them every week. OAuth expirations and cost changes happen on monthly-ish cadences — catching them weekly is unnecessary, catching them annually is too late. Business drift (you needed 30 emails/day processing, now it's 300) is a longer-horizon conversation. Right cadence, right depth, right time — that's the discipline."
+    },
+    {
+      id: 4,
+      text: "You check your credentials list monthly and spot that your Gmail OAuth credential shows 'reconnection required.' What's the honest craft move, based on this lesson?",
+      options: [
+        { text: "Ignore it — it'll probably work next time.", correct: false },
+        { text: "Reconnect proactively, right now, rather than waiting for a workflow to silently fail. Personal Google accounts in particular are known to expire OAuth tokens as often as every 7 days. Reconnecting is 30 seconds of work; discovering it failed silently when a Monday briefing doesn't arrive is hours of investigation plus a bad moment with whoever expected that briefing.", correct: true },
+        { text: "Delete the credential and build a new one from scratch for freshness.", correct: false },
+        { text: "Wait until the workflow fails so you know exactly what needs reconnecting.", correct: false }
+      ],
+      explanation: "Proactive reconnection is one of those maintenance habits that sounds trivial but saves real pain. Google OAuth expirations are a well-documented 2025-2026 issue (especially with personal accounts — Workspace accounts are more stable). The monthly check exists precisely so you catch these <em>before</em> they take down a production workflow. Thirty seconds of clicking beats hours of debugging plus stakeholder awkwardness."
+    },
+    {
+      id: 5,
+      text: "The lesson describes 'retirement with discipline' as a craft skill. What's the underlying principle?",
+      options: [
+        { text: "More running systems always equals more value delivered.", correct: false },
+        { text: "A system you don't use is still costing you money (API calls, polling cycles) and attention (error alerts, credential management, mental overhead). Retiring systems that aren't genuinely earning their cost is a positive craft act, not a failure — most working practitioners run fewer systems over time, not more, because they've learned which ones pay for themselves.", correct: true },
+        { text: "Retirement is only appropriate if a system fails more than twice in a row.", correct: false },
+        { text: "Systems should be retired annually regardless of performance.", correct: false }
+      ],
+      explanation: "The quarterly 'is this still worth running?' question is where the portfolio stays healthy. Every live workflow consumes operational budget — polling, API calls, credential renewal, your attention when it errors. Systems that aren't actively earning their cost should be retired. The brand's framing here is important: this isn't failure, it's discipline. Most working AI practitioners run fewer things better — not more things worse."
+    },
+    {
+      id: 6,
+      text: "The quarterly review includes 'test a new model version before switching.' What's the right way to do that test, according to this lesson?",
+      options: [
+        { text: "Swap the model string in production and watch what happens.", correct: false },
+        { text: "Take 3-5 representative recent inputs, run them through both the current and the proposed new model, and compare the outputs side-by-side. Most of the time the new model is a safe upgrade; occasionally it structures output differently or changes tone in ways that matter. Catch that in a planned test, not in a broken production run.", correct: true },
+        { text: "Automatically upgrade whenever the provider releases a new model.", correct: false },
+        { text: "Never test — always use the oldest stable model for reliability.", correct: false }
+      ],
+      explanation: "The side-by-side comparison is the single most valuable migration habit. You don't need fancy eval tooling for a small portfolio — five real inputs, two models, eyeball the outputs. You'll notice immediately if the new model hedges where the old one was direct, restructures JSON, or changes formatting conventions. Planned comparison catches these; unplanned production swaps don't. Every model generation has this kind of gotcha somewhere."
+    }
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function pickQuestions() {
+    if (attemptCount === 0) {
+      const canonical = [1, 2].map(id => questionBank.find(q => q.id === id));
+      return canonical.map(q => ({ ...q, options: q.options.slice() }));
+    }
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  function renderQuestions() {
+    const selected = pickQuestions();
+    const container = document.getElementById('quizQuestions');
+    container.innerHTML = '';
+
+    selected.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  const progressDots = document.querySelectorAll('#quizProgress span');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+
+  renderQuestions();
+
+  function getCards() { return document.querySelectorAll('.q-card'); }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    progressDots.forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < i) d.classList.add('done');
+      else if (idx === i) d.classList.add('active');
+    });
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('quiz').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) { currentQ++; showQuestion(currentQ); }
+    else { showResults(); }
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) { currentQ--; showQuestion(currentQ); }
+  }
+
+  function showResults() {
+    getCards().forEach(c => c.classList.remove('active'));
+    document.getElementById('quizNav').style.display = 'none';
+    progressDots.forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+
+    const score = answers.filter(a => a === true).length;
+    document.getElementById('scoreNum').textContent = score;
+
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+    if (score === 2) {
+      title.textContent = 'Both right. Maintenance mindset in place.';
+      body.textContent = attemptCount === 0
+        ? "You'll notice drift before it notices you. On to Lesson 4.4 — your 30/60/90 plan for the next three months, and the close of the course."
+        : "Clean sweep on the retry too. You've genuinely got this.";
+    } else if (score === 1) {
+      title.textContent = 'Halfway there.';
+      body.textContent = "Worth a re-read. The three-drift mental model and the weekly-monthly-quarterly cadence are what you actually take forward after this course — worth getting solid.";
+    } else {
+      title.textContent = 'Worth another pass.';
+      body.textContent = "Maintenance is the unsexy lesson that protects everything you've built. Re-read and retry when you're ready. Fifteen minutes on this now saves weeks of surprise-fixing later.";
+    }
+
+    document.getElementById('quizResult').classList.add('show');
+    updateCompletion(score);
+  }
+
+  function resetQuiz() {
+    attemptCount++;
+    currentQ = 0;
+    answers = [null, null];
+    answered = [false, false];
+
+    renderQuestions();
+
+    document.getElementById('quizResult').classList.remove('show');
+    document.getElementById('quizNav').style.display = 'flex';
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Next question →';
+    showQuestion(0);
+  }
+
+  const actionCheck = document.getElementById('actionDone');
+  const statusEl = document.getElementById('completionStatus');
+  function updateCompletion(quizScore) {
+    const quizDone = answered.every(Boolean);
+    const actionDone = actionCheck.checked;
+    if (quizDone && actionDone && (quizScore ?? answers.filter(a=>a===true).length) >= 1) {
+      statusEl.classList.add('complete');
+      statusEl.innerHTML = '<span>✓</span><span>Lesson complete</span>';
+    } else if (quizDone) {
+      statusEl.innerHTML = '<span>◐</span><span>Quiz done — finish your action</span>';
+    } else if (actionDone) {
+      statusEl.innerHTML = '<span>◐</span><span>Action done — take the quick check</span>';
+    }
+  }
+  actionCheck.addEventListener('change', () => updateCompletion());
+</script>
+
+</body>
+</html>

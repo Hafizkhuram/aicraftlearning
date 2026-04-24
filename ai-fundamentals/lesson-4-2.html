@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lesson 4.2 — Privacy, and what NOT to paste into AI | AICraft Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --emerald:#10B981;
+    --forest:#065F46;
+    --mint:#D1FAE5;
+    --mint-soft:#ECFDF5;
+    --slate:#0F172A;
+    --text:#1E293B;
+    --text-soft:#475569;
+    --text-mute:#64748B;
+    --border:#E2E8F0;
+    --border-soft:#F1F5F9;
+    --bg:#FAFAF7;
+    --card:#FFFFFF;
+    --success:#059669;
+    --error:#DC2626;
+    --warn:#F59E0B;
+    --warn-bg:#FEF7EC;
+    --warn-border:#F4E0BB;
+    --warn-text:#92400E;
+    --warn-deep:#78350F;
+    /* Safety tiers */
+    --safe:#10B981;
+    --safe-bg:#ECFDF5;
+    --safe-border:#A7F3D0;
+    --risky:#F59E0B;
+    --risky-bg:#FEF7EC;
+    --risky-border:#FDE68A;
+    --danger:#DC2626;
+    --danger-bg:#FEF2F2;
+    --danger-border:#FECACA;
+    --display:"Fraunces", Georgia, serif;
+    --body:"DM Sans", system-ui, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;font-family:var(--body);
+    font-size:17px;line-height:1.7;
+    color:var(--text);background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .progress-track{position:fixed;top:0;left:0;right:0;height:3px;z-index:100}
+  .progress-bar{height:100%;width:0%;
+    background:linear-gradient(90deg,var(--emerald),var(--forest));
+    transition:width .15s ease-out;
+  }
+
+  header{
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(8px);background:rgba(255,255,255,.85);
+  }
+  .header-inner{
+    max-width:1100px;margin:0 auto;padding:18px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .brand{
+    display:flex;align-items:center;gap:10px;
+    text-decoration:none;
+  }
+  .brand-logo{
+    height:32px;width:auto;
+    display:block;
+  }
+  .header-meta{display:flex;align-items:center;gap:20px;font-size:13px;color:var(--text-mute)}
+  .header-meta .sep{opacity:.4}
+  .lesson-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 10px;border-radius:999px;
+    background:var(--mint);color:var(--forest);
+    font-weight:600;font-size:12px;letter-spacing:.02em;
+  }
+  .lesson-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald)}
+
+  main{
+    max-width:1100px;margin:0 auto;padding:0 28px 80px;
+    display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:56px;
+  }
+  @media (max-width:900px){
+    main{grid-template-columns:1fr;gap:0;padding-bottom:48px}
+    aside.toc{display:none}
+  }
+
+  article{max-width:680px;padding-top:48px}
+
+  .lesson-meta{
+    display:flex;align-items:center;gap:10px;
+    font-size:13px;color:var(--text-mute);
+    margin-bottom:20px;font-weight:500;
+  }
+  .lesson-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-mute)}
+
+  h1.lesson-title{
+    font-family:var(--display);font-weight:500;
+    font-size:clamp(34px,4.8vw,52px);line-height:1.08;
+    letter-spacing:-.02em;color:var(--slate);margin:0 0 20px;
+  }
+  h1.lesson-title em{font-style:italic;color:var(--forest)}
+
+  .hook{
+    font-family:var(--display);font-size:21px;line-height:1.5;
+    color:var(--text-soft);font-style:italic;font-weight:400;
+    padding:0 0 0 20px;border-left:3px solid var(--emerald);
+    margin:28px 0 48px;
+  }
+
+  article h2{
+    font-family:var(--display);font-weight:600;font-size:28px;
+    line-height:1.25;letter-spacing:-.015em;color:var(--forest);
+    margin:56px 0 16px;position:relative;padding-left:18px;
+  }
+  article h2::before{
+    content:"";position:absolute;left:0;top:10px;bottom:10px;
+    width:3px;border-radius:2px;background:var(--emerald);
+  }
+  article h3{
+    font-family:var(--display);font-weight:600;font-size:20px;
+    color:var(--slate);margin:32px 0 10px;letter-spacing:-.005em;
+  }
+  article p{margin:0 0 18px}
+  article p strong{color:var(--slate);font-weight:600}
+  article code{
+    font-family:"SFMono-Regular",Consolas,monospace;
+    background:var(--mint-soft);color:var(--forest);
+    padding:1px 6px;border-radius:4px;font-size:.92em;
+  }
+
+  .misconception{
+    display:grid;grid-template-columns:auto 1fr;gap:16px;
+    padding:20px 22px;background:var(--warn-bg);
+    border:1px solid var(--warn-border);border-radius:10px;margin:28px 0;
+  }
+  .misconception-icon{
+    width:32px;height:32px;border-radius:8px;
+    background:var(--warn);color:#fff;
+    display:grid;place-items:center;
+    font-family:var(--display);font-weight:700;font-size:18px;flex-shrink:0;
+  }
+  .misconception-label{
+    font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--warn-text);font-weight:700;margin-bottom:4px;
+  }
+  .misconception-text{margin:0;color:var(--warn-deep);font-size:15.5px;line-height:1.6}
+
+  .takeaway{
+    margin:40px 0;padding:28px 32px;
+    background:linear-gradient(135deg,var(--mint-soft) 0%,var(--mint) 100%);
+    border:1px solid #A7F3D0;border-radius:14px;
+    position:relative;overflow:hidden;
+  }
+  .takeaway::before{
+    content:"";position:absolute;top:0;bottom:0;left:0;
+    width:4px;background:var(--emerald);
+  }
+  .takeaway-label{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);font-weight:700;margin-bottom:12px;
+  }
+  .takeaway-label svg{width:14px;height:14px}
+  .takeaway-main{
+    font-family:var(--display);font-size:22px;line-height:1.4;
+    color:var(--slate);font-weight:600;margin:0 0 10px;letter-spacing:-.01em;
+  }
+  .takeaway-sub{font-size:15.5px;color:var(--forest);margin:0;line-height:1.6}
+
+  /* Three safety tiers */
+  .tiers{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+    margin:28px 0;
+  }
+  @media (max-width:820px){.tiers{grid-template-columns:1fr}}
+  .tier-card{
+    padding:22px 22px 18px;border-radius:14px;
+    border:1.5px solid;
+    display:flex;flex-direction:column;
+  }
+  .tier-card.safe{background:var(--safe-bg);border-color:var(--safe-border)}
+  .tier-card.risky{background:var(--risky-bg);border-color:var(--risky-border)}
+  .tier-card.danger{background:var(--danger-bg);border-color:var(--danger-border)}
+  .tier-icon{
+    width:36px;height:36px;border-radius:10px;
+    display:grid;place-items:center;
+    font-family:var(--display);font-weight:700;font-size:16px;
+    color:#fff;margin-bottom:10px;
+  }
+  .tier-card.safe .tier-icon{background:var(--safe)}
+  .tier-card.risky .tier-icon{background:var(--risky)}
+  .tier-card.danger .tier-icon{background:var(--danger)}
+  .tier-label{
+    font-family:var(--display);font-weight:700;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    margin:0 0 4px;
+  }
+  .tier-card.safe .tier-label{color:var(--forest)}
+  .tier-card.risky .tier-label{color:var(--warn-deep)}
+  .tier-card.danger .tier-label{color:#7F1D1D}
+  .tier-title{
+    font-family:var(--display);font-weight:600;
+    font-size:17px;color:var(--slate);
+    margin:0 0 12px;letter-spacing:-.005em;line-height:1.3;
+  }
+  .tier-list{list-style:none;padding:0;margin:0 0 10px;flex:1}
+  .tier-list li{
+    font-size:13.5px;color:var(--text);
+    padding:5px 0 5px 16px;position:relative;
+    line-height:1.5;
+  }
+  .tier-list li::before{
+    content:"";position:absolute;left:0;top:12px;
+    width:8px;height:2px;border-radius:1px;
+  }
+  .tier-card.safe .tier-list li::before{background:var(--safe)}
+  .tier-card.risky .tier-list li::before{background:var(--risky)}
+  .tier-card.danger .tier-list li::before{background:var(--danger)}
+
+  /* Paste-check classifier */
+  .checker{
+    margin:32px 0;
+    padding:26px 28px 22px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+  }
+  .checker-head{
+    display:flex;justify-content:space-between;align-items:baseline;
+    flex-wrap:wrap;gap:8px;margin-bottom:6px;
+  }
+  .checker-label{
+    font-family:var(--display);font-weight:600;
+    font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--text-mute);
+  }
+  .checker-score{font-size:13px;color:var(--text-mute);font-weight:500}
+  .checker-sub{color:var(--text-soft);font-size:14.5px;margin:0 0 20px}
+
+  .pc-item{
+    padding:16px 18px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    margin-bottom:12px;
+    background:var(--bg);
+    transition:all .3s;
+  }
+  .pc-item.answered{background:var(--card)}
+  .pc-situation{
+    font-size:13.5px;color:var(--text-mute);
+    margin:0 0 8px;font-weight:500;
+  }
+  .pc-content{
+    font-size:14.5px;color:var(--text);
+    margin:0 0 14px;line-height:1.55;
+    padding:12px 14px;
+    background:var(--card);
+    border-left:3px solid var(--border);
+    border-radius:0 6px 6px 0;
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:13px;
+    white-space:pre-wrap;
+  }
+  .pc-item.answered .pc-content{background:var(--bg)}
+
+  .pc-buttons{
+    display:flex;gap:8px;flex-wrap:wrap;
+  }
+  .pc-btn{
+    flex:1;min-width:100px;
+    padding:10px 14px;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    background:var(--card);
+    cursor:pointer;
+    font-family:var(--body);font-weight:600;font-size:13.5px;
+    color:var(--text-soft);
+    transition:all .18s;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .pc-btn:hover:not(:disabled){transform:translateY(-1px)}
+  .pc-btn.safe:hover:not(:disabled){border-color:var(--safe);color:var(--safe)}
+  .pc-btn.risky:hover:not(:disabled){border-color:var(--risky);color:var(--warn-deep)}
+  .pc-btn.danger:hover:not(:disabled){border-color:var(--danger);color:var(--danger)}
+  .pc-btn:disabled{cursor:default;opacity:.5;transform:none}
+  .pc-btn-dot{
+    width:10px;height:10px;border-radius:50%;flex-shrink:0;
+  }
+  .pc-btn.safe .pc-btn-dot{background:var(--safe)}
+  .pc-btn.risky .pc-btn-dot{background:var(--risky)}
+  .pc-btn.danger .pc-btn-dot{background:var(--danger)}
+  .pc-btn.picked.correct{
+    background:var(--safe-bg);border-color:var(--safe);color:var(--safe);
+  }
+  .pc-btn.picked.wrong{
+    background:var(--danger-bg);border-color:var(--danger);color:var(--danger);
+  }
+  .pc-btn.reveal{opacity:1 !important}
+  .pc-btn.reveal.safe{background:var(--safe-bg);border-color:var(--safe);color:var(--safe)}
+  .pc-btn.reveal.risky{background:var(--risky-bg);border-color:var(--risky);color:var(--warn-deep)}
+  .pc-btn.reveal.danger{background:var(--danger-bg);border-color:var(--danger);color:var(--danger)}
+
+  .pc-feedback{
+    display:none;
+    margin-top:12px;padding:12px 14px;
+    border-radius:8px;font-size:13.5px;line-height:1.55;
+  }
+  .pc-feedback.show{display:block;animation:fadeIn .3s ease}
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(4px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .pc-feedback.safe{background:var(--safe-bg);border-left:3px solid var(--safe);color:var(--forest)}
+  .pc-feedback.risky{background:var(--risky-bg);border-left:3px solid var(--risky);color:var(--warn-deep)}
+  .pc-feedback.danger{background:var(--danger-bg);border-left:3px solid var(--danger);color:#7F1D1D}
+  .pc-feedback-label{
+    font-family:var(--display);font-weight:600;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    margin-bottom:4px;display:block;
+  }
+
+  /* The simple rule callout */
+  .rule{
+    margin:28px 0;
+    padding:28px 32px;
+    background:var(--slate);
+    color:#fff;
+    border-radius:16px;
+    position:relative;overflow:hidden;
+  }
+  .rule::before{
+    content:"";position:absolute;left:0;top:22px;bottom:22px;
+    width:4px;background:var(--emerald);border-radius:2px;
+  }
+  .rule-label{
+    font-family:var(--display);font-weight:700;
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--emerald);margin:0 0 10px;
+  }
+  .rule-text{
+    font-family:var(--display);font-weight:500;
+    font-size:24px;line-height:1.35;
+    color:#fff;margin:0 0 10px;letter-spacing:-.01em;
+    font-style:italic;
+  }
+  .rule-sub{
+    font-size:14.5px;color:#CBD5E1;
+    margin:0;line-height:1.55;
+  }
+
+  /* Action box */
+  .action-box{
+    margin:48px 0 0;padding:32px;
+    background:var(--slate);border-radius:16px;color:#fff;
+    position:relative;overflow:hidden;
+  }
+  .action-box::after{
+    content:"";position:absolute;right:-60px;bottom:-60px;
+    width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(16,185,129,.18),transparent 70%);
+    pointer-events:none;
+  }
+  .action-eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    color:var(--emerald);font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;font-weight:700;margin-bottom:14px;
+  }
+  .action-title{
+    font-family:var(--display);font-weight:500;font-size:26px;
+    line-height:1.25;margin:0 0 12px;color:#fff;letter-spacing:-.01em;
+  }
+  .action-body{color:#CBD5E1;font-size:16px;line-height:1.65;margin:0 0 20px}
+  .action-prompt{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:8px;padding:14px 16px;
+    font-family:"SFMono-Regular",Consolas,monospace;
+    font-size:13.5px;color:#E2E8F0;margin:0 0 20px;line-height:1.7;
+  }
+  .action-check{
+    display:flex;align-items:center;gap:10px;
+    cursor:pointer;user-select:none;padding:10px 0;
+    color:#CBD5E1;font-size:15px;position:relative;z-index:2;
+  }
+  .action-check input{display:none}
+  .action-check .box{
+    width:20px;height:20px;border-radius:5px;
+    border:1.5px solid #475569;
+    display:grid;place-items:center;transition:all .2s;flex-shrink:0;
+  }
+  .action-check input:checked + .box{background:var(--emerald);border-color:var(--emerald)}
+  .action-check input:checked + .box::after{
+    content:"✓";color:#fff;font-size:13px;font-weight:700;
+  }
+  .action-check input:checked ~ span:last-child{
+    color:#fff;text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3);
+  }
+
+  /* Quiz */
+  .quiz{
+    margin-top:72px;padding:40px 36px;
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+  }
+  .quiz-header{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .quiz-eyebrow{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--forest);font-weight:700;
+  }
+  .quiz-title{
+    font-family:var(--display);font-weight:600;font-size:26px;
+    line-height:1.2;color:var(--slate);margin:4px 0 8px;letter-spacing:-.01em;
+  }
+  .quiz-sub{color:var(--text-mute);margin:0 0 28px;font-size:15px}
+  .quiz-progress{display:flex;gap:6px;margin-bottom:28px}
+  .quiz-progress span{
+    flex:1;height:4px;border-radius:2px;
+    background:var(--border);transition:background .3s;
+  }
+  .quiz-progress span.done{background:var(--emerald)}
+  .quiz-progress span.active{background:var(--forest)}
+
+  .q-card{display:none;animation:fadeIn .35s ease}
+  .q-card.active{display:block}
+  .q-number{
+    font-family:var(--display);font-size:13px;color:var(--text-mute);
+    font-weight:500;letter-spacing:.04em;margin-bottom:8px;
+  }
+  .q-text{
+    font-family:var(--display);font-weight:500;font-size:21px;
+    line-height:1.4;color:var(--slate);margin:0 0 24px;letter-spacing:-.005em;
+  }
+  .options{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+  .option{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:16px 18px;border:1.5px solid var(--border);border-radius:10px;
+    cursor:pointer;transition:all .2s;background:var(--card);
+    font-size:15.5px;line-height:1.5;
+  }
+  .option:hover:not(.disabled){border-color:var(--emerald);background:var(--mint-soft)}
+  .option.disabled{cursor:default}
+  .option-letter{
+    width:26px;height:26px;border-radius:7px;
+    background:var(--border-soft);color:var(--text-soft);
+    display:grid;place-items:center;font-weight:700;font-size:13px;
+    flex-shrink:0;transition:all .2s;font-family:var(--display);
+  }
+  .option:hover:not(.disabled) .option-letter{background:var(--emerald);color:#fff}
+  .option.correct{border-color:var(--success);background:#F0FDF4}
+  .option.correct .option-letter{background:var(--success);color:#fff}
+  .option.incorrect{border-color:var(--error);background:#FEF2F2}
+  .option.incorrect .option-letter{background:var(--error);color:#fff}
+  .option-check{
+    margin-left:auto;opacity:0;transition:opacity .2s;
+    font-size:20px;line-height:1;
+  }
+  .option.correct .option-check{opacity:1;color:var(--success)}
+  .option.incorrect .option-check{opacity:1;color:var(--error)}
+
+  .explanation{
+    display:none;margin-top:20px;padding:18px 20px;border-radius:10px;
+    background:var(--mint-soft);border-left:3px solid var(--emerald);
+    font-size:15px;line-height:1.6;color:var(--forest);
+  }
+  .explanation.show{display:block;animation:fadeIn .3s ease}
+  .explanation strong{
+    display:block;font-family:var(--display);font-size:13px;
+    letter-spacing:.1em;text-transform:uppercase;
+    color:var(--forest);margin-bottom:6px;
+  }
+  .explanation.wrong{background:#FEF2F2;border-left-color:var(--error);color:#7F1D1D}
+  .explanation.wrong strong{color:#7F1D1D}
+
+  .quiz-nav{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:24px;gap:12px;
+  }
+  .btn{
+    border:0;cursor:pointer;font-family:var(--body);
+    font-weight:600;font-size:14.5px;padding:11px 22px;border-radius:8px;
+    transition:all .18s;display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn-primary{background:var(--forest);color:#fff}
+  .btn-primary:hover{background:var(--slate);transform:translateY(-1px)}
+  .btn-primary:disabled{
+    background:var(--border);color:var(--text-mute);
+    cursor:not-allowed;transform:none;
+  }
+  .btn-ghost{background:transparent;color:var(--text-mute)}
+  .btn-ghost:hover{color:var(--forest)}
+
+  .quiz-result{display:none;text-align:center;padding:20px 0}
+  .quiz-result.show{display:block;animation:fadeIn .4s ease}
+  .quiz-score{
+    font-family:var(--display);font-weight:500;font-size:72px;
+    line-height:1;color:var(--forest);margin:0 0 8px;letter-spacing:-.03em;
+  }
+  .quiz-score span{color:var(--text-mute);font-size:32px}
+  .quiz-result-title{
+    font-family:var(--display);font-weight:600;font-size:24px;
+    color:var(--slate);margin:0 0 8px;
+  }
+  .quiz-result-body{
+    color:var(--text-mute);margin:0 auto 24px;max-width:420px;
+    font-size:15.5px;line-height:1.6;
+  }
+
+  aside.toc{
+    padding-top:56px;position:sticky;top:80px;
+    align-self:start;max-height:calc(100vh - 100px);overflow-y:auto;
+  }
+  .toc-label{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--text-mute);font-weight:700;margin-bottom:14px;
+  }
+  .toc ul{list-style:none;padding:0;margin:0;border-left:1px solid var(--border)}
+  .toc li{margin:0}
+  .toc a{
+    display:block;padding:7px 16px;font-size:13.5px;color:var(--text-mute);
+    text-decoration:none;border-left:2px solid transparent;margin-left:-1px;
+    transition:all .15s;line-height:1.4;
+  }
+  .toc a:hover{color:var(--forest)}
+  .toc a.active{color:var(--forest);font-weight:600;border-left-color:var(--emerald)}
+
+  .lesson-footer{
+    max-width:680px;margin:56px 0 0;
+    padding-top:32px;border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:center;
+    gap:16px;flex-wrap:wrap;
+  }
+  .next-lesson{
+    display:flex;flex-direction:column;gap:2px;
+    padding:16px 22px;border-radius:10px;
+    background:var(--card);border:1px solid var(--border);
+    text-decoration:none;transition:all .2s;
+  }
+  .next-lesson:hover{
+    border-color:var(--emerald);transform:translateY(-1px);
+    box-shadow:0 4px 14px rgba(6,95,70,.06);
+  }
+  .next-lesson-label{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-mute);font-weight:600;
+  }
+  .next-lesson-title{font-family:var(--display);font-weight:600;font-size:16px;color:var(--forest)}
+  .completion-status{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-mute)}
+  .completion-status.complete{color:var(--success)}
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" aria-label="AICraft Learning">
+      <svg class="brand-logo" viewBox="0 0 420 80" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(8, 8)">
+          <circle cx="24" cy="28" r="12" fill="#10B981"/>
+          <text x="24" y="33" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+          <line x1="36" y1="20" x2="50" y2="8" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="6" r="5" fill="#34D399"/>
+          <line x1="36" y1="36" x2="50" y2="48" stroke="#34D399" stroke-width="2"/>
+          <circle cx="52" cy="50" r="5" fill="#34D399"/>
+          <line x1="12" y1="20" x2="0" y2="10" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="8" r="5" fill="#065F46"/>
+          <line x1="12" y1="36" x2="0" y2="46" stroke="#065F46" stroke-width="2"/>
+          <circle cx="-2" cy="48" r="5" fill="#065F46"/>
+        </g>
+        <text x="76" y="32" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="30" letter-spacing="-0.5">
+          <tspan fill="#10B981">AI</tspan><tspan fill="#1E293B">Craft</tspan>
+        </text>
+        <text x="76" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="20" fill="#64748B" letter-spacing="3">LEARNING</text>
+      </svg>
+    </a>
+    <div class="header-meta">
+      <span class="lesson-badge">Module 4 · Lesson 2</span>
+      <span class="sep">·</span>
+      <span>6 min read</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <article>
+    <div class="lesson-meta">
+      <span>AI Fundamentals: From Zero to Confident</span>
+      <span class="dot"></span>
+      <span>Making smart AI decisions</span>
+    </div>
+
+    <h1 class="lesson-title">Privacy, and what <em>NOT to paste</em> into AI</h1>
+
+    <p class="hook">Business owners regularly paste things into ChatGPT that would horrify their lawyers. Here's how to stop.</p>
+
+    <p>This is the single most important non-technical lesson in the course. Not because the rules are complicated — they aren't. But because a moment's carelessness here can cost you a client, a contract, or real money.</p>
+
+    <p>The good news is the mental model is very simple. Once you have it, you'll catch yourself before you paste the wrong thing, and you'll know when reaching for a different tool is the right move.</p>
+
+    <div class="misconception">
+      <div class="misconception-icon">!</div>
+      <div>
+        <div class="misconception-label">The common misconception</div>
+        <p class="misconception-text"><strong>"It's a private conversation between me and the AI."</strong> It really isn't. Consumer AI tools keep what you paste, and in many cases it can be used to improve future versions of the model. Treat the chat box like a public forum you happen to be typing into alone.</p>
+      </div>
+    </div>
+
+    <h2 id="section-1">What actually happens to what you paste</h2>
+
+    <p>Here's the honest picture, simplified. When you paste text into a consumer AI tool, three things can happen to it:</p>
+
+    <p><strong>One — it sits in your chat history.</strong> That's the benign part. You can re-open the chat, reference it, delete it.</p>
+
+    <p><strong>Two — it's stored on the provider's servers.</strong> Also normal. They need to store it to serve it back to you, troubleshoot bugs, enforce their usage policies, and comply with legal requests if they come up.</p>
+
+    <p><strong>Three — on free and consumer tiers, it may be used to train future models.</strong> This is the bit most people don't realise. Unless you've explicitly turned off training data use in settings (possible on most tools) or you're on a business tier, your conversations may quietly become training material. That training doesn't put your exact words into the next model — but you shouldn't bet anything important on that.</p>
+
+    <p>The practical upshot: <strong>assume what you paste doesn't stay private.</strong> It's not quite as bad as posting on a public forum, but it's closer to that than to a private document on your own computer.</p>
+
+    <h2 id="section-2">Three tiers — safe, risky, dangerous</h2>
+
+    <p>Here's the mental model to actually carry around. Three tiers, sorted by the damage a leak would do.</p>
+
+    <div class="tiers">
+      <div class="tier-card safe">
+        <div class="tier-icon">✓</div>
+        <p class="tier-label">Safe</p>
+        <h3 class="tier-title">Public info, your own drafts, general questions</h3>
+        <ul class="tier-list">
+          <li>Marketing copy you'd publish anyway</li>
+          <li>Blog drafts you wrote</li>
+          <li>Public product descriptions</li>
+          <li>General "how do I…" questions</li>
+          <li>Pasting your own personal brief from Lesson 2.2</li>
+        </ul>
+      </div>
+      <div class="tier-card risky">
+        <div class="tier-icon">~</div>
+        <p class="tier-label">Risky</p>
+        <h3 class="tier-title">Business data, internal docs, identifiable client info</h3>
+        <ul class="tier-list">
+          <li>Real client names or companies</li>
+          <li>Internal strategy or pricing documents</li>
+          <li>Employee performance notes</li>
+          <li>Business financials and forecasts</li>
+          <li>Unpublished contracts or proposals</li>
+        </ul>
+      </div>
+      <div class="tier-card danger">
+        <div class="tier-icon">!</div>
+        <p class="tier-label">Dangerous</p>
+        <h3 class="tier-title">Credentials, regulated data, other people's private information</h3>
+        <ul class="tier-list">
+          <li>Passwords or API keys</li>
+          <li>Credit card or bank details</li>
+          <li>Medical or health records</li>
+          <li>Someone else's personal data (GDPR-regulated)</li>
+          <li>Anything covered by NDA</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>The tiers escalate on two axes: how much damage a leak would do, and who it would affect. Safe stuff affects only you and wouldn't harm anyone if it ended up somewhere public. Dangerous stuff could cost you a regulator fine, a client relationship, or real money — and often affects someone who never agreed to have their information pasted anywhere.</p>
+
+    <h2 id="section-3">Run it through the checker</h2>
+
+    <p>Five realistic snippets. For each, decide where it sits. Try to beat the curve — this is the test that matters.</p>
+
+    <div class="checker" id="checker">
+      <div class="checker-head">
+        <span class="checker-label">Paste checker · 5 scenarios</span>
+        <span class="checker-score" id="checkerScore">0 of 5 checked</span>
+      </div>
+      <p class="checker-sub">Click the tier you'd place each paste in. Feedback appears straight away.</p>
+
+      <!-- Item 1 -->
+      <div class="pc-item" data-correct="safe">
+        <p class="pc-situation">You're drafting a new landing page and want AI help.</p>
+        <div class="pc-content">"Here's the rough copy I wrote for my landing page — can you tighten it and suggest a better headline?
+
+[pasted: your own 300 words of draft copy about your services]"</div>
+        <div class="pc-buttons">
+          <button class="pc-btn safe" data-pick="safe"><span class="pc-btn-dot"></span>Safe</button>
+          <button class="pc-btn risky" data-pick="risky"><span class="pc-btn-dot"></span>Risky</button>
+          <button class="pc-btn danger" data-pick="danger"><span class="pc-btn-dot"></span>Dangerous</button>
+        </div>
+        <div class="pc-feedback">
+          <span class="pc-feedback-label">Safe — fine to paste</span>
+          Your own marketing copy, intended for the public anyway. Nothing private in it, nothing about anyone else. This is exactly what the tool is built to help with.
+        </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="pc-item" data-correct="risky">
+        <p class="pc-situation">A supplier sent a late delivery, and you want to draft a response.</p>
+        <div class="pc-content">"Help me write a firm but professional reply to this supplier about a late shipment:
+
+From: sam@blackwood-leather.co.uk
+Date: 14 March
+Subject: Order 2847 — delivery delay
+Hi — just a note that your order (£4,200) has slipped by ten days because our tannery…"</div>
+        <div class="pc-buttons">
+          <button class="pc-btn safe" data-pick="safe"><span class="pc-btn-dot"></span>Safe</button>
+          <button class="pc-btn risky" data-pick="risky"><span class="pc-btn-dot"></span>Risky</button>
+          <button class="pc-btn danger" data-pick="danger"><span class="pc-btn-dot"></span>Dangerous</button>
+        </div>
+        <div class="pc-feedback">
+          <span class="pc-feedback-label">Risky — strip and rephrase first</span>
+          Real supplier name, real email address, real order value. None of it is regulated, but it is identifiable business data belonging to another party. The fix: describe the situation in general terms ("my supplier is 10 days late on a £4K order") and keep the names and email out.
+        </div>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="pc-item" data-correct="danger">
+        <p class="pc-situation">You want help organising your recent card transactions into categories.</p>
+        <div class="pc-content">"Categorise these transactions by expense type:
+
+Amex card ending 4127, April statement
+Card number: 3712 XXXX XXXX 4127
+01/04 — Stripe £340.12
+02/04 — Canva £19.00
+03/04 — Patient: J. Harrington, balance £1,200 (medical invoice)
+…"</div>
+        <div class="pc-buttons">
+          <button class="pc-btn safe" data-pick="safe"><span class="pc-btn-dot"></span>Safe</button>
+          <button class="pc-btn risky" data-pick="risky"><span class="pc-btn-dot"></span>Risky</button>
+          <button class="pc-btn danger" data-pick="danger"><span class="pc-btn-dot"></span>Dangerous</button>
+        </div>
+        <div class="pc-feedback">
+          <span class="pc-feedback-label">Dangerous — multiple red lines at once</span>
+          Partial card number (even masked versions are sensitive), a named patient with a medical invoice (health data about someone else), full dates. Any one of these is a stop sign; together they're a pile-up. The categorisation task belongs in a spreadsheet. AI can help describe trends once you've done it there.
+        </div>
+      </div>
+
+      <!-- Item 4 -->
+      <div class="pc-item" data-correct="safe">
+        <p class="pc-situation">You're exploring ideas for a new product line.</p>
+        <div class="pc-content">"I run a small UK leather-goods shop making weekender bags. I'm thinking about adding a backpack to the range. What would be good design angles to explore, given my existing customer is 30s/40s, design-conscious, and wants understated quality?"</div>
+        <div class="pc-buttons">
+          <button class="pc-btn safe" data-pick="safe"><span class="pc-btn-dot"></span>Safe</button>
+          <button class="pc-btn risky" data-pick="risky"><span class="pc-btn-dot"></span>Risky</button>
+          <button class="pc-btn danger" data-pick="danger"><span class="pc-btn-dot"></span>Dangerous</button>
+        </div>
+        <div class="pc-feedback">
+          <span class="pc-feedback-label">Safe — this is exactly the right way to share business context</span>
+          You've described your business in general terms — no customer names, no unpublished financials, no identifiable individuals. This is the personal brief from Lesson 2.2 doing its job. Share context, not data.
+        </div>
+      </div>
+
+      <!-- Item 5 -->
+      <div class="pc-item" data-correct="danger">
+        <p class="pc-situation">Your login isn't working and you want help troubleshooting.</p>
+        <div class="pc-content">"My deployment script keeps failing. Here's my env file — can you tell me what's wrong?
+
+AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+DATABASE_URL=postgres://admin:Str0ngP@ss!@db.mycompany.com:5432/…"</div>
+        <div class="pc-buttons">
+          <button class="pc-btn safe" data-pick="safe"><span class="pc-btn-dot"></span>Safe</button>
+          <button class="pc-btn risky" data-pick="risky"><span class="pc-btn-dot"></span>Risky</button>
+          <button class="pc-btn danger" data-pick="danger"><span class="pc-btn-dot"></span>Dangerous</button>
+        </div>
+        <div class="pc-feedback">
+          <span class="pc-feedback-label">Dangerous — rotate those keys immediately if pasted</span>
+          Real API keys and database passwords. If those ever leak, someone can use them directly against your infrastructure. Redact every credential before pasting anything technical — replace each one with something like YOUR_AWS_KEY_HERE. If you've already pasted the real ones, rotate the keys now, not later.
+        </div>
+      </div>
+    </div>
+
+    <h2 id="section-4">The one rule to carry everywhere</h2>
+
+    <p>You won't remember the three tiers under pressure. What you will remember — if you drill it enough times — is a single sentence you can apply in a second. Here it is.</p>
+
+    <div class="rule">
+      <p class="rule-label">The paste rule</p>
+      <p class="rule-text">"Don't paste anything you wouldn't email to a stranger."</p>
+      <p class="rule-sub">If you'd hesitate to send it to someone you don't know, don't paste it into a consumer AI tool. That single question catches almost every mistake.</p>
+    </div>
+
+    <p>The beauty of the rule is that it outperforms memorising GDPR, NDAs, or training data policies. You already know what you'd email to a stranger — essentially nothing personal, nothing confidential, nothing about anyone else. Apply the same filter to AI and you'll be fine more than 99% of the time.</p>
+
+    <h2 id="section-5">When you genuinely need to share sensitive data</h2>
+
+    <p>Sometimes you really do need AI help with business-sensitive material — a contract to review, client notes to summarise, a financial model to sanity-check. The answer isn't to stop using AI. It's to use a tier designed for it.</p>
+
+    <p><strong>Paid business or team tiers</strong> — ChatGPT Team/Business, Claude for Work, Google Workspace Gemini — typically commit in writing not to use your data for training. That's a real, contract-backed difference from the consumer tiers. They're a sensible spend for anyone regularly handling confidential material.</p>
+
+    <p><strong>Anonymise before pasting.</strong> For one-off jobs where a paid tier isn't available, strip the identifiers. Replace real names with "the client," real companies with "Company A," real figures with "~£500K." The AI doesn't need the real names to help you draft or analyse — it just needs the structure.</p>
+
+    <p><strong>For code and technical content.</strong> Never paste real API keys, passwords, or secrets. Replace every credential with a placeholder like <code>YOUR_API_KEY</code>. Most AI tools will give you exactly the same help without the real values.</p>
+
+    <div class="takeaway">
+      <div class="takeaway-label">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm3.5 7.5l-4 4a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06L9 11.94l3.44-3.44a.75.75 0 011.06 1.06z"/></svg>
+        The one thing to remember
+      </div>
+      <p class="takeaway-main">Your AI's training set is not a private conversation. Treat it accordingly.</p>
+      <p class="takeaway-sub">Don't paste anything you wouldn't email to a stranger. For genuinely sensitive work, use a business-tier tool or anonymise before you hit send.</p>
+    </div>
+
+    <div class="action-box">
+      <div class="action-eyebrow">
+        ◆ Try this right now
+      </div>
+      <h3 class="action-title">Write your three personal red lines</h3>
+      <p class="action-body">Take two minutes. Write down three specific things you will never paste into a consumer AI tool. Make them concrete, not abstract.</p>
+      <div class="action-prompt">
+        1. ________________________________________<br>
+        2. ________________________________________<br>
+        3. ________________________________________<br><br>
+        (Examples to prompt your thinking: real client names,<br>
+         customer email lists, employee performance notes,<br>
+         unpublished financials, login credentials.)
+      </div>
+      <p class="action-body" style="margin-bottom:8px">Stick the list somewhere you'll see it — a sticky note, a Notes app, pinned at the top of your personal brief. The whole trick is catching yourself <em>before</em> you paste. This list is the catch.</p>
+      <label class="action-check">
+        <input type="checkbox" id="actionDone" />
+        <span class="box"></span>
+        <span>I've done this — mark as complete</span>
+      </label>
+    </div>
+
+    <!-- QUIZ -->
+    <section class="quiz" id="quiz">
+      <div class="quiz-header">
+        <span class="quiz-eyebrow">Lesson check · 3 questions</span>
+      </div>
+      <h2 class="quiz-title" style="color:var(--slate);padding:0;margin-top:0">Did it stick?</h2>
+      <p class="quiz-sub">Takes about 30 seconds. Answers and explanations appear right away.</p>
+
+      <div class="quiz-progress" id="quizProgress">
+        <span class="active"></span><span></span><span></span>
+      </div>
+
+      <div id="quizQuestions"></div>
+
+      <div class="quiz-result" id="quizResult">
+        <div class="quiz-score"><span id="scoreNum">0</span><span>/3</span></div>
+        <h3 class="quiz-result-title" id="resultTitle">Nicely done</h3>
+        <p class="quiz-result-body" id="resultBody">Privacy habits sorted. One lesson to go — how to spot AI hype and marketing nonsense before it wastes your money.</p>
+        <button class="btn btn-ghost" onclick="resetQuiz()">↻ Retry questions</button>
+      </div>
+
+      <div class="quiz-nav" id="quizNav">
+        <button class="btn btn-ghost" id="prevBtn" onclick="prevQuestion()" style="visibility:hidden">← Previous</button>
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next question →</button>
+      </div>
+    </section>
+
+    <div class="lesson-footer">
+      <div class="completion-status" id="completionStatus">
+        <span>◯</span>
+        <span>Lesson in progress</span>
+      </div>
+      <a href="#" class="next-lesson">
+        <span class="next-lesson-label">Next · Lesson 4.3</span>
+        <span class="next-lesson-title">How to spot AI hype and misinformation →</span>
+      </a>
+    </div>
+  </article>
+
+  <aside class="toc">
+    <div class="toc-label">In this lesson</div>
+    <ul>
+      <li><a href="#section-1" class="active">What happens to your paste</a></li>
+      <li><a href="#section-2">The three tiers</a></li>
+      <li><a href="#section-3">Run it through the checker</a></li>
+      <li><a href="#section-4">The one rule to carry</a></li>
+      <li><a href="#section-5">When you really need to share</a></li>
+      <li><a href="#quiz">Lesson check</a></li>
+    </ul>
+  </aside>
+</main>
+
+<script>
+  // Progress bar
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+    progressBar.style.width = Math.min(100, Math.max(0, scrolled * 100)) + '%';
+  });
+
+  // TOC active state
+  const tocLinks = document.querySelectorAll('.toc a');
+  const sections = [...tocLinks].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY + 140;
+    let activeIdx = 0;
+    sections.forEach((s, i) => { if (s.offsetTop <= y) activeIdx = i; });
+    tocLinks.forEach((a,i) => a.classList.toggle('active', i === activeIdx));
+  });
+
+  // -------- Paste checker --------
+  let checkerAnswered = 0;
+  const checkerTotal = 5;
+
+  document.querySelectorAll('.pc-item').forEach(item => {
+    const correct = item.dataset.correct;
+    const buttons = item.querySelectorAll('.pc-btn');
+    const feedback = item.querySelector('.pc-feedback');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (item.classList.contains('answered')) return;
+        item.classList.add('answered');
+
+        const picked = btn.dataset.pick;
+        buttons.forEach(b => b.disabled = true);
+        btn.classList.add('picked');
+
+        if (picked === correct) {
+          btn.classList.add('correct');
+        } else {
+          btn.classList.add('wrong');
+          buttons.forEach(b => {
+            if (b.dataset.pick === correct) b.classList.add('reveal', correct);
+          });
+        }
+        feedback.classList.add('show', correct);
+        checkerAnswered++;
+        document.getElementById('checkerScore').textContent =
+          `${checkerAnswered} of ${checkerTotal} checked`;
+      });
+    });
+  });
+
+  // -------- Quiz --------
+  const totalQuestions = 3;
+  let currentQ = 0;
+  let answers = [null, null, null];
+  let answered = [false, false, false];
+  let attemptCount = 0;
+
+  const questionBank = [
+    {
+      id: 1,
+      text: "Based on this lesson, what's the 'one rule to carry everywhere' for deciding what to paste into consumer AI?",
+      options: [
+        { text: "\"If it fits in the free tier's character limit, it's fine.\"", correct: false },
+        { text: "\"Don't paste anything you wouldn't email to a stranger.\"", correct: true },
+        { text: "\"Only paste what's already on your own website.\"", correct: false },
+        { text: "\"Paste freely — AI providers have strong encryption.\"", correct: false }
+      ],
+      explanation: "The rule beats remembering GDPR, NDAs, and training policies because you already know what you'd email to a stranger — essentially nothing personal, nothing confidential, nothing about anyone else. Same filter applies to AI."
+    },
+    {
+      id: 2,
+      text: "A colleague wants help drafting a marketing email. She's about to paste her entire customer list — 4,000 names and emails — into ChatGPT so it can personalise the campaign. Based on this lesson, what's the right answer?",
+      options: [
+        { text: "Fine — that's a normal use case for consumer AI.", correct: false },
+        { text: "Don't paste the list. Describe the audience in general terms and let AI draft the campaign — the personalisation work goes in a proper email tool, not the AI chat.", correct: true },
+        { text: "Only paste 100 names at a time to stay under limits.", correct: false },
+        { text: "It's safe if she's using the paid tier.", correct: false }
+      ],
+      explanation: "A customer list is identifiable personal data about other people — GDPR-regulated, and absolutely in the dangerous tier. AI can help draft the campaign without ever seeing the list. Email tools handle the personalisation. Tools for their right jobs."
+    },
+    {
+      id: 3,
+      text: "Based on this lesson, what actually happens to text you paste into consumer AI tools (free tier, default settings)?",
+      options: [
+        { text: "It's deleted from the provider's servers at the end of your session.", correct: false },
+        { text: "It sits in your chat history, is stored on their servers, and on free/consumer tiers may be used to improve future models unless you've opted out.", correct: true },
+        { text: "It's encrypted so even the provider can't read it.", correct: false },
+        { text: "It's immediately anonymised before any processing.", correct: false }
+      ],
+      explanation: "Three things happen: it's stored for your history, it's kept on their servers, and unless you've opted out, it can become training data. Treat the chat box like a public forum you happen to be typing into alone."
+    },
+    {
+      id: 4,
+      text: "Which of these is correctly classified in this lesson's three-tier model?",
+      options: [
+        { text: "Passwords and API keys are in the 'risky' tier.", correct: false },
+        { text: "Your own published marketing copy is in the 'safe' tier.", correct: true },
+        { text: "Real client names and company financials are in the 'safe' tier.", correct: false },
+        { text: "Someone else's medical records are in the 'risky' tier.", correct: false }
+      ],
+      explanation: "Your own published content is safe — nothing confidential, no one else's data involved. Passwords/keys and medical records are both dangerous. Client names and financials are risky — internal business data belonging to others."
+    },
+    {
+      id: 5,
+      text: "You genuinely need AI help reviewing a confidential client contract. Based on this lesson, which approach is sensible?",
+      options: [
+        { text: "Paste the whole thing into the free tier; speed matters more than policy.", correct: false },
+        { text: "Use a paid business tier (like Claude for Work or ChatGPT Team) that contractually doesn't train on your data, or anonymise the contract first — replacing names and figures with placeholders.", correct: true },
+        { text: "Email it to yourself first, then paste — emails are private.", correct: false },
+        { text: "Skip AI entirely — anything confidential is off-limits forever.", correct: false }
+      ],
+      explanation: "Paid business tiers give you contract-backed non-training commitments, which is the right spend for anyone regularly handling sensitive material. For one-offs, anonymisation works well — the AI just needs the structure, not the real identifiers."
+    },
+    {
+      id: 6,
+      text: "A developer is about to paste a .env file containing real AWS keys and a database password into ChatGPT to ask why a script is failing. Based on this lesson, what should happen?",
+      options: [
+        { text: "It's fine — AI can't execute credentials.", correct: false },
+        { text: "Replace every credential with placeholders (YOUR_AWS_KEY_HERE, YOUR_DB_PASSWORD) before pasting. If the real values have already been pasted, rotate them now.", correct: true },
+        { text: "Paste it all but add \"please don't store this\" at the top.", correct: false },
+        { text: "Only paste the keys — passwords are lower-risk.", correct: false }
+      ],
+      explanation: "Credentials are dangerous tier. AI gives you exactly the same help with placeholders as it does with real values, so there's no reason to expose them. If you've already pasted real ones, rotating now costs minutes; cleaning up a breach costs days."
+    },
+    {
+      id: 7,
+      text: "The lesson argues that chat boxes are closer to what than to a private document on your own computer?",
+      options: [
+        { text: "An encrypted private vault.", correct: false },
+        { text: "A public forum you happen to be typing into alone.", correct: true },
+        { text: "A phone call protected by end-to-end encryption.", correct: false },
+        { text: "A sealed envelope addressed only to the provider.", correct: false }
+      ],
+      explanation: "That mental image does the work. Once you treat the chat box as closer-to-public than closer-to-private, the three-tier decisions become obvious almost by reflex."
+    },
+    {
+      id: 8,
+      text: "You're drafting a response to a supplier's late-delivery email. Based on this lesson, what's the smartest way to get AI help?",
+      options: [
+        { text: "Paste the whole email thread including the supplier's name, email address, and order value.", correct: false },
+        { text: "Describe the situation in general terms (\"my supplier is ten days late on a £4K order\"), keep the names and email out, and let AI draft the reply.", correct: true },
+        { text: "Paste the email but replace the company's address with a fake one.", correct: false },
+        { text: "Skip AI — supplier emails are off-limits entirely.", correct: false }
+      ],
+      explanation: "Real supplier names, addresses, and order values are identifiable business data belonging to someone else — risky tier. The AI doesn't need any of those details to help you draft; the general situation is enough."
+    }
+  ];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function pickQuestions() {
+    if (attemptCount === 0) {
+      const canonical = [1, 2, 3].map(id => questionBank.find(q => q.id === id));
+      return canonical.map(q => ({ ...q, options: q.options.slice() }));
+    }
+    const picked = shuffle(questionBank).slice(0, totalQuestions);
+    return picked.map(q => ({ ...q, options: shuffle(q.options) }));
+  }
+
+  function renderQuestions() {
+    const selected = pickQuestions();
+    const container = document.getElementById('quizQuestions');
+    container.innerHTML = '';
+
+    selected.forEach((q, qIdx) => {
+      const card = document.createElement('div');
+      card.className = 'q-card' + (qIdx === 0 ? ' active' : '');
+      card.dataset.q = qIdx;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      const optionsHTML = q.options.map((opt, i) => `
+        <div class="option" data-correct="${opt.correct}">
+          <span class="option-letter">${letters[i]}</span>
+          <span>${opt.text}</span>
+          <span class="option-check">${opt.correct ? '✓' : '✗'}</span>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-number">Question ${qIdx + 1} of ${totalQuestions}</div>
+        <p class="q-text">${q.text}</p>
+        <div class="options">${optionsHTML}</div>
+        <div class="explanation">
+          <strong>Explanation</strong>
+          ${q.explanation}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const card = opt.closest('.q-card');
+        const qIdx = parseInt(card.dataset.q);
+        if (answered[qIdx]) return;
+
+        const isCorrect = opt.dataset.correct === 'true';
+        const opts = card.querySelectorAll('.option');
+        opts.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+
+        const exp = card.querySelector('.explanation');
+        exp.classList.add('show');
+        if (!isCorrect) exp.classList.add('wrong');
+
+        answers[qIdx] = isCorrect;
+        answered[qIdx] = true;
+        nextBtn.disabled = false;
+        nextBtn.textContent = qIdx === totalQuestions - 1 ? 'See results →' : 'Next question →';
+      });
+    });
+  }
+
+  const progressDots = document.querySelectorAll('#quizProgress span');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+
+  renderQuestions();
+
+  function getCards() { return document.querySelectorAll('.q-card'); }
+
+  function showQuestion(i) {
+    const cards = getCards();
+    cards.forEach(c => c.classList.remove('active'));
+    cards[i].classList.add('active');
+    progressDots.forEach((d, idx) => {
+      d.classList.remove('active','done');
+      if (idx < i) d.classList.add('done');
+      else if (idx === i) d.classList.add('active');
+    });
+    prevBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    nextBtn.disabled = !answered[i];
+    nextBtn.textContent = i === totalQuestions - 1 ? 'See results →' : 'Next question →';
+    document.getElementById('quiz').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function nextQuestion() {
+    if (currentQ < totalQuestions - 1) { currentQ++; showQuestion(currentQ); }
+    else { showResults(); }
+  }
+  function prevQuestion() {
+    if (currentQ > 0) { currentQ--; showQuestion(currentQ); }
+  }
+
+  function showResults() {
+    getCards().forEach(c => c.classList.remove('active'));
+    document.getElementById('quizNav').style.display = 'none';
+    progressDots.forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+
+    const score = answers.filter(a => a === true).length;
+    document.getElementById('scoreNum').textContent = score;
+
+    const title = document.getElementById('resultTitle');
+    const body = document.getElementById('resultBody');
+    if (score === 3) {
+      title.textContent = 'All three. Privacy habits locked in.';
+      body.textContent = attemptCount === 0
+        ? "Your lawyer would approve. One lesson to go — how to spot AI hype and marketing nonsense before it wastes your money."
+        : "Clean sweep on the retry. Properly sharp on this.";
+    } else if (score === 2) {
+      title.textContent = 'Close — one to revisit.';
+      body.textContent = "Scroll back to the three tiers and the paste rule. This is the lesson with the highest real-world stakes — worth double-checking the bit you missed.";
+    } else {
+      title.textContent = 'Worth another pass.';
+      body.textContent = "This is the lesson your lawyer would want you to ace. Scroll up, run the checker again, and retry when you're ready.";
+    }
+
+    document.getElementById('quizResult').classList.add('show');
+    updateCompletion(score);
+  }
+
+  function resetQuiz() {
+    attemptCount++;
+    currentQ = 0;
+    answers = [null, null, null];
+    answered = [false, false, false];
+    renderQuestions();
+    document.getElementById('quizResult').classList.remove('show');
+    document.getElementById('quizNav').style.display = 'flex';
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Next question →';
+    showQuestion(0);
+  }
+
+  // Action + completion
+  const actionCheck = document.getElementById('actionDone');
+  const statusEl = document.getElementById('completionStatus');
+  function updateCompletion(quizScore) {
+    const quizDone = answered.every(Boolean);
+    const actionDone = actionCheck.checked;
+    const score = quizScore ?? answers.filter(a=>a===true).length;
+    if (quizDone && actionDone && score >= 2) {
+      statusEl.classList.add('complete');
+      statusEl.innerHTML = '<span>✓</span><span>Lesson complete</span>';
+    } else if (quizDone) {
+      statusEl.innerHTML = '<span>◐</span><span>Quiz done — finish your action</span>';
+    } else if (actionDone) {
+      statusEl.innerHTML = '<span>◐</span><span>Action done — take the quick check</span>';
+    }
+  }
+  actionCheck.addEventListener('change', () => updateCompletion());
+</script>
+
+</body>
+</html>
