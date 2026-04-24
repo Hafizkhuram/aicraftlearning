@@ -1,0 +1,82 @@
+{
+  "slug": "claude-code-mastery",
+  "title": "Claude Code: Setup, Workflow & Mastery",
+  "subtitle": "The most powerful AI tool most business owners don't know they can use — without writing a single line of code.",
+  "level": "Intermediate",
+  "duration": "~3 hours",
+  "lessonCount": 16,
+  "moduleCount": 4,
+  "price": 39.99,
+  "priceDisplay": "$39.99",
+  "stripePriceId": "price_PLACEHOLDER_PASTE_LATER",
+  "heroHeading": "Install Claude Code. Automate the work that eats your week.",
+  "heroSubhead": "In 16 short written lessons, you'll set up Claude Code, run your first automation, and build the confidence to use it for real work in your business. No coding required — just the patience to do it properly.",
+  "whoItsFor": [
+    "Business owners who've plateaued on ChatGPT and want real automation",
+    "Professionals who spend hours on repetitive document or data work",
+    "Consultants who want to deliver more without hiring help",
+    "Anyone who's heard of Claude Code but was scared off by the name"
+  ],
+  "whatYoullLearn": [
+    "Install Claude Code via the friendlier VS Code path",
+    "Organise files, process PDFs, and clean spreadsheets in bulk",
+    "Write a CLAUDE.md file that turns Claude Code into a colleague who knows your business",
+    "Build reusable Skills and schedule workflows to run while you sleep",
+    "Know when Claude Code is the right tool — and when it isn't"
+  ],
+  "assessmentConfig": {
+    "questionCount": 25,
+    "passMarkPercent": 70,
+    "retakeCooldownHours": 24,
+    "lessonCheckQuestionsPer": 3,
+    "moduleReviewQuestionsPer": 5
+  },
+  "modules": [
+    {
+      "number": 1,
+      "title": "Getting Claude Code onto your computer",
+      "lessons": [
+        { "slug": "lesson-1-1", "title": "What Claude Code actually is (and why non-coders should care)", "minutes": 7, "htmlPath": "/content/claude-code-mastery/lesson-1-1.html" },
+        { "slug": "lesson-1-2", "title": "Installing Claude Code the easy way", "minutes": 9, "htmlPath": "/content/claude-code-mastery/lesson-1-2.html" },
+        { "slug": "lesson-1-3", "title": "Your first useful thing — organising a messy folder", "minutes": 7, "htmlPath": "/content/claude-code-mastery/lesson-1-3.html" },
+        { "slug": "lesson-1-4", "title": "Safety first — what to never let Claude Code do", "minutes": 8, "htmlPath": "/content/claude-code-mastery/lesson-1-4.html" },
+        { "slug": "module-1-review", "title": "Module 1 review", "minutes": 3, "htmlPath": "/content/claude-code-mastery/module-1-review.html", "isReview": true }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "The core workflow (how Claude Code actually thinks)",
+      "lessons": [
+        { "slug": "lesson-2-1", "title": "The project folder is everything", "minutes": 7, "htmlPath": "/content/claude-code-mastery/lesson-2-1.html" },
+        { "slug": "lesson-2-2", "title": "Meet CLAUDE.md — your project's memory", "minutes": 9, "htmlPath": "/content/claude-code-mastery/lesson-2-2.html" },
+        { "slug": "lesson-2-3", "title": "Describing what you want (the new prompting)", "minutes": 8, "htmlPath": "/content/claude-code-mastery/lesson-2-3.html" },
+        { "slug": "lesson-2-4", "title": "When Claude Code does it wrong (iteration and feedback)", "minutes": 7, "htmlPath": "/content/claude-code-mastery/lesson-2-4.html" },
+        { "slug": "module-2-review", "title": "Module 2 review", "minutes": 3, "htmlPath": "/content/claude-code-mastery/module-2-review.html", "isReview": true }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Real business workflows (what to actually automate)",
+      "lessons": [
+        { "slug": "lesson-3-1", "title": "Processing documents in bulk", "minutes": 8, "htmlPath": "/content/claude-code-mastery/lesson-3-1.html" },
+        { "slug": "lesson-3-2", "title": "Turning messy data into clean reports", "minutes": 8, "htmlPath": "/content/claude-code-mastery/lesson-3-2.html" },
+        { "slug": "lesson-3-3", "title": "Research workflows — from question to answer in minutes", "minutes": 8, "htmlPath": "/content/claude-code-mastery/lesson-3-3.html" },
+        { "slug": "lesson-3-4", "title": "Drafting at scale (content production workflows)", "minutes": 8, "htmlPath": "/content/claude-code-mastery/lesson-3-4.html" },
+        { "slug": "module-3-review", "title": "Module 3 review", "minutes": 3, "htmlPath": "/content/claude-code-mastery/module-3-review.html", "isReview": true }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Becoming powerful with Claude Code",
+      "lessons": [
+        { "slug": "lesson-4-1", "title": "Skills — teaching Claude Code your repeatable processes", "minutes": 8, "htmlPath": "/content/claude-code-mastery/lesson-4-1.html" },
+        { "slug": "lesson-4-2", "title": "Scheduling — making work happen while you sleep", "minutes": 8, "htmlPath": "/content/claude-code-mastery/lesson-4-2.html" },
+        { "slug": "lesson-4-3", "title": "When Claude Code is the wrong tool", "minutes": 7, "htmlPath": "/content/claude-code-mastery/lesson-4-3.html" },
+        { "slug": "lesson-4-4", "title": "Your 30-day Claude Code plan", "minutes": 7, "htmlPath": "/content/claude-code-mastery/lesson-4-4.html" },
+        { "slug": "module-4-review", "title": "Module 4 review", "minutes": 3, "htmlPath": "/content/claude-code-mastery/module-4-review.html", "isReview": true }
+      ]
+    }
+  ],
+  "assessmentHtmlPath": "/content/claude-code-mastery/final-assessment.html",
+  "certificateHtmlPath": "/content/claude-code-mastery/certificate.html"
+}

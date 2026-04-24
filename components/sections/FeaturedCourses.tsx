@@ -2,54 +2,10 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FadeIn, FadeInItem, FadeInStagger } from "@/components/ui/FadeIn";
+import { getAllCourseManifests } from "@/lib/courses";
+import type { CourseLevel } from "@/lib/courses";
 
-type Level = "Beginner" | "Intermediate" | "Advanced";
-
-type FeaturedCourse = {
-  slug: string;
-  title: string;
-  level: Level;
-  description: string;
-  modules: number;
-  lessons: number;
-  priceUSD: number;
-};
-
-// TODO Phase 3: replace with manifest reads from /content/courses/*.json
-const courses: FeaturedCourse[] = [
-  {
-    slug: "ai-fundamentals",
-    title: "AI Fundamentals",
-    level: "Beginner",
-    description:
-      "Build a working mental model of modern AI — what it is, what it isn't, and how to put it to work day one.",
-    modules: 4,
-    lessons: 12,
-    priceUSD: 29.99,
-  },
-  {
-    slug: "claude-code-mastery",
-    title: "Claude Code Mastery",
-    level: "Intermediate",
-    description:
-      "Use Claude Code as a true engineering teammate. Workflows, prompting patterns, and the habits that compound.",
-    modules: 5,
-    lessons: 16,
-    priceUSD: 39.99,
-  },
-  {
-    slug: "ai-agents-workflows",
-    title: "AI Agents & Workflows",
-    level: "Advanced",
-    description:
-      "Design agentic systems with Make, Claude, and the right guardrails. Practical automations, not science projects.",
-    modules: 6,
-    lessons: 18,
-    priceUSD: 99,
-  },
-];
-
-const levelStyles: Record<Level, string> = {
+const levelStyles: Record<CourseLevel, string> = {
   Beginner:
     "bg-[var(--color-light-mint)] text-[var(--color-deep-green)] dark:bg-[color-mix(in_oklab,var(--color-deep-green)_55%,transparent)] dark:text-[var(--color-accent-green)]",
   Intermediate:
@@ -58,20 +14,9 @@ const levelStyles: Record<Level, string> = {
     "bg-[#E0E7FF] text-[#3730A3] dark:bg-[color-mix(in_oklab,#3730A3_50%,transparent)] dark:text-[#A5B4FC]",
 };
 
-const priceFormatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-});
+export async function FeaturedCourses() {
+  const courses = await getAllCourseManifests();
 
-function formatPrice(value: number) {
-  return Number.isInteger(value)
-    ? `$${value}`
-    : priceFormatter.format(value);
-}
-
-export function FeaturedCourses() {
   return (
     <section className="bg-[var(--color-surface)] py-24 sm:py-28 dark:bg-[#0b1322]">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -116,18 +61,18 @@ export function FeaturedCourses() {
                 </h3>
 
                 <p className="mt-3 text-[15px] leading-relaxed text-[var(--color-text-muted)] dark:text-slate-300">
-                  {course.description}
+                  {course.subtitle}
                 </p>
 
                 <dl className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-medium text-[var(--color-text-muted)] dark:text-slate-400">
                   <div className="inline-flex items-center gap-1">
                     <dt className="sr-only">Modules</dt>
-                    <dd>{course.modules} modules</dd>
+                    <dd>{course.moduleCount} modules</dd>
                   </div>
                   <span aria-hidden="true">·</span>
                   <div className="inline-flex items-center gap-1">
                     <dt className="sr-only">Lessons</dt>
-                    <dd>{course.lessons} lessons</dd>
+                    <dd>{course.lessonCount} lessons</dd>
                   </div>
                 </dl>
 
@@ -137,7 +82,7 @@ export function FeaturedCourses() {
                       One-time
                     </p>
                     <p className="mt-1 font-display text-2xl font-semibold text-[var(--color-deep-green)] dark:text-[var(--color-text-light)]">
-                      {formatPrice(course.priceUSD)}
+                      {course.priceDisplay}
                     </p>
                   </div>
                   <span className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-primary-green)] transition-transform group-hover:translate-x-0.5 dark:text-[var(--color-accent-green)]">

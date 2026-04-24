@@ -1,0 +1,82 @@
+{
+  "slug": "ai-agents-workflows",
+  "title": "Building AI Agents & Workflows",
+  "subtitle": "Most AI courses teach you to build demos. This one teaches you to build systems that stay running.",
+  "level": "Advanced",
+  "duration": "~4 hours",
+  "lessonCount": 16,
+  "moduleCount": 4,
+  "price": 99,
+  "priceDisplay": "$99",
+  "stripePriceId": "price_PLACEHOLDER_PASTE_LATER",
+  "heroHeading": "Three working AI systems in your business — by the end of the course",
+  "heroSubhead": "Sixteen short written lessons. Three real systems you build and keep running. Workflows vs agents, tool choice, guardrails, debugging, and the maintenance reality most courses skip. No code. No hype.",
+  "whoItsFor": [
+    "Business owners and operations leads ready to go beyond one-off prompts",
+    "Consultants and professionals who already automate with Zapier, Make, or n8n",
+    "Anyone who's finished AI Fundamentals and Claude Code and wants the next level",
+    "Builders who want real systems in production, not more demos"
+  ],
+  "whatYoullLearn": [
+    "The difference between workflows and agents — and when to use each",
+    "The minimum viable stack for non-coders (n8n + Claude + your business tools)",
+    "How to build three real systems: email triage, research agent, meeting-to-task automation",
+    "Error handling, logging, guardrails, and kill switches that make systems trustworthy",
+    "The maintenance reality: keeping systems running over time"
+  ],
+  "assessmentConfig": {
+    "questionCount": 30,
+    "passMarkPercent": 70,
+    "retakeCooldownHours": 24,
+    "lessonCheckQuestionsPer": 2,
+    "moduleReviewQuestionsPer": 5
+  },
+  "modules": [
+    {
+      "number": 1,
+      "title": "Workflows vs. agents — what you're actually building",
+      "lessons": [
+        { "slug": "lesson-1-1", "title": "Workflows vs. agents — know the difference", "minutes": 9, "htmlPath": "/content/ai-agents-workflows/lesson-1-1.html" },
+        { "slug": "lesson-1-2", "title": "What actually delivers ROI (and what doesn't)", "minutes": 9, "htmlPath": "/content/ai-agents-workflows/lesson-1-2.html" },
+        { "slug": "lesson-1-3", "title": "Your stack: n8n, Claude, and the minimum viable toolkit", "minutes": 9, "htmlPath": "/content/ai-agents-workflows/lesson-1-3.html" },
+        { "slug": "lesson-1-4", "title": "Getting n8n running in 15 minutes", "minutes": 10, "htmlPath": "/content/ai-agents-workflows/lesson-1-4.html" },
+        { "slug": "module-1-review", "title": "Module 1 review", "minutes": 3, "htmlPath": "/content/ai-agents-workflows/module-1-review.html", "isReview": true }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Build your first workflow",
+      "lessons": [
+        { "slug": "lesson-2-1", "title": "Anatomy of a workflow: triggers, nodes, actions", "minutes": 9, "htmlPath": "/content/ai-agents-workflows/lesson-2-1.html" },
+        { "slug": "lesson-2-2", "title": "Build #1: Email triage workflow", "minutes": 12, "htmlPath": "/content/ai-agents-workflows/lesson-2-2.html" },
+        { "slug": "lesson-2-3", "title": "Debugging when things go wrong", "minutes": 9, "htmlPath": "/content/ai-agents-workflows/lesson-2-3.html" },
+        { "slug": "lesson-2-4", "title": "Making it bulletproof: error handling and logging", "minutes": 10, "htmlPath": "/content/ai-agents-workflows/lesson-2-4.html" },
+        { "slug": "module-2-review", "title": "Module 2 review", "minutes": 3, "htmlPath": "/content/ai-agents-workflows/module-2-review.html", "isReview": true }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Build your first agent",
+      "lessons": [
+        { "slug": "lesson-3-1", "title": "What makes an agent different", "minutes": 9, "htmlPath": "/content/ai-agents-workflows/lesson-3-1.html" },
+        { "slug": "lesson-3-2", "title": "Build #2: Research agent", "minutes": 12, "htmlPath": "/content/ai-agents-workflows/lesson-3-2.html" },
+        { "slug": "lesson-3-3", "title": "Giving agents memory and context", "minutes": 9, "htmlPath": "/content/ai-agents-workflows/lesson-3-3.html" },
+        { "slug": "lesson-3-4", "title": "Guardrails — keeping agents in their lane", "minutes": 9, "htmlPath": "/content/ai-agents-workflows/lesson-3-4.html" },
+        { "slug": "module-3-review", "title": "Module 3 review", "minutes": 3, "htmlPath": "/content/ai-agents-workflows/module-3-review.html", "isReview": true }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Beyond building: connecting, scaling, knowing when to stop",
+      "lessons": [
+        { "slug": "lesson-4-1", "title": "Build #3: Connecting AI to your real business tools", "minutes": 12, "htmlPath": "/content/ai-agents-workflows/lesson-4-1.html" },
+        { "slug": "lesson-4-2", "title": "Multi-agent systems: when they make sense (and when they don't)", "minutes": 9, "htmlPath": "/content/ai-agents-workflows/lesson-4-2.html" },
+        { "slug": "lesson-4-3", "title": "Running AI systems over time: the maintenance reality", "minutes": 9, "htmlPath": "/content/ai-agents-workflows/lesson-4-3.html" },
+        { "slug": "lesson-4-4", "title": "Your agent portfolio: the 30/60/90 plan", "minutes": 9, "htmlPath": "/content/ai-agents-workflows/lesson-4-4.html" },
+        { "slug": "module-4-review", "title": "Module 4 review", "minutes": 3, "htmlPath": "/content/ai-agents-workflows/module-4-review.html", "isReview": true }
+      ]
+    }
+  ],
+  "assessmentHtmlPath": "/content/ai-agents-workflows/final-assessment.html",
+  "certificateHtmlPath": "/content/ai-agents-workflows/certificate.html"
+}

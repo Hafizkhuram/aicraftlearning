@@ -1,0 +1,78 @@
+{
+  "slug": "ai-fundamentals",
+  "title": "AI Fundamentals: From Zero to Confident",
+  "subtitle": "The fundamentals every professional needs, without the hype.",
+  "level": "Beginner",
+  "duration": "~3 hours",
+  "lessonCount": 12,
+  "moduleCount": 4,
+  "price": 29.99,
+  "priceDisplay": "$29.99",
+  "stripePriceId": "price_PLACEHOLDER_PASTE_LATER",
+  "heroHeading": "Finally understand AI — without the hype, in one weekend",
+  "heroSubhead": "Twelve short written lessons that take you from confused onlooker to confident user. No jargon. No fluff. Just the foundations that make everything else make sense.",
+  "whoItsFor": [
+    "Non-technical professionals who feel left behind by AI",
+    "Business owners who want to use AI properly, not just dabble",
+    "Consultants and freelancers looking to build real AI skills",
+    "Readers — people who'd rather read a well-crafted lesson than watch a rambling video"
+  ],
+  "whatYoullLearn": [
+    "How AI actually works under the hood (plain English, no maths)",
+    "How to write prompts that produce good output",
+    "When to trust AI output and when to verify it",
+    "How to pick the right AI tool for the job",
+    "Privacy, hype, and the habits of professional AI users"
+  ],
+  "assessmentConfig": {
+    "questionCount": 20,
+    "passMarkPercent": 70,
+    "retakeCooldownHours": 24,
+    "lessonCheckQuestionsPer": 3,
+    "moduleReviewQuestionsPer": 5
+  },
+  "modules": [
+    {
+      "number": 1,
+      "title": "What AI actually is",
+      "lessons": [
+        { "slug": "lesson-1-1", "title": "What AI actually is, in one minute", "minutes": 6, "htmlPath": "/content/ai-fundamentals/lesson-1-1.html" },
+        { "slug": "lesson-1-2", "title": "The family tree of AI terms", "minutes": 7, "htmlPath": "/content/ai-fundamentals/lesson-1-2.html" },
+        { "slug": "lesson-1-3", "title": "What AI is good at vs terrible at", "minutes": 6, "htmlPath": "/content/ai-fundamentals/lesson-1-3.html" },
+        { "slug": "module-1-review", "title": "Module 1 review", "minutes": 3, "htmlPath": "/content/ai-fundamentals/module-1-review.html", "isReview": true }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "How AI actually works",
+      "lessons": [
+        { "slug": "lesson-2-1", "title": "How LLMs actually predict words", "minutes": 7, "htmlPath": "/content/ai-fundamentals/lesson-2-1.html" },
+        { "slug": "lesson-2-2", "title": "The context window", "minutes": 7, "htmlPath": "/content/ai-fundamentals/lesson-2-2.html" },
+        { "slug": "lesson-2-3", "title": "Why outputs feel generic — and the fix", "minutes": 7, "htmlPath": "/content/ai-fundamentals/lesson-2-3.html" },
+        { "slug": "module-2-review", "title": "Module 2 review", "minutes": 3, "htmlPath": "/content/ai-fundamentals/module-2-review.html", "isReview": true }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Working with AI well",
+      "lessons": [
+        { "slug": "lesson-3-1", "title": "The ROLE / CONTEXT / TASK pattern", "minutes": 7, "htmlPath": "/content/ai-fundamentals/lesson-3-1.html" },
+        { "slug": "lesson-3-2", "title": "When to trust AI output — and when not to", "minutes": 6, "htmlPath": "/content/ai-fundamentals/lesson-3-2.html" },
+        { "slug": "lesson-3-3", "title": "The 3 ways people waste time with AI", "minutes": 6, "htmlPath": "/content/ai-fundamentals/lesson-3-3.html" },
+        { "slug": "module-3-review", "title": "Module 3 review", "minutes": 3, "htmlPath": "/content/ai-fundamentals/module-3-review.html", "isReview": true }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Smart AI decisions",
+      "lessons": [
+        { "slug": "lesson-4-1", "title": "Claude vs ChatGPT vs Gemini — which one, when?", "minutes": 6, "htmlPath": "/content/ai-fundamentals/lesson-4-1.html" },
+        { "slug": "lesson-4-2", "title": "Privacy, and what NOT to paste into AI", "minutes": 6, "htmlPath": "/content/ai-fundamentals/lesson-4-2.html" },
+        { "slug": "lesson-4-3", "title": "How to spot AI hype and misinformation", "minutes": 6, "htmlPath": "/content/ai-fundamentals/lesson-4-3.html" },
+        { "slug": "module-4-review", "title": "Module 4 review", "minutes": 3, "htmlPath": "/content/ai-fundamentals/module-4-review.html", "isReview": true }
+      ]
+    }
+  ],
+  "assessmentHtmlPath": "/content/ai-fundamentals/final-assessment.html",
+  "certificateHtmlPath": "/content/ai-fundamentals/certificate.html"
+}

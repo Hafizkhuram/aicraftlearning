@@ -63,12 +63,12 @@ export async function POST(request: Request) {
     line_items: [
       {
         price_data: {
-          currency: "gbp",
+          currency: "usd",
           product_data: {
             name: manifest.title,
-            description: manifest.tagline ?? manifest.description,
+            description: manifest.subtitle,
           },
-          unit_amount: Math.round(manifest.priceGBP * 100),
+          unit_amount: Math.round(manifest.price * 100),
         },
         quantity: 1,
       },

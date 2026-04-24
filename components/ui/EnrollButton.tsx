@@ -6,22 +6,15 @@ import { useAuth } from "@clerk/nextjs";
 
 type EnrollButtonProps = {
   courseSlug: string;
-  priceGBP: number;
+  priceDisplay: string;
   isEnrolled?: boolean;
   label?: string;
   className?: string;
 };
 
-const priceFormatter = new Intl.NumberFormat("en-GB", {
-  style: "currency",
-  currency: "GBP",
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 0,
-});
-
 export function EnrollButton({
   courseSlug,
-  priceGBP,
+  priceDisplay,
   isEnrolled = false,
   label,
   className,
@@ -38,12 +31,12 @@ export function EnrollButton({
   if (isEnrolled) {
     return (
       <a href={`/learn/${courseSlug}`} className={classes}>
-        Go to course →
+        Already enrolled — Go to course →
       </a>
     );
   }
 
-  const defaultLabel = label ?? `Enrol · ${priceFormatter.format(priceGBP)}`;
+  const defaultLabel = label ?? `Enrol · ${priceDisplay}`;
 
   async function handleClick() {
     if (!isLoaded) return;

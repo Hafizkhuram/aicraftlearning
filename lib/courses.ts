@@ -1,21 +1,57 @@
 import { promises as fs } from "fs";
 import path from "path";
 
+export type CourseLevel = "Beginner" | "Intermediate" | "Advanced";
+
 export type CourseLesson = {
   slug: string;
   title: string;
-  duration?: string;
+  minutes: number;
+  htmlPath: string;
+  isReview?: boolean;
+};
+
+export type CourseModule = {
+  number: number;
+  title: string;
+  lessons: CourseLesson[];
+};
+
+export type CourseAssessmentConfig = {
+  questionCount: number;
+  passMarkPercent: number;
+  retakeCooldownHours: number;
+  lessonCheckQuestionsPer: number;
+  moduleReviewQuestionsPer: number;
 };
 
 export type CourseManifest = {
   slug: string;
   title: string;
-  tagline?: string;
-  description?: string;
-  priceGBP: number;
-  stripePriceId?: string;
-  lessons: CourseLesson[];
-  [key: string]: unknown;
+  subtitle: string;
+  level: CourseLevel;
+  duration: string;
+  lessonCount: number;
+  moduleCount: number;
+  price: number;
+  priceDisplay: string;
+  stripePriceId: string;
+  heroHeading: string;
+  heroSubhead: string;
+  whoItsFor: string[];
+  whatYoullLearn: string[];
+  assessmentConfig: CourseAssessmentConfig;
+  modules: CourseModule[];
+  assessmentHtmlPath: string;
+  certificateHtmlPath: string;
+};
+
+const COURSES_DIR = path.join(process.cwd(), "content", "courses");
+
+const LEVEL_ORDER: Record<CourseLevel, number> = {
+  Beginner: 0,
+  Intermediate: 1,
+  Advanced: 2,
 };
 
 export async function getCourseManifest(
@@ -24,12 +60,7 @@ export async function getCourseManifest(
   const safeSlug = slug.replace(/[^a-z0-9-]/gi, "");
   if (!safeSlug || safeSlug !== slug) return null;
 
-  const filePath = path.join(
-    process.cwd(),
-    "content",
-    "courses",
-    `${safeSlug}.json`,
-  );
+  const filePath = path.join(COURSES_DIR, `${safeSlug}.json`);
 
   try {
     const raw = await fs.readFile(filePath, "utf-8");
@@ -37,4 +68,16 @@ export async function getCourseManifest(
   } catch {
     return null;
   }
+}
+
+export async function getAllCourseManifests(): Promise<CourseManifest[]> {
+  const entries = await fs.readdir(COURSES_DIR);
+  const slugs = entries
+    .filter((name) => name.endsWith(".json"))
+    .map((name) => name.replace(/\.json$/, ""));
+
+  const manifests = await Promise.all(slugs.map((s) => getCourseManifest(s)));
+  return manifests
+    .filter((m): m is CourseManifest => m !== null)
+    .sort((a, b) => LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level]);
 }
