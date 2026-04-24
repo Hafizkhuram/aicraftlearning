@@ -2,11 +2,10 @@
 
 import { ChevronDown } from "lucide-react";
 import * as Accordion from "@radix-ui/react-accordion";
-
-export type FaqItem = { question: string; answer: string };
+import type { CourseFaq } from "@/lib/courses";
 
 type Props = {
-  items: FaqItem[];
+  items: CourseFaq[];
 };
 
 export function FaqAccordion({ items }: Props) {
@@ -31,7 +30,7 @@ export function FaqAccordion({ items }: Props) {
               />
             </Accordion.Trigger>
           </Accordion.Header>
-          <Accordion.Content className="overflow-hidden data-[state=closed]:animate-[accordion-up_220ms_ease] data-[state=open]:animate-[accordion-down_220ms_ease]">
+          <Accordion.Content>
             <p
               className="border-t border-[var(--color-border-subtle)] px-5 py-4 text-[15px] leading-relaxed text-[var(--color-text-muted)] dark:border-slate-800 dark:text-slate-300"
               style={{ borderTopWidth: "0.5px" }}

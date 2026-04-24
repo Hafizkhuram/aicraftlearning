@@ -5,8 +5,8 @@ import { auth } from "@clerk/nextjs/server";
 import { Check } from "lucide-react";
 import { EnrollButton } from "@/components/ui/EnrollButton";
 import { FadeIn } from "@/components/ui/FadeIn";
-import { CurriculumAccordion } from "@/components/sections/CurriculumAccordion";
-import { FaqAccordion, type FaqItem } from "@/components/sections/FaqAccordion";
+import { CurriculumGrid } from "@/components/sections/CurriculumGrid";
+import { FaqAccordion } from "@/components/sections/FaqAccordion";
 import { getCourseManifest } from "@/lib/courses";
 import type { CourseLevel, CourseManifest } from "@/lib/courses";
 import { getPrisma } from "@/lib/db";
@@ -26,44 +26,6 @@ function buildMetaDescription(course: CourseManifest): string {
   if (composed.length <= 158) return composed;
   return composed.slice(0, 155).trimEnd() + "…";
 }
-
-const FAQS: FaqItem[] = [
-  {
-    question: "Who is this course for?",
-    answer:
-      "Non-technical professionals, business owners, consultants, and anyone who wants to use AI properly without writing code. If you're tired of generic AI tutorials, you'll feel at home.",
-  },
-  {
-    question: "Do I need any prior experience?",
-    answer:
-      "No prior coding or AI experience is required. We start from first principles and build up. If you can use a web browser and a spreadsheet, you'll be fine.",
-  },
-  {
-    question: "How is the course delivered?",
-    answer:
-      "It's text-first. Each lesson is a short, well-written page with a small interactive exercise inside it and a quick check at the end. No long video runtimes, no playback speed gymnastics.",
-  },
-  {
-    question: "How long do I have access?",
-    answer:
-      "Lifetime access. You buy once and keep it. Future updates to the course are included at no extra cost.",
-  },
-  {
-    question: "Is there a certificate?",
-    answer:
-      "Yes — pass the final assessment and you'll receive a verifiable AICraft Learning certificate you can share on LinkedIn.",
-  },
-  {
-    question: "Can I get a refund?",
-    answer:
-      "Yes. If the course isn't a fit within 14 days of purchase, email us and we'll refund you. No long forms.",
-  },
-  {
-    question: "Will I actually use this in my work?",
-    answer:
-      "That's the whole point. Every lesson is built around a real situation — drafting, research, document work, decision-making — not abstract theory.",
-  },
-];
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -196,11 +158,6 @@ export default async function CourseDetailPage({ params }: PageProps) {
               </div>
               <span aria-hidden="true" className="text-slate-600">·</span>
               <div className="inline-flex items-center gap-1">
-                <dt className="sr-only">Duration</dt>
-                <dd>{course.duration}</dd>
-              </div>
-              <span aria-hidden="true" className="text-slate-600">·</span>
-              <div className="inline-flex items-center gap-1">
                 <dt className="sr-only">Format</dt>
                 <dd>Text + interactive</dd>
               </div>
@@ -299,7 +256,10 @@ export default async function CourseDetailPage({ params }: PageProps) {
           </FadeIn>
 
           <div className="mt-10">
-            <CurriculumAccordion modules={course.modules} />
+            <CurriculumGrid
+              modules={course.modules}
+              assessmentConfig={course.assessmentConfig}
+            />
           </div>
         </div>
       </section>
@@ -339,7 +299,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
           </FadeIn>
 
           <div className="mt-10">
-            <FaqAccordion items={FAQS} />
+            <FaqAccordion items={course.faqs} />
           </div>
         </div>
       </section>

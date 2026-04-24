@@ -83,13 +83,3 @@ h1, h2, h3, h4, h5, h6 {
   outline-offset: 2px;
   border-radius: 4px;
 }
-
-/* Radix accordion content open/close animations */
-@keyframes accordion-down {
-  from { height: 0 }
-  to { height: var(--radix-accordion-content-height) }
-}
-@keyframes accordion-up {
-  from { height: var(--radix-accordion-content-height) }
-  to { height: 0 }
-}

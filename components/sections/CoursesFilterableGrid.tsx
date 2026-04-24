@@ -136,11 +136,6 @@ export function CoursesFilterableGrid({ courses }: Props) {
                     <dt className="sr-only">Lessons</dt>
                     <dd>{course.lessonCount} lessons</dd>
                   </div>
-                  <span aria-hidden="true">·</span>
-                  <div className="inline-flex items-center gap-1">
-                    <dt className="sr-only">Duration</dt>
-                    <dd>{course.duration}</dd>
-                  </div>
                 </dl>
 
                 <div className="mt-auto flex items-end justify-between pt-7">

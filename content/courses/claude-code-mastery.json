@@ -3,7 +3,6 @@
   "title": "Claude Code: Setup, Workflow & Mastery",
   "subtitle": "The most powerful AI tool most business owners don't know they can use — without writing a single line of code.",
   "level": "Intermediate",
-  "duration": "~3 hours",
   "lessonCount": 16,
   "moduleCount": 4,
   "price": 39.99,
@@ -35,6 +34,9 @@
     {
       "number": 1,
       "title": "Getting Claude Code onto your computer",
+      "description": "Get Claude Code installed and earn an early win. The friendlier setup path, your first useful job — organising a messy folder — and the safety rules that keep you out of trouble.",
+      "lessonCount": 4,
+      "quizQuestionCount": 5,
       "lessons": [
         { "slug": "lesson-1-1", "title": "What Claude Code actually is (and why non-coders should care)", "minutes": 7, "htmlPath": "/content/claude-code-mastery/lesson-1-1.html" },
         { "slug": "lesson-1-2", "title": "Installing Claude Code the easy way", "minutes": 9, "htmlPath": "/content/claude-code-mastery/lesson-1-2.html" },
@@ -46,6 +48,9 @@
     {
       "number": 2,
       "title": "The core workflow (how Claude Code actually thinks)",
+      "description": "Learn how Claude Code actually thinks. Project folders as the unit of work, the CLAUDE.md file that gives it memory, and the iteration habits that turn rough first attempts into finished work.",
+      "lessonCount": 4,
+      "quizQuestionCount": 5,
       "lessons": [
         { "slug": "lesson-2-1", "title": "The project folder is everything", "minutes": 7, "htmlPath": "/content/claude-code-mastery/lesson-2-1.html" },
         { "slug": "lesson-2-2", "title": "Meet CLAUDE.md — your project's memory", "minutes": 9, "htmlPath": "/content/claude-code-mastery/lesson-2-2.html" },
@@ -57,6 +62,9 @@
     {
       "number": 3,
       "title": "Real business workflows (what to actually automate)",
+      "description": "Four real workflows you can run this week. Bulk document processing, cleaning messy spreadsheets into clean reports, research from question to answer, and drafting at scale.",
+      "lessonCount": 4,
+      "quizQuestionCount": 5,
       "lessons": [
         { "slug": "lesson-3-1", "title": "Processing documents in bulk", "minutes": 8, "htmlPath": "/content/claude-code-mastery/lesson-3-1.html" },
         { "slug": "lesson-3-2", "title": "Turning messy data into clean reports", "minutes": 8, "htmlPath": "/content/claude-code-mastery/lesson-3-2.html" },
@@ -68,6 +76,9 @@
     {
       "number": 4,
       "title": "Becoming powerful with Claude Code",
+      "description": "Move past one-off use. Skills for repeatable processes, scheduled jobs that run while you sleep, the cases where Claude Code is the wrong tool, and a 30-day plan to make it stick.",
+      "lessonCount": 4,
+      "quizQuestionCount": 5,
       "lessons": [
         { "slug": "lesson-4-1", "title": "Skills — teaching Claude Code your repeatable processes", "minutes": 8, "htmlPath": "/content/claude-code-mastery/lesson-4-1.html" },
         { "slug": "lesson-4-2", "title": "Scheduling — making work happen while you sleep", "minutes": 8, "htmlPath": "/content/claude-code-mastery/lesson-4-2.html" },
@@ -78,5 +89,35 @@
     }
   ],
   "assessmentHtmlPath": "/content/claude-code-mastery/final-assessment.html",
-  "certificateHtmlPath": "/content/claude-code-mastery/certificate.html"
+  "certificateHtmlPath": "/content/claude-code-mastery/certificate.html",
+  "faqs": [
+    {
+      "question": "Who is this course for?",
+      "answer": "Business owners, consultants, and professionals who've plateaued on ChatGPT and want a real tool for the work that eats their week. No coding experience needed."
+    },
+    {
+      "question": "Do I need any prior experience?",
+      "answer": "If you're comfortable with files and folders on your computer, you're ready. Some experience with ChatGPT or Claude helps but isn't required. Our AI Fundamentals course is a good warm-up if you want one — but not a prerequisite."
+    },
+    {
+      "question": "How is the course delivered?",
+      "answer": "Text-first. Each lesson is a short, well-written page with a small interactive exercise inside it and a quick check at the end. No long video runtimes, no playback speed gymnastics."
+    },
+    {
+      "question": "How long do I have access?",
+      "answer": "Lifetime access. You buy once and keep it. Future updates to the course are included at no extra cost."
+    },
+    {
+      "question": "Is there a certificate?",
+      "answer": "Yes. Pass the final assessment with 70% or above and you'll get a verifiable certificate at a shareable URL (/certificate/[id]). The link works for anyone — no AICraft account required to verify it."
+    },
+    {
+      "question": "Can I get a refund?",
+      "answer": "Yes. If the course isn't a fit within 14 days of purchase, email us and we'll refund you in full. No long forms."
+    },
+    {
+      "question": "Will I actually use this in my work?",
+      "answer": "Three of the four modules are built around real business workflows: documents in bulk, messy data to clean reports, research, and content drafting. You'll have working processes by the end of the first week."
+    }
+  ]
 }

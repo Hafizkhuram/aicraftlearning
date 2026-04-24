@@ -3,7 +3,6 @@
   "title": "AI Fundamentals: From Zero to Confident",
   "subtitle": "The fundamentals every professional needs, without the hype.",
   "level": "Beginner",
-  "duration": "~3 hours",
   "lessonCount": 12,
   "moduleCount": 4,
   "price": 29.99,
@@ -35,6 +34,9 @@
     {
       "number": 1,
       "title": "What AI actually is",
+      "description": "Build the mental model. What AI actually is, the family tree of terms you keep hearing, and where it's strong vs where it falls over.",
+      "lessonCount": 3,
+      "quizQuestionCount": 5,
       "lessons": [
         { "slug": "lesson-1-1", "title": "What AI actually is, in one minute", "minutes": 6, "htmlPath": "/content/ai-fundamentals/lesson-1-1.html" },
         { "slug": "lesson-1-2", "title": "The family tree of AI terms", "minutes": 7, "htmlPath": "/content/ai-fundamentals/lesson-1-2.html" },
@@ -45,6 +47,9 @@
     {
       "number": 2,
       "title": "How AI actually works",
+      "description": "Look under the bonnet. How LLMs predict words, what the context window actually does, and why most outputs feel generic — with the fix.",
+      "lessonCount": 3,
+      "quizQuestionCount": 5,
       "lessons": [
         { "slug": "lesson-2-1", "title": "How LLMs actually predict words", "minutes": 7, "htmlPath": "/content/ai-fundamentals/lesson-2-1.html" },
         { "slug": "lesson-2-2", "title": "The context window", "minutes": 7, "htmlPath": "/content/ai-fundamentals/lesson-2-2.html" },
@@ -55,6 +60,9 @@
     {
       "number": 3,
       "title": "Working with AI well",
+      "description": "The patterns that separate skilled users from beginners. A clear prompting structure, when to trust the output, and the three habits that quietly waste hours.",
+      "lessonCount": 3,
+      "quizQuestionCount": 5,
       "lessons": [
         { "slug": "lesson-3-1", "title": "The ROLE / CONTEXT / TASK pattern", "minutes": 7, "htmlPath": "/content/ai-fundamentals/lesson-3-1.html" },
         { "slug": "lesson-3-2", "title": "When to trust AI output — and when not to", "minutes": 6, "htmlPath": "/content/ai-fundamentals/lesson-3-2.html" },
@@ -65,6 +73,9 @@
     {
       "number": 4,
       "title": "Smart AI decisions",
+      "description": "Choose well, use safely. Picking the right model for the task, what never to paste into AI, and how to spot hype before it costs you.",
+      "lessonCount": 3,
+      "quizQuestionCount": 5,
       "lessons": [
         { "slug": "lesson-4-1", "title": "Claude vs ChatGPT vs Gemini — which one, when?", "minutes": 6, "htmlPath": "/content/ai-fundamentals/lesson-4-1.html" },
         { "slug": "lesson-4-2", "title": "Privacy, and what NOT to paste into AI", "minutes": 6, "htmlPath": "/content/ai-fundamentals/lesson-4-2.html" },
@@ -74,5 +85,35 @@
     }
   ],
   "assessmentHtmlPath": "/content/ai-fundamentals/final-assessment.html",
-  "certificateHtmlPath": "/content/ai-fundamentals/certificate.html"
+  "certificateHtmlPath": "/content/ai-fundamentals/certificate.html",
+  "faqs": [
+    {
+      "question": "Who is this course for?",
+      "answer": "Non-technical professionals, business owners, and consultants who want to understand AI properly without learning to code. If you've felt left behind by the hype, this is the start line."
+    },
+    {
+      "question": "Do I need any prior experience?",
+      "answer": "None. We start from the ground up — no maths, no jargon, no prior tool experience required. If you've used a web browser, you're ready."
+    },
+    {
+      "question": "How is the course delivered?",
+      "answer": "Text-first. Each lesson is a short, well-written page with a small interactive exercise inside it and a quick check at the end. No long video runtimes, no playback speed gymnastics."
+    },
+    {
+      "question": "How long do I have access?",
+      "answer": "Lifetime access. You buy once and keep it. Future updates to the course are included at no extra cost."
+    },
+    {
+      "question": "Is there a certificate?",
+      "answer": "Yes. Pass the final assessment with 70% or above and you'll get a verifiable certificate at a shareable URL (/certificate/[id]). The link works for anyone — no AICraft account required to verify it."
+    },
+    {
+      "question": "Can I get a refund?",
+      "answer": "Yes. If the course isn't a fit within 14 days of purchase, email us and we'll refund you in full. No long forms."
+    },
+    {
+      "question": "Will I actually use this in my work?",
+      "answer": "That's the whole point. Every lesson is built around a real situation — drafting, research, decision-making — not abstract theory."
+    }
+  ]
 }

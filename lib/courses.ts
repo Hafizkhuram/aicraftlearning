@@ -14,6 +14,9 @@ export type CourseLesson = {
 export type CourseModule = {
   number: number;
   title: string;
+  description: string;
+  lessonCount: number;
+  quizQuestionCount: number;
   lessons: CourseLesson[];
 };
 
@@ -25,12 +28,16 @@ export type CourseAssessmentConfig = {
   moduleReviewQuestionsPer: number;
 };
 
+export type CourseFaq = {
+  question: string;
+  answer: string;
+};
+
 export type CourseManifest = {
   slug: string;
   title: string;
   subtitle: string;
   level: CourseLevel;
-  duration: string;
   lessonCount: number;
   moduleCount: number;
   price: number;
@@ -44,6 +51,7 @@ export type CourseManifest = {
   modules: CourseModule[];
   assessmentHtmlPath: string;
   certificateHtmlPath: string;
+  faqs: CourseFaq[];
 };
 
 const COURSES_DIR = path.join(process.cwd(), "content", "courses");
