@@ -11,7 +11,6 @@ import {
   PenTool,
   Presentation,
   Send,
-  Target,
   Users,
 } from "lucide-react";
 import { FadeIn, FadeInItem, FadeInStagger } from "@/components/ui/FadeIn";
@@ -99,27 +98,6 @@ const deliverySteps = [
     icon: LineChart,
     title: "Measure",
     body: "Completion data plus a 30/60/90-day check-in on the workflows we targeted. You leave with evidence, not just a finished course.",
-  },
-];
-
-const caseStudies = [
-  {
-    industry: "[PLACEHOLDER — SaaS company, 120 employees]",
-    headline:
-      "[PLACEHOLDER — Rolled out AI-assisted support workflows across customer success in 3 weeks]",
-    body: "[PLACEHOLDER — Real case study copy describing the brief, what was built, and the outcome goes here once we have a reference customer.]",
-  },
-  {
-    industry: "[PLACEHOLDER — Professional services firm, 60 employees]",
-    headline:
-      "[PLACEHOLDER — Cut proposal turnaround time from 5 days to 1 with a custom AIOS workflow]",
-    body: "[PLACEHOLDER — Real case study copy describing the brief, what was built, and the outcome goes here once we have a reference customer.]",
-  },
-  {
-    industry: "[PLACEHOLDER — Operations team at a 200-person retailer]",
-    headline:
-      "[PLACEHOLDER — Trained 50 ops staff on AI-assisted reporting in under a month]",
-    body: "[PLACEHOLDER — Real case study copy describing the brief, what was built, and the outcome goes here once we have a reference customer.]",
   },
 ];
 
@@ -402,53 +380,7 @@ export default function ForBusinessPage() {
         </div>
       </section>
 
-      {/* Case studies (placeholder) */}
-      <section className="bg-white py-20 sm:py-24 dark:bg-[var(--color-dark-bg)]">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <FadeIn>
-            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-primary-green)] dark:text-[var(--color-accent-green)]">
-              Case studies
-            </p>
-            <h2 className="accent-bar mt-3 max-w-3xl font-display text-3xl font-semibold leading-[1.1] tracking-tight text-[var(--color-deep-green)] sm:text-4xl dark:text-[var(--color-text-light)]">
-              What rollouts look like in practice
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--color-text-muted)] sm:text-lg dark:text-slate-300">
-              Three sketches of the kind of engagement we run. Real client
-              names and outcomes will be added once reference customers are
-              comfortable being named.
-            </p>
-          </FadeIn>
-
-          <FadeInStagger className="mt-14 grid grid-cols-1 gap-7 md:grid-cols-3">
-            {caseStudies.map((study, idx) => (
-              <FadeInItem key={idx} className="h-full">
-                <article
-                  className="relative flex h-full flex-col rounded-2xl border border-[var(--color-border-subtle)] bg-[var(--color-surface)] p-7 dark:border-slate-800 dark:bg-[#0b1322]"
-                  style={{ borderWidth: "0.5px" }}
-                >
-                  <span className="absolute top-5 right-5 inline-flex items-center rounded-full border border-[var(--color-warning)] bg-[color-mix(in_oklab,var(--color-warning)_18%,white)] px-2.5 py-1 text-[10px] font-semibold tracking-[0.18em] uppercase text-[#92400E] dark:bg-[color-mix(in_oklab,var(--color-warning)_18%,var(--color-dark-bg))] dark:text-[var(--color-warning)]">
-                    Placeholder
-                  </span>
-
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-[var(--color-deep-green)] dark:bg-[var(--color-dark-bg)] dark:text-[var(--color-accent-green)]">
-                    <Target size={22} strokeWidth={1.75} aria-hidden="true" />
-                  </div>
-
-                  <p className="mt-6 text-xs font-semibold tracking-[0.18em] uppercase text-[var(--color-text-muted)]">
-                    {study.industry}
-                  </p>
-                  <h3 className="mt-3 font-display text-lg font-semibold leading-snug text-[var(--color-deep-green)] dark:text-[var(--color-text-light)]">
-                    {study.headline}
-                  </h3>
-                  <p className="mt-3 text-[14px] leading-relaxed text-[var(--color-text-muted)] dark:text-slate-300">
-                    {study.body}
-                  </p>
-                </article>
-              </FadeInItem>
-            ))}
-          </FadeInStagger>
-        </div>
-      </section>
+      {/* Case studies section removed pending real reference customers — reintroduce in marketing pass once we have at least one named or anonymisable client engagement. */}
 
       {/* Contact form */}
       <section
