@@ -26,8 +26,22 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function CoursesPage() {
+type CoursesPageProps = {
+  searchParams: Promise<{ recommended?: string | string[] }>;
+};
+
+export default async function CoursesPage({ searchParams }: CoursesPageProps) {
   const courses = await getAllCourseManifests();
+  const params = await searchParams;
+  const rawRecommended = params.recommended;
+  const recommendedRaw = Array.isArray(rawRecommended)
+    ? rawRecommended[0]
+    : rawRecommended;
+  const recommended = recommendedRaw?.replace(/[^a-z0-9-]/gi, "") || null;
+  const recommendedSlug =
+    recommended && courses.some((c) => c.slug === recommended)
+      ? recommended
+      : null;
 
   return (
     <>
@@ -64,7 +78,10 @@ export default async function CoursesPage() {
 
       {/* Filterable grid */}
       <section className="bg-[var(--color-surface)] py-20 sm:py-24 dark:bg-[#0b1322]">
-        <CoursesFilterableGrid courses={courses} />
+        <CoursesFilterableGrid
+          courses={courses}
+          recommendedSlug={recommendedSlug}
+        />
       </section>
     </>
   );

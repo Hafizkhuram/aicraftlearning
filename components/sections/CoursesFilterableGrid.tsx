@@ -2,12 +2,13 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Search } from "lucide-react";
+import { ArrowRight, Search, Sparkles } from "lucide-react";
 import { FadeInItem, FadeInStagger } from "@/components/ui/FadeIn";
 import type { CourseLevel, CourseManifest } from "@/lib/courses";
 
 type Props = {
   courses: CourseManifest[];
+  recommendedSlug?: string | null;
 };
 
 type LevelFilter = "All" | CourseLevel;
@@ -28,7 +29,7 @@ const levelStyles: Record<CourseLevel, string> = {
     "bg-[#E0E7FF] text-[#3730A3] dark:bg-[color-mix(in_oklab,#3730A3_50%,transparent)] dark:text-[#A5B4FC]",
 };
 
-export function CoursesFilterableGrid({ courses }: Props) {
+export function CoursesFilterableGrid({ courses, recommendedSlug }: Props) {
   const [level, setLevel] = useState<LevelFilter>("All");
   const [query, setQuery] = useState("");
 
@@ -101,17 +102,35 @@ export function CoursesFilterableGrid({ courses }: Props) {
         </p>
       ) : (
         <FadeInStagger className="mt-12 grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((course) => (
+          {filtered.map((course) => {
+            const isRecommended = recommendedSlug === course.slug;
+            return (
             <FadeInItem key={course.slug} className="h-full">
               <Link
                 href={`/courses/${course.slug}`}
-                className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--color-border-subtle)] bg-white p-7 pl-8 transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--color-primary-green)] hover:shadow-[0_18px_40px_-24px_rgba(15,23,42,0.18)] dark:border-slate-800 dark:bg-[#0F172A] dark:hover:border-[var(--color-accent-green)] dark:hover:shadow-[0_18px_40px_-22px_rgba(16,185,129,0.35)]"
-                style={{ borderWidth: "0.5px" }}
+                aria-label={
+                  isRecommended
+                    ? `${course.title} — recommended for you`
+                    : course.title
+                }
+                className={[
+                  "group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white p-7 pl-8 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-24px_rgba(15,23,42,0.18)] dark:bg-[#0F172A] dark:hover:shadow-[0_18px_40px_-22px_rgba(16,185,129,0.35)]",
+                  isRecommended
+                    ? "border-[var(--color-primary-green)] dark:border-[var(--color-accent-green)]"
+                    : "border-[var(--color-border-subtle)] hover:border-[var(--color-primary-green)] dark:border-slate-800 dark:hover:border-[var(--color-accent-green)]",
+                ].join(" ")}
+                style={{ borderWidth: isRecommended ? "1px" : "0.5px" }}
               >
                 <span
                   aria-hidden="true"
                   className="absolute top-7 bottom-7 left-3 w-[3px] rounded-full bg-[var(--color-primary-green)]"
                 />
+                {isRecommended ? (
+                  <span className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-[var(--color-primary-green)] px-2.5 py-1 text-[10px] font-semibold tracking-[0.18em] uppercase text-white">
+                    <Sparkles size={11} strokeWidth={2.5} aria-hidden="true" />
+                    Recommended for you
+                  </span>
+                ) : null}
                 <span
                   className={`inline-flex w-fit items-center rounded-full px-3 py-1 text-[11px] font-semibold tracking-wide uppercase ${levelStyles[course.level]}`}
                 >
@@ -154,7 +173,8 @@ export function CoursesFilterableGrid({ courses }: Props) {
                 </div>
               </Link>
             </FadeInItem>
-          ))}
+            );
+          })}
         </FadeInStagger>
       )}
     </div>
