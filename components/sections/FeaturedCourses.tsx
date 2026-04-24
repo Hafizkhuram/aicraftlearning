@@ -12,7 +12,6 @@ type FeaturedCourse = {
   description: string;
   modules: number;
   lessons: number;
-  duration: string;
   priceUSD: number;
 };
 
@@ -26,7 +25,6 @@ const courses: FeaturedCourse[] = [
       "Build a working mental model of modern AI — what it is, what it isn't, and how to put it to work day one.",
     modules: 4,
     lessons: 12,
-    duration: "~6 hours",
     priceUSD: 29.99,
   },
   {
@@ -37,7 +35,6 @@ const courses: FeaturedCourse[] = [
       "Use Claude Code as a true engineering teammate. Workflows, prompting patterns, and the habits that compound.",
     modules: 5,
     lessons: 16,
-    duration: "~9 hours",
     priceUSD: 39.99,
   },
   {
@@ -48,7 +45,6 @@ const courses: FeaturedCourse[] = [
       "Design agentic systems with Make, Claude, and the right guardrails. Practical automations, not science projects.",
     modules: 6,
     lessons: 18,
-    duration: "~12 hours",
     priceUSD: 99,
   },
 ];
@@ -132,11 +128,6 @@ export function FeaturedCourses() {
                   <div className="inline-flex items-center gap-1">
                     <dt className="sr-only">Lessons</dt>
                     <dd>{course.lessons} lessons</dd>
-                  </div>
-                  <span aria-hidden="true">·</span>
-                  <div className="inline-flex items-center gap-1">
-                    <dt className="sr-only">Duration</dt>
-                    <dd>{course.duration}</dd>
                   </div>
                 </dl>
 

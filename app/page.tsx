@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
-import { TrustStrip } from "@/components/sections/TrustStrip";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FeaturedCourses } from "@/components/sections/FeaturedCourses";
 import { WhyAICraft } from "@/components/sections/WhyAICraft";
 import { AssessmentTeaser } from "@/components/sections/AssessmentTeaser";
-import { Testimonials } from "@/components/sections/Testimonials";
 import { FinalCTA } from "@/components/sections/FinalCTA";
+
+// Future: a "Trusted by" strip and a Testimonials band sit between hero/courses
+// and the final CTA respectively. Pulled from v4 polish — re-add once we have
+// real partner logos and real learner quotes (no invented brands or names).
 import { siteName, siteUrl } from "@/lib/constants";
 
 const homeTitle = `${siteName} — AI courses for tool-fatigued professionals`;
@@ -35,12 +37,10 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <TrustStrip />
       <HowItWorks />
       <FeaturedCourses />
       <WhyAICraft />
       <AssessmentTeaser />
-      <Testimonials />
       <FinalCTA />
     </>
   );

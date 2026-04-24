@@ -25,16 +25,20 @@ export function Hero() {
           </FadeIn>
 
           <FadeIn delay={0.08}>
-            <h1 className="mt-5 font-display text-[40px] font-bold leading-[1.05] tracking-tight text-[var(--color-text-light)] sm:text-[56px] lg:text-[72px]">
-              Learn to use AI like you mean it.
+            <h1 className="mt-5 font-display text-[36px] font-bold leading-[1.05] tracking-tight text-[var(--color-text-light)] sm:text-[52px] lg:text-[68px] xl:text-[72px]">
+              Stop drowning in AI tools.{" "}
+              <span className="block text-[var(--color-primary-green)]">
+                Start building AI that works.
+              </span>
             </h1>
           </FadeIn>
 
           <FadeIn delay={0.16}>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg lg:text-[19px]">
-              Tool-fatigued? Overwhelmed? We teach the craft of AI — not the
-              hype. Text-based courses, bespoke interactive lessons, real
-              skills.
+              Most professionals try AI, get generic outputs, and feel like
+              they&apos;re falling behind. We teach non-technical people how to
+              build AI systems that actually know their business. No coding. No
+              hype. Just craft.
             </p>
           </FadeIn>
 
@@ -62,7 +66,7 @@ export function Hero() {
 
           <FadeIn delay={0.32}>
             <p className="mt-7 text-xs text-slate-500">
-              No credit card required for the assessment. 5 minutes.
+              Takes 5 minutes. No signup required.
             </p>
           </FadeIn>
         </div>
