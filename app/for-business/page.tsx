@@ -385,12 +385,12 @@ export default function ForBusinessPage() {
       {/* Contact form */}
       <section
         id="contact"
-        className="scroll-mt-24 bg-[var(--color-surface)] py-20 sm:py-24 dark:bg-[#0b1322]"
+        className="scroll-mt-24 bg-white py-20 sm:py-24 dark:bg-[var(--color-dark-bg)]"
       >
         <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8">
           <FadeIn>
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-primary-green)] dark:text-[var(--color-accent-green)]">
-              Talk to us
+              Next steps
             </p>
             <h2 className="accent-bar mt-3 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-[var(--color-deep-green)] sm:text-4xl dark:text-[var(--color-text-light)]">
               Start a conversation
