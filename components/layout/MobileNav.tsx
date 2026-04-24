@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Menu, X } from "lucide-react";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { primaryNavLinks } from "@/lib/constants";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -71,20 +72,44 @@ export function MobileNav() {
               </span>
               <ThemeToggle />
             </div>
-            <Link
-              href="/sign-in"
-              onClick={() => setOpen(false)}
-              className="inline-flex items-center justify-center rounded-lg border border-[var(--color-border-subtle)] px-4 py-2.5 text-sm font-medium whitespace-nowrap text-[var(--color-text-dark)] transition-colors hover:border-primary-green hover:text-primary-green dark:border-slate-700 dark:text-[var(--color-text-light)] dark:hover:border-accent-green dark:hover:text-accent-green"
-            >
-              Sign in
-            </Link>
-            <Link
-              href="/sign-up"
-              onClick={() => setOpen(false)}
-              className="inline-flex items-center justify-center rounded-lg bg-primary-green px-4 py-2.5 text-sm font-medium whitespace-nowrap text-white transition-colors hover:bg-[var(--color-deep-green)]"
-            >
-              Sign up
-            </Link>
+            <SignedOut>
+              <Link
+                href="/sign-in"
+                onClick={() => setOpen(false)}
+                className="inline-flex items-center justify-center rounded-lg border border-[var(--color-border-subtle)] px-4 py-2.5 text-sm font-medium whitespace-nowrap text-[var(--color-text-dark)] transition-colors hover:border-primary-green hover:text-primary-green dark:border-slate-700 dark:text-[var(--color-text-light)] dark:hover:border-accent-green dark:hover:text-accent-green"
+              >
+                Sign in
+              </Link>
+              <Link
+                href="/sign-up"
+                onClick={() => setOpen(false)}
+                className="inline-flex items-center justify-center rounded-lg bg-primary-green px-4 py-2.5 text-sm font-medium whitespace-nowrap text-white transition-colors hover:bg-[var(--color-deep-green)]"
+              >
+                Sign up
+              </Link>
+            </SignedOut>
+            <SignedIn>
+              <Link
+                href="/learn"
+                onClick={() => setOpen(false)}
+                className="inline-flex items-center justify-center rounded-lg bg-primary-green px-4 py-2.5 text-sm font-medium whitespace-nowrap text-white transition-colors hover:bg-[var(--color-deep-green)]"
+              >
+                My Learning
+              </Link>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-[var(--color-text-muted)]">
+                  Account
+                </span>
+                <UserButton
+                  afterSignOutUrl="/"
+                  appearance={{
+                    elements: {
+                      avatarBox: "h-9 w-9",
+                    },
+                  }}
+                />
+              </div>
+            </SignedIn>
           </div>
         </Dialog.Content>
       </Dialog.Portal>

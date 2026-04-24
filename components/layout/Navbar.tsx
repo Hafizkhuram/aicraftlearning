@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { primaryNavLinks, siteName } from "@/lib/constants";
 import { ThemeToggle } from "./ThemeToggle";
 import { MobileNav } from "./MobileNav";
@@ -45,19 +46,36 @@ export function Navbar() {
         {/* Right — theme toggle + auth (desktop) */}
         <div className="hidden nav:flex items-center gap-3">
           <ThemeToggle />
-          {/* Phase 1 — plain placeholders. Phase 1.5 wires Clerk <SignedIn>/<SignedOut>. */}
-          <Link
-            href="/sign-in"
-            className="text-sm font-medium whitespace-nowrap text-[var(--color-text-dark)] transition-colors hover:text-primary-green dark:text-[var(--color-text-light)] dark:hover:text-[var(--color-accent-green)]"
-          >
-            Sign in
-          </Link>
-          <Link
-            href="/sign-up"
-            className="inline-flex items-center justify-center rounded-lg bg-primary-green px-4 py-2 text-sm font-medium whitespace-nowrap text-white transition-colors hover:bg-[var(--color-deep-green)]"
-          >
-            Sign up
-          </Link>
+          <SignedOut>
+            <Link
+              href="/sign-in"
+              className="text-sm font-medium whitespace-nowrap text-[var(--color-text-dark)] transition-colors hover:text-primary-green dark:text-[var(--color-text-light)] dark:hover:text-[var(--color-accent-green)]"
+            >
+              Sign in
+            </Link>
+            <Link
+              href="/sign-up"
+              className="inline-flex items-center justify-center rounded-lg bg-primary-green px-4 py-2 text-sm font-medium whitespace-nowrap text-white transition-colors hover:bg-[var(--color-deep-green)]"
+            >
+              Sign up
+            </Link>
+          </SignedOut>
+          <SignedIn>
+            <Link
+              href="/learn"
+              className="text-sm font-medium whitespace-nowrap text-[var(--color-text-dark)] transition-colors hover:text-primary-green dark:text-[var(--color-text-light)] dark:hover:text-[var(--color-accent-green)]"
+            >
+              My Learning
+            </Link>
+            <UserButton
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  avatarBox: "h-9 w-9",
+                },
+              }}
+            />
+          </SignedIn>
         </div>
 
         {/* Right — hamburger (mobile/tablet) */}

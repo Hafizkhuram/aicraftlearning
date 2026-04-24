@@ -1,0 +1,78 @@
+// Mirrors the existing Neon Postgres tables. Do not run any migration command
+// against this schema — the database is already populated. If drift appears,
+// use `prisma db pull --print` to inspect and reconcile with the user.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  enrolments         Enrolment[]
+  lessonProgress     LessonProgress[]
+  assessmentAttempts AssessmentAttempt[]
+  certificates       Certificate[]
+}
+
+model Enrolment {
+  id              String   @id @default(cuid())
+  userId          String
+  courseSlug      String
+  stripeSessionId String   @unique
+  createdAt       DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, courseSlug])
+}
+
+model LessonProgress {
+  id         String   @id @default(cuid())
+  userId     String
+  courseSlug String
+  lessonSlug String
+  completed  Boolean  @default(false)
+  lastReadAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, courseSlug, lessonSlug])
+}
+
+model AssessmentAttempt {
+  id             String   @id @default(cuid())
+  userId         String
+  courseSlug     String
+  score          Int
+  totalQuestions Int
+  passed         Boolean
+  completedAt    DateTime @default(now())
+  answers        Json?
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId, courseSlug])
+}
+
+model Certificate {
+  id             String   @id @default(cuid())
+  verificationId String   @unique
+  userId         String
+  courseSlug     String
+  courseTitle    String
+  learnerName    String
+  issuedAt       DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, courseSlug])
+}
