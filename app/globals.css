@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand colour tokens */
+  --color-primary-green: #10b981;
+  --color-deep-green: #065f46;
+  --color-light-mint: #d1fae5;
+  --color-accent-green: #34d399;
+  --color-dark-bg: #0f172a;
+  --color-surface: #f0fdf4;
+  --color-text-dark: #1e293b;
+  --color-text-light: #f8fafc;
+  --color-text-muted: #64748b;
+  --color-border-subtle: #e2e8f0;
+  --color-warning: #fbbf24;
+
+  /* Fonts wired from next/font/google in app/layout.tsx */
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-body: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+
+  /* Custom breakpoint for the navbar desktop/mobile switch */
+  --breakpoint-nav: 1024px;
+}
+
+/* Enable Tailwind's dark variant via a .dark class on <html> (next-themes) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: var(--color-text-light);
+  --foreground: var(--color-text-dark);
+}
+
+.dark {
+  --background: var(--color-dark-bg);
+  --foreground: var(--color-text-light);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Signature motif: thin vertical green accent bar used beside key headings. */
+.accent-bar {
+  position: relative;
+  padding-left: 0.875rem;
+}
+.accent-bar::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--color-primary-green);
+}
+
+/* Accessible focus ring default */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-primary-green);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
