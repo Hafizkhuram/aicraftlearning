@@ -304,40 +304,22 @@ export default function AboutPage() {
                   ))}
                 </div>
 
-                {/* TODO: replace # with Khuram's real LinkedIn and X/Twitter
-                    URLs before launch. Same pattern as the capabilities-brief
-                    PDF placeholder on /for-business. Brand glyphs ship as
-                    inline SVGs to match the footer — lucide-react dropped
-                    Linkedin and Twitter icons in newer versions. */}
-                <div className="mt-7 flex items-center gap-3">
+                <div className="mt-8 flex items-center justify-center gap-3 sm:justify-start">
                   <a
-                    href="#linkedin"
+                    href="https://www.linkedin.com/in/khuram-shahzad-203b088b/"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label="Khuram Shahzad on LinkedIn"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border-subtle)] text-[var(--color-deep-green)] transition-colors hover:border-[var(--color-primary-green)] hover:text-[var(--color-primary-green)] dark:border-slate-700 dark:text-[var(--color-accent-green)] dark:hover:border-[var(--color-accent-green)]"
+                    className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[var(--color-border-subtle)] text-[var(--color-deep-green)] transition-colors hover:border-[var(--color-primary-green)] hover:text-[var(--color-primary-green)] dark:border-slate-700 dark:text-[var(--color-accent-green)] dark:hover:border-[var(--color-accent-green)]"
                   >
                     <svg
                       viewBox="0 0 24 24"
-                      width="16"
-                      height="16"
+                      width="24"
+                      height="24"
                       fill="currentColor"
                       aria-hidden="true"
                     >
                       <path d="M4.98 3.5C4.98 4.881 3.87 6 2.5 6S.02 4.881.02 3.5C.02 2.12 1.13 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8.02h4.56V23H.22V8.02zM8.02 8.02h4.37v2.05h.06c.61-1.15 2.1-2.36 4.32-2.36 4.62 0 5.48 3.04 5.48 7v8.29h-4.56v-7.35c0-1.75-.03-4-2.44-4-2.44 0-2.81 1.9-2.81 3.87V23H8.02V8.02z" />
-                    </svg>
-                  </a>
-                  <a
-                    href="#twitter"
-                    aria-label="Khuram Shahzad on X / Twitter"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border-subtle)] text-[var(--color-deep-green)] transition-colors hover:border-[var(--color-primary-green)] hover:text-[var(--color-primary-green)] dark:border-slate-700 dark:text-[var(--color-accent-green)] dark:hover:border-[var(--color-accent-green)]"
-                  >
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="15"
-                      height="15"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path d="M18.244 2H21.5l-7.52 8.59L22.75 22h-6.828l-5.35-6.99L4.3 22H1.04l8.06-9.21L1.25 2h6.987l4.83 6.39L18.244 2zm-2.394 18h1.894L7.23 4H5.21l10.64 16z" />
                     </svg>
                   </a>
                 </div>

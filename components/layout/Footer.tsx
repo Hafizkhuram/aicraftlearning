@@ -102,20 +102,20 @@ export function Footer() {
               </svg>
             </a>
             <a
-              href={socialLinks.twitter}
-              aria-label="AICraft Learning on X / Twitter"
+              href={socialLinks.facebook}
+              aria-label="AICraft Learning on Facebook"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-700 text-slate-400 transition-colors hover:border-[var(--color-accent-green)] hover:text-[var(--color-accent-green)]"
             >
               <svg
                 viewBox="0 0 24 24"
-                width="15"
-                height="15"
+                width="16"
+                height="16"
                 fill="currentColor"
                 aria-hidden="true"
               >
-                <path d="M18.244 2H21.5l-7.52 8.59L22.75 22h-6.828l-5.35-6.99L4.3 22H1.04l8.06-9.21L1.25 2h6.987l4.83 6.39L18.244 2zm-2.394 18h1.894L7.23 4H5.21l10.64 16z" />
+                <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987H7.898V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.99 22 12z" />
               </svg>
             </a>
           </div>

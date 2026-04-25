@@ -9,8 +9,8 @@ export const supportEmail = "support@aicraftlearning.com";
 export const enterpriseEmail = "enterprise@aicraftlearning.com";
 
 export const socialLinks = {
-  linkedin: "https://www.linkedin.com/company/aicraftlearning",
-  twitter: "https://twitter.com/aicraftlearning",
+  linkedin: "https://www.linkedin.com/in/khuram-shahzad-203b088b/",
+  facebook: "https://www.facebook.com/profile.php?id=61573282276582",
 };
 
 export type NavLink = {
