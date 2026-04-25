@@ -1,0 +1,334 @@
+{
+  "_comment": "AIOS Mastery is a high-touch programme. No Stripe checkout, no /courses/[slug] page — content is for /aios-program only.",
+  "slug": "aios-mastery",
+  "title": "AIOS Mastery",
+  "subtitle": "The flagship programme — your business, run as an AI operating system.",
+  "hero": {
+    "eyebrow": "The flagship programme",
+    "headline": "Run your business with an AI operating system.",
+    "subhead": "Most people bolt AI onto existing workflows. AIOS teaches you to run your work through one. A complete, considered system across five layers — built inside your real business, not a sandbox.",
+    "stats": [
+      { "value": "3", "label": "Phases" },
+      { "value": "7", "label": "Modules" },
+      { "value": "1", "label": "Live AIOS Built" }
+    ],
+    "primaryCta": {
+      "label": "Book a discovery call",
+      "href": "/contact?subject=aios-discovery-call"
+    },
+    "secondaryCta": {
+      "label": "See the curriculum",
+      "href": "#curriculum"
+    }
+  },
+  "whatIsAios": "An AI operating system isn't software you install. It's the way you organise your business so AI is the default, not an add-on. Every recurring task has an owner — a workflow, an agent, or a person — and the system itself decides which. Your numbers are visible. Your decisions are surfaced. Your repetitive work runs on its own. The outputs that reach your customers are recognisably yours, but produced by a system you designed and maintain. AIOS Mastery teaches you to build this — across five layers, inside your actual business, with tools you'll keep using. No coding. Deep understanding required.",
+  "stack": {
+    "eyebrow": "The AIOS stack",
+    "heading": "Five layers, built in order.",
+    "footer": "Each layer earns its place by what it lets the layer above it do. You build them in sequence — that's why the programme works.",
+    "layers": [
+      {
+        "number": "05",
+        "name": "Output layer",
+        "tagline": "the system produces what only you could design",
+        "module": "Module 5",
+        "icon": "Send"
+      },
+      {
+        "number": "04",
+        "name": "Automation layer",
+        "tagline": "the system handles the repetitive work",
+        "module": "Module 4",
+        "icon": "Workflow"
+      },
+      {
+        "number": "03",
+        "name": "Intelligence layer",
+        "tagline": "the system surfaces what matters",
+        "module": "Module 3",
+        "icon": "Brain"
+      },
+      {
+        "number": "02",
+        "name": "Data layer",
+        "tagline": "the system sees your numbers",
+        "module": "Module 2",
+        "icon": "BarChart3"
+      },
+      {
+        "number": "01",
+        "name": "Context layer",
+        "tagline": "the system knows your business",
+        "module": "Module 1",
+        "icon": "BookOpen"
+      }
+    ]
+  },
+  "craftDifference": {
+    "eyebrow": "The craft difference",
+    "heading": "Why AIOS Mastery doesn't look like other AI courses.",
+    "pairs": [
+      { "left": "Generic AI courses", "right": "Your business, your AIOS" },
+      { "left": "Tool tours and feature lists", "right": "Layers built in your real workflow" },
+      { "left": "Hours of video to skim", "right": "Working sessions on real artefacts" },
+      { "left": "Generic prompt libraries", "right": "Prompts written for your data" },
+      { "left": "Cohort lectures, then nothing", "right": "Embedded weeks until it sticks" },
+      { "left": "Certificates of attendance", "right": "A live AIOS you keep running" },
+      { "left": "Sold once, used twice", "right": "A system that compounds over years" }
+    ]
+  },
+  "curriculum": {
+    "eyebrow": "Curriculum",
+    "heading": "Three phases. Seven modules. One live AIOS.",
+    "footer": "You finish with a complete, running AIOS — and the craft to keep evolving it.",
+    "phases": [
+      {
+        "name": "Phase 1",
+        "title": "Foundation",
+        "subtitle": "understand before you build",
+        "modules": [
+          {
+            "number": "Module 00",
+            "layer": "Foundation",
+            "title": "AI fluency for non-technical people",
+            "lessons": [
+              "How LLMs actually work",
+              "The evolution: tools → automations → agents → AIOS",
+              "What makes an AIOS different from a chatbot",
+              "Software composing — describing what you want vs coding it"
+            ],
+            "outcome": "You can explain what an AIOS is, why it matters, and what distinguishes mastery from dabbling."
+          },
+          {
+            "number": "Module 01",
+            "layer": "AIOS Layer 1",
+            "title": "Context layer — teaching the system your business",
+            "lessons": [
+              "Building your business context document — the system's source of truth",
+              "What context AI actually needs (and what it doesn't)",
+              "Storing and retrieving context — Notion, Claude Projects, Google Drive",
+              "Keeping context current as the business changes"
+            ],
+            "outcome": "Your AIOS has a single, curated source of truth about your business — the context every layer above will draw on."
+          }
+        ]
+      },
+      {
+        "name": "Phase 2",
+        "title": "Build",
+        "subtitle": "construct each layer with intent",
+        "modules": [
+          {
+            "number": "Module 02",
+            "layer": "AIOS Layer 2",
+            "title": "Data layer — connecting your business numbers",
+            "lessons": [
+              "Data source mapping",
+              "No-code data pipelines",
+              "Structuring data for AI consumption",
+              "The live data dashboard"
+            ],
+            "outcome": "Your AIOS can see your business — revenue, pipeline, customers, and key metrics, connected and readable."
+          },
+          {
+            "number": "Module 03",
+            "layer": "AIOS Layer 3",
+            "title": "Intelligence layer — surfacing what matters",
+            "lessons": [
+              "Defining your decision points",
+              "Building AI-powered summaries and briefings",
+              "Prompt engineering for analysis",
+              "Building your \"second brain\" interface (Relevance AI / Claude Projects)"
+            ],
+            "outcome": "A working intelligence layer: daily briefings, anomaly detection, and a queryable interface for your business knowledge."
+          },
+          {
+            "number": "Module 04",
+            "layer": "AIOS Layer 4",
+            "title": "Automation layer — handling the repetitive work",
+            "lessons": [
+              "The automation audit",
+              "Building AI workflows in n8n",
+              "Email, scheduling, and follow-up automation",
+              "Voice AI for intake and outreach",
+              "Designing automations that stay trustworthy"
+            ],
+            "outcome": "At least 3 working automations running in your actual business — not demos, live systems."
+          },
+          {
+            "number": "Module 05",
+            "layer": "AIOS Layer 5",
+            "title": "Output layer — building what matters",
+            "lessons": [
+              "Software composing in practice (Claude Code + Lovable, no code)",
+              "Your AIOS dashboard",
+              "Content and communications at scale",
+              "The craft of iteration"
+            ],
+            "outcome": "A personal AIOS dashboard and at least one custom internal tool — your AI outputs things only you could have designed."
+          }
+        ]
+      },
+      {
+        "name": "Phase 3",
+        "title": "Mastery",
+        "subtitle": "integrate, refine, own it",
+        "modules": [
+          {
+            "number": "Module 06",
+            "layer": "Capstone",
+            "isCapstone": true,
+            "title": "Integration and the craft of maintenance",
+            "lessons": [
+              "The AIOS assembly",
+              "Diagnosing and debugging",
+              "The 90-day maintenance rhythm",
+              "AIOS showcase and critique",
+              "What comes next — the frontier of AIOS (multi-agent, deeper memory, emerging tools)"
+            ],
+            "outcome": "A complete, running AIOS across all 5 layers — and the confidence and knowledge to keep improving it independently."
+          }
+        ]
+      }
+    ]
+  },
+  "tools": {
+    "eyebrow": "The tools you'll learn",
+    "heading": "What you actually use to build an AIOS.",
+    "footer": "AIOS isn't tied to any single vendor. These are the tools we teach with most often, because they actually work for non-technical operators in 2026.",
+    "chips": [
+      { "label": "n8n", "sublabel": "automation", "icon": "Workflow" },
+      { "label": "Claude / Claude Code", "sublabel": "intelligence + composing", "icon": "Sparkles" },
+      { "label": "Relevance AI", "sublabel": "agents + retrieval", "icon": "Brain" },
+      { "label": "Lovable", "sublabel": "no-code app building", "icon": "Layers" },
+      { "label": "Retell AI", "sublabel": "voice", "icon": "PhoneCall" },
+      { "label": "Notion / Google Drive", "sublabel": "context + storage", "icon": "FileText" }
+    ]
+  },
+  "whoItsFor": {
+    "eyebrow": "Fit",
+    "heading": "Honest qualification beats hype.",
+    "forYou": {
+      "title": "This is for you if…",
+      "items": [
+        "You run, lead, or own a business with real recurring work",
+        "You've outgrown one-off prompts and want a system",
+        "You can commit to building inside your real business, not a sandbox",
+        "You're comfortable not writing code, but willing to think hard",
+        "You've finished AI Fundamentals or Claude Code Mastery (or have equivalent fluency)"
+      ]
+    },
+    "notForYou": {
+      "title": "This isn't for you if…",
+      "items": [
+        "You're looking for a self-paced course you finish in a weekend",
+        "You want to learn to code (this isn't that programme)",
+        "Your business doesn't yet have recurring workflows worth automating",
+        "You're not ready for embedded weeks of building inside your real operations"
+      ]
+    }
+  },
+  "valueLadder": {
+    "eyebrow": "Where AIOS fits",
+    "heading": "The catalogue, in order.",
+    "footer": "AIOS Mastery isn't a substitute for the foundation courses — it builds on them. Most graduates have completed at least one of the three before applying.",
+    "steps": [
+      {
+        "title": "AI Fundamentals",
+        "tagline": "Build the mental model.",
+        "price": "$29.99",
+        "href": "/courses/ai-fundamentals"
+      },
+      {
+        "title": "Claude Code Mastery",
+        "tagline": "Use Claude Code as a teammate.",
+        "price": "$39.99",
+        "href": "/courses/claude-code-mastery"
+      },
+      {
+        "title": "AI Agents & Workflows",
+        "tagline": "Build systems that stay running.",
+        "price": "$99",
+        "href": "/courses/ai-agents-workflows"
+      },
+      {
+        "title": "AIOS Mastery",
+        "tagline": "Your business, run as an AI operating system.",
+        "price": "from $2,499",
+        "href": "/aios-program",
+        "isCapstone": true
+      }
+    ]
+  },
+  "pricing": {
+    "eyebrow": "Investment",
+    "heading": "AIOS Mastery — full programme.",
+    "fromPrice": "$2,499",
+    "displayString": "From $2,499",
+    "priceFootnote": "Final investment confirmed on the discovery call. Payment plans available.",
+    "included": [
+      "All 7 modules across 3 phases",
+      "1 live AIOS built inside your business",
+      "Working sessions on your real artefacts",
+      "Embedded weeks while the system takes hold",
+      "1:1 reviews and capstone critique",
+      "Lifetime access to material updates",
+      "Verifiable certificate of demonstrated capability",
+      "Alumni network and cohort references"
+    ],
+    "primaryCta": {
+      "label": "Book a discovery call",
+      "href": "/contact?subject=aios-discovery-call"
+    },
+    "secondaryText": "Or email enterprise@aicraftlearning.com directly — we reply within 24 hours.",
+    "secondaryEmail": "enterprise@aicraftlearning.com",
+    "reassuranceStrip": "14-day refund · Lifetime updates · Real support"
+  },
+  "faqs": [
+    {
+      "question": "Is this a self-paced course or a cohort programme?",
+      "answer": "It's a guided programme. Delivery rhythm is set per buyer on the discovery call — some run in 8 weeks, some over a quarter, depending on how much your team can absorb at once."
+    },
+    {
+      "question": "Do I need to have completed the other AICraft courses first?",
+      "answer": "Strongly recommended. AI Fundamentals or Claude Code Mastery (or equivalent fluency) gives you the vocabulary to move fast. We'll check fit on the discovery call."
+    },
+    {
+      "question": "How much time per week does it take?",
+      "answer": "Most buyers spend 4–6 hours per week on AIOS — half learning, half building. The embedded weeks are heavier."
+    },
+    {
+      "question": "What does \"embedded weeks\" actually mean?",
+      "answer": "Working sessions inside your real business: building automations on your real data, debugging in your real workflow, capstone presentation to your real team. Not demos."
+    },
+    {
+      "question": "What's the refund policy?",
+      "answer": "14 days, no questions asked. After that, we work with you to make it right rather than refund — this is a long programme and we want you to finish."
+    },
+    {
+      "question": "Are payment plans available?",
+      "answer": "Yes. Three- and six-month plans are standard; longer terms case-by-case. Discussed on the discovery call."
+    },
+    {
+      "question": "What happens after the programme ends?",
+      "answer": "Lifetime access to material updates, alumni network, and you keep your live AIOS. We also run quarterly alumni working sessions at no extra cost."
+    },
+    {
+      "question": "Will the certificate be recognised by employers?",
+      "answer": "It's a verifiable record of demonstrated capability — buyers can verify it directly at your certificate URL. Recognition varies by employer; the artefact (your live AIOS) is the harder evidence."
+    },
+    {
+      "question": "How is AIOS Mastery different from AI Agents & Workflows?",
+      "answer": "Agents & Workflows teaches you to build automations. AIOS teaches you to run your whole business through them. Different scope, different commitment, different artefact."
+    },
+    {
+      "question": "What if I'm not the right fit?",
+      "answer": "The discovery call works both ways. If we don't think AIOS is right for your business yet, we'll say so — and often point you to a better starting point in the catalogue."
+    }
+  ],
+  "metadata": {
+    "title": "AIOS Mastery — flagship programme",
+    "description": "Run your business with an AI operating system. A complete, considered programme — five layers, built inside your real business, with tools you'll keep using.",
+    "canonical": "/aios-program"
+  }
+}

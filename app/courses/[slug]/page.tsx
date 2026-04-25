@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { Check } from "lucide-react";
 import { EnrollButton } from "@/components/ui/EnrollButton";
@@ -38,6 +38,14 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
+  if (slug === "aios-mastery") {
+    return {
+      title: "AIOS Mastery — flagship programme",
+      description:
+        "Run your business with an AI operating system. A complete, considered programme — five layers, built inside your real business, with tools you'll keep using.",
+      alternates: { canonical: `${siteUrl}/aios-program` },
+    };
+  }
   const course = await getCourseManifest(slug);
   if (!course) {
     return {
@@ -90,6 +98,7 @@ async function getEnrolment(courseSlug: string): Promise<boolean> {
 
 export default async function CourseDetailPage({ params }: PageProps) {
   const { slug } = await params;
+  if (slug === "aios-mastery") redirect("/aios-program");
   const course = await getCourseManifest(slug);
   if (!course) notFound();
 
