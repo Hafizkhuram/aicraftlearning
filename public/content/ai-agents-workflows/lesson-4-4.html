@@ -615,7 +615,7 @@ The plan doesn't start on paper. It starts in your calendar.</div>
         <p class="finale-body" style="margin-bottom:16px"><strong>Two steps left.</strong> First, the Module 4 review — 5 questions to lock in what you learned about tool connections, multi-agent reality, maintenance cadences, and the 30-day plan. Then the final assessment: questions across all four modules, with 70% to earn your certificate.</p>
 
         <div class="finale-cta-row">
-          <a href="module-4-review-agents.html" class="finale-btn primary">Module 4 review — 5 questions →</a>
+          <a href="#" class="finale-btn primary" onclick="window.parent.postMessage({type:'aicraft:lesson-navigate-next'},window.location.origin);return false;">Module 4 review — 5 questions →</a>
           <a href="#nextstep" class="finale-btn secondary">See what's next</a>
         </div>
       </div>
@@ -902,6 +902,7 @@ The plan doesn't start on paper. It starts in your calendar.</div>
     }
 
     document.getElementById('quizResult').classList.add('show');
+    updateCompletion(score);
   }
 
   function resetQuiz() {
@@ -918,7 +919,19 @@ The plan doesn't start on paper. It starts in your calendar.</div>
   }
 
   const actionCheck = document.getElementById('actionDone');
-  actionCheck.addEventListener('change', () => { /* no-op, finale carries the weight */ });
+  function updateCompletion(quizScore) {
+    const quizDone = answered.every(Boolean);
+    const actionDone = actionCheck.checked;
+    const score = quizScore ?? answers.filter(a=>a===true).length;
+    if (quizDone && actionDone && score >= 2) {
+      window.parent.postMessage({
+        type: 'aicraft:lesson-complete',
+        score: score,
+        total: 3
+      }, window.location.origin);
+    }
+  }
+  actionCheck.addEventListener('change', () => updateCompletion());
 </script>
 
 </body>

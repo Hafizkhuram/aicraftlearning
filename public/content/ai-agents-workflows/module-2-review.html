@@ -763,6 +763,14 @@
 
     const score = answers.filter(a => a === true).length;
     const passed = score >= 3;
+    if (passed) {
+      window.parent.postMessage({
+        type: 'aicraft:lesson-complete',
+        score: score,
+        total: totalQuestions,
+        isReview: true
+      }, window.location.origin);
+    }
 
     document.getElementById('scoreNum').textContent = score;
     document.getElementById('reviewArea').style.display = 'none';
@@ -798,6 +806,7 @@
 
       cta.href = '#';
       cta.innerHTML = 'Start Module 3 — Build your first agent →';
+      cta.onclick = function () { window.parent.postMessage({ type: 'aicraft:lesson-navigate-next' }, window.location.origin); return false; };
       unlocked.style.display = 'flex';
     } else {
       card.classList.remove('pass');

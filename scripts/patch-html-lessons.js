@@ -67,25 +67,18 @@ function patchStandardLesson(content, filePath) {
   let result = content;
 
   // 1. Inject postMessage in the "lesson complete" branch.
-  // The exact pattern in every standard lesson:
-  //   if (quizDone && actionDone && (quizScore ?? answers.filter(a=>a===true).length) >= 2) {
-  //     statusEl.classList.add('complete');
-  //     statusEl.innerHTML = '<span>✓</span><span>Lesson complete</span>';
-  //   }
-  // Insert the postMessage line after the innerHTML line and before the closing brace.
-  const completeInnerLine =
-    "statusEl.innerHTML = '<span>✓</span><span>Lesson complete</span>';";
-  if (!result.includes(completeInnerLine)) {
+  // The pattern in every standard lesson varies slightly — the innerHTML may
+  // say 'Lesson complete' or 'Lesson complete · Module N done'. Match the
+  // common prefix and insert the postMessage line after it (preserving indent).
+  const completeInsertPattern =
+    /(^[ \t]*)statusEl\.innerHTML = '<span>✓<\/span><span>Lesson complete[^']*<\/span>';/m;
+  if (!completeInsertPattern.test(result)) {
     return {
       changed: false,
       reason: `lesson-complete branch not found (missing innerHTML 'Lesson complete' line)`,
       error: true,
     };
   }
-
-  // Match the line plus its leading indent so we can preserve the indent on the inserted block.
-  const completeInsertPattern =
-    /(^[ \t]*)statusEl\.innerHTML = '<span>✓<\/span><span>Lesson complete<\/span>';/m;
   result = result.replace(
     completeInsertPattern,
     (line, indent) =>
@@ -131,8 +124,9 @@ function patchNoOpFinaleLesson(content, filePath) {
 
   // 2. Inject an updateCompletion function and call it from the listener.
   // Insert before the actionCheck = ... line so the function is defined first.
+  // The optional preceding comment varies, so we match only on the const decl.
   const actionCheckDeclPattern =
-    /(\/\/ Action checkbox[^\n]*\n\s*const actionCheck = document\.getElementById\('actionDone'\);\s*\n)\s*actionCheck\.addEventListener\('change',\s*\(\)\s*=>\s*\{\s*\/\* no-op, finale carries the weight \*\/\s*\}\);/;
+    /(^[ \t]*const actionCheck = document\.getElementById\('actionDone'\);\s*\n)([ \t]*)actionCheck\.addEventListener\('change',\s*\(\)\s*=>\s*\{\s*\/\* no-op, finale carries the weight \*\/\s*\}\);/m;
 
   if (!actionCheckDeclPattern.test(result)) {
     return {
@@ -144,20 +138,20 @@ function patchNoOpFinaleLesson(content, filePath) {
 
   result = result.replace(
     actionCheckDeclPattern,
-    (_m, beforeListener) =>
-      `${beforeListener}  function updateCompletion(quizScore) {\n` +
-      `    const quizDone = answered.every(Boolean);\n` +
-      `    const actionDone = actionCheck.checked;\n` +
-      `    const score = quizScore ?? answers.filter(a=>a===true).length;\n` +
-      `    if (quizDone && actionDone && score >= 2) {\n` +
-      `      window.parent.postMessage({\n` +
-      `        type: 'aicraft:lesson-complete',\n` +
-      `        score: score,\n` +
-      `        total: 3\n` +
-      `      }, window.location.origin);\n` +
-      `    }\n` +
-      `  }\n` +
-      `  actionCheck.addEventListener('change', () => updateCompletion());`,
+    (_m, beforeListener, indent) =>
+      `${beforeListener}${indent}function updateCompletion(quizScore) {\n` +
+      `${indent}  const quizDone = answered.every(Boolean);\n` +
+      `${indent}  const actionDone = actionCheck.checked;\n` +
+      `${indent}  const score = quizScore ?? answers.filter(a=>a===true).length;\n` +
+      `${indent}  if (quizDone && actionDone && score >= 2) {\n` +
+      `${indent}    window.parent.postMessage({\n` +
+      `${indent}      type: 'aicraft:lesson-complete',\n` +
+      `${indent}      score: score,\n` +
+      `${indent}      total: 3\n` +
+      `${indent}    }, window.location.origin);\n` +
+      `${indent}  }\n` +
+      `${indent}}\n` +
+      `${indent}actionCheck.addEventListener('change', () => updateCompletion());`,
   );
 
   // 3. Call updateCompletion(score) at the end of showResults().
@@ -178,9 +172,10 @@ function patchNoOpFinaleLesson(content, filePath) {
   );
 
   // 4. Rewrite the finale primary button (the "next" link in these lessons).
-  // Pattern: <a href="module-N-review.html" class="finale-btn primary">
+  // Filename suffix varies across courses (module-4-review.html,
+  // module-4-review-claude-code.html, module-4-review-agents.html).
   const finaleBtnPattern =
-    /<a\s+href="module-\d+-review\.html"\s+class="finale-btn primary">/;
+    /<a\s+href="[^"]+\.html"\s+class="finale-btn primary">/;
   if (!finaleBtnPattern.test(result)) {
     return {
       changed: false,
@@ -197,9 +192,21 @@ function patchNoOpFinaleLesson(content, filePath) {
 }
 
 // -------------------- Patch: module review --------------------
-// 1. Inject postMessage right after `const passed = ... PASS_THRESHOLD;` line.
-// 2. Rewrite the "Start Module N" / "Start the final assessment" anchor in
-//    actions.innerHTML to emit aicraft:lesson-navigate-next.
+// Two shapes exist in the wild:
+//
+//   Shape A (ai-fundamentals, claude-code-mastery):
+//     const passed = (score / totalQuestions) >= PASS_THRESHOLD;
+//     ...
+//     actions.innerHTML = `<a href="lesson-X.html" class="btn btn-primary btn-big">...</a>...`;
+//
+//   Shape B (ai-agents-workflows):
+//     const passed = score >= 3;
+//     ...
+//     cta.href = '#';
+//     cta.innerHTML = 'Start Module N — ... →';
+//
+// In both cases we inject the same postMessage when passed is true. The
+// continue-link rewrite differs per shape.
 function patchModuleReview(content) {
   if (content.includes(PATCHED_MARKER)) {
     return { changed: false, reason: "already patched" };
@@ -207,46 +214,66 @@ function patchModuleReview(content) {
 
   let result = content;
 
-  const passedLinePattern =
-    /(const passed = \(score \/ totalQuestions\) >= PASS_THRESHOLD;)/;
-  if (!passedLinePattern.test(result)) {
+  // Inject postMessage block after whichever passed-assignment exists.
+  const passedThresholdPattern =
+    /(^[ \t]*)(const passed = \(score \/ totalQuestions\) >= PASS_THRESHOLD;)/m;
+  const passedScorePattern = /(^[ \t]*)(const passed = score >= \d+;)/m;
+
+  let passedMatcher = null;
+  if (passedThresholdPattern.test(result)) passedMatcher = passedThresholdPattern;
+  else if (passedScorePattern.test(result)) passedMatcher = passedScorePattern;
+
+  if (!passedMatcher) {
     return {
       changed: false,
-      reason: "PASS_THRESHOLD assignment not found",
+      reason: "passed-assignment not found (neither PASS_THRESHOLD nor score>=N shape)",
       error: true,
     };
   }
 
   result = result.replace(
-    passedLinePattern,
-    (_m, line) =>
-      `${line}\n    if (passed) {\n` +
-      `      window.parent.postMessage({\n` +
-      `        type: 'aicraft:lesson-complete',\n` +
-      `        score: score,\n` +
-      `        total: totalQuestions,\n` +
-      `        isReview: true\n` +
-      `      }, window.location.origin);\n` +
-      `    }`,
+    passedMatcher,
+    (_m, indent, line) =>
+      `${indent}${line}\n` +
+      `${indent}if (passed) {\n` +
+      `${indent}  window.parent.postMessage({\n` +
+      `${indent}    type: 'aicraft:lesson-complete',\n` +
+      `${indent}    score: score,\n` +
+      `${indent}    total: totalQuestions,\n` +
+      `${indent}    isReview: true\n` +
+      `${indent}  }, window.location.origin);\n` +
+      `${indent}}`,
   );
 
-  // Rewrite the primary anchor inside actions.innerHTML.
-  // Pattern: <a href="(lesson-N-N|final-assessment).html" class="btn btn-primary btn-big">
-  const primaryAnchorPattern =
-    /<a\s+href="(?:lesson-\d+-\d+|final-assessment)\.html"\s+class="btn btn-primary btn-big">/;
-  if (!primaryAnchorPattern.test(result)) {
-    return {
-      changed: false,
-      reason: "primary continue anchor not found in actions.innerHTML",
-      error: true,
-    };
+  // Continue-link rewrite — try Shape A first (templated anchor inside
+  // actions.innerHTML), fall back to Shape B (cta DOM property assignment).
+  const shapeAAnchor =
+    /<a\s+href="[^"]+\.html"\s+class="btn btn-primary btn-big">/;
+  const shapeBCtaInnerHTML =
+    /(^[ \t]*)(cta\.innerHTML = 'Start [^']*';)/gm;
+
+  let kindLabel = "module-review";
+  if (shapeAAnchor.test(result)) {
+    result = result.replace(
+      shapeAAnchor,
+      `<a href="#" class="btn btn-primary btn-big" onclick="window.parent.postMessage({type:'aicraft:lesson-navigate-next'},window.location.origin);return false;">`,
+    );
+  } else if (shapeBCtaInnerHTML.test(result)) {
+    shapeBCtaInnerHTML.lastIndex = 0;
+    result = result.replace(
+      shapeBCtaInnerHTML,
+      (_m, indent, line) =>
+        `${indent}${line}\n${indent}cta.onclick = function () { window.parent.postMessage({ type: 'aicraft:lesson-navigate-next' }, window.location.origin); return false; };`,
+    );
+  } else {
+    // Some module reviews intentionally have no forward CTA in the pass
+    // branch (e.g. claude-code-mastery/module-4-review shows a "course done"
+    // celebration instead). The completion postMessage still fires above;
+    // the parent's sidebar surfaces the next step.
+    kindLabel = "module-review (no continue-link, parent sidebar handles next)";
   }
-  result = result.replace(
-    primaryAnchorPattern,
-    `<a href="#" class="btn btn-primary btn-big" onclick="window.parent.postMessage({type:'aicraft:lesson-navigate-next'},window.location.origin);return false;">`,
-  );
 
-  return { changed: true, content: result, kind: "module-review" };
+  return { changed: true, content: result, kind: kindLabel };
 }
 
 // -------------------- Patch: final assessment --------------------
@@ -260,7 +287,7 @@ function patchFinalAssessment(content) {
   let result = content;
 
   const passedLinePattern =
-    /(const passed = \(score \/ totalQuestions\) >= PASS_THRESHOLD;)/;
+    /(^[ \t]*)(const passed = \(score \/ totalQuestions\) >= PASS_THRESHOLD;)/m;
   if (!passedLinePattern.test(result)) {
     return {
       changed: false,
@@ -271,14 +298,15 @@ function patchFinalAssessment(content) {
 
   result = result.replace(
     passedLinePattern,
-    (_m, line) =>
-      `${line}\n    window.parent.postMessage({\n` +
-      `      type: 'aicraft:assessment-complete',\n` +
-      `      score: score,\n` +
-      `      total: totalQuestions,\n` +
-      `      passed: passed,\n` +
-      `      answers: answers\n` +
-      `    }, window.location.origin);`,
+    (_m, indent, line) =>
+      `${indent}${line}\n` +
+      `${indent}window.parent.postMessage({\n` +
+      `${indent}  type: 'aicraft:assessment-complete',\n` +
+      `${indent}  score: score,\n` +
+      `${indent}  total: totalQuestions,\n` +
+      `${indent}  passed: passed,\n` +
+      `${indent}  answers: answers\n` +
+      `${indent}}, window.location.origin);`,
   );
 
   // Rewrite the certificate anchor inside the dynamic actions.innerHTML.
@@ -311,8 +339,15 @@ function patchCertificate(content) {
   let result = content;
 
   // 1. Remove the privacy note paragraph.
+  // Original structure (just the note block):
+  //   <div class="name-note">
+  //     <span>...</span>
+  //     <div>...<strong>A note on privacy.</strong>...</div>
+  //   </div>
+  // Replace it (and the surrounding whitespace) with nothing — the
+  // surrounding name-card and name-screen close tags stay intact.
   const privacyPattern =
-    /\s*<div class="name-note">[\s\S]*?<strong>A note on privacy\.<\/strong>[\s\S]*?<\/div>\s*<\/div>\s*<\/div>/;
+    /\s*<div class="name-note">[\s\S]*?<strong>A note on privacy\.<\/strong>[\s\S]*?<\/div>\s*<\/div>/;
   if (!privacyPattern.test(result)) {
     return {
       changed: false,
@@ -320,11 +355,7 @@ function patchCertificate(content) {
       error: true,
     };
   }
-  // Preserve the closing </div></div> for the name-card and name-screen wrappers.
-  result = result.replace(
-    privacyPattern,
-    `\n  </div>\n  </div>`,
-  );
+  result = result.replace(privacyPattern, "");
 
   // 2. Remove the "Edit name" button (calls backToName, no longer present).
   const editNameBtnPattern =

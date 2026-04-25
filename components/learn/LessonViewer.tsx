@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type LessonViewerProps = {
   courseSlug: string;
@@ -17,19 +18,67 @@ type LessonViewerProps = {
     slug: string;
     title: string;
   } | null;
+  // Where to send the user when the lesson emits navigate-next.
+  // The server resolves "next incomplete lesson" — if everything is
+  // complete this falls back to the assessment page or the course home.
+  navigateNextHref: string;
   sidebar: ReactNode;
 };
 
 export function LessonViewer({
+  courseSlug,
   currentLesson,
   nextLesson,
+  navigateNextHref,
   sidebar,
 }: LessonViewerProps) {
+  const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     setDrawerOpen(false);
   }, [currentLesson.slug]);
+
+  useEffect(() => {
+    function onMessage(event: MessageEvent) {
+      if (event.origin !== window.location.origin) return;
+      const data = event.data as
+        | {
+            type?: string;
+            score?: number;
+            total?: number;
+          }
+        | null
+        | undefined;
+      if (!data || typeof data !== "object" || !data.type) return;
+
+      if (data.type === "aicraft:lesson-complete") {
+        const score = typeof data.score === "number" ? data.score : null;
+        const total = typeof data.total === "number" ? data.total : null;
+        fetch("/api/progress/complete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            courseSlug,
+            lessonSlug: currentLesson.slug,
+            score,
+            total,
+          }),
+        })
+          .then(() => router.refresh())
+          .catch(() => {
+            // Surface nothing to the iframe — the user can re-trigger by
+            // toggling the action checkbox or refreshing.
+          });
+      }
+
+      if (data.type === "aicraft:lesson-navigate-next") {
+        router.push(navigateNextHref);
+      }
+    }
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [courseSlug, currentLesson.slug, navigateNextHref, router]);
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] w-full bg-[var(--color-surface)] dark:bg-[var(--color-dark-bg)]">

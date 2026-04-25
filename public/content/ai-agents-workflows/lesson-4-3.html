@@ -500,7 +500,7 @@
         <span>◯</span>
         <span>Lesson in progress</span>
       </div>
-      <a href="#" class="next-lesson">
+      <a href="#" class="next-lesson" onclick="window.parent.postMessage({type:'aicraft:lesson-navigate-next'},window.location.origin);return false;">
         <span class="next-lesson-label">Next · Lesson 4.4</span>
         <span class="next-lesson-title">Your agent portfolio — the 30/60/90 plan →</span>
       </a>
@@ -770,6 +770,11 @@
     if (quizDone && actionDone && (quizScore ?? answers.filter(a=>a===true).length) >= 1) {
       statusEl.classList.add('complete');
       statusEl.innerHTML = '<span>✓</span><span>Lesson complete</span>';
+      window.parent.postMessage({
+        type: 'aicraft:lesson-complete',
+        score: quizScore ?? answers.filter(a=>a===true).length,
+        total: 3
+      }, window.location.origin);
     } else if (quizDone) {
       statusEl.innerHTML = '<span>◐</span><span>Quiz done — finish your action</span>';
     } else if (actionDone) {

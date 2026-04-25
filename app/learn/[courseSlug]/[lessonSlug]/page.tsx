@@ -91,13 +91,28 @@ export default async function LessonPage({ params }: PageProps) {
   ]);
 
   const all = flatLessons(manifest);
-  const next = all[found.flatIndex + 1] ?? null;
+  const sequenceNext = all[found.flatIndex + 1] ?? null;
 
   const assessmentState: "locked" | "available" | "passed" = certificate
     ? "passed"
     : progress.allLessonsComplete
       ? "available"
       : "locked";
+
+  // Resolve where to send the user when the iframe emits navigate-next.
+  // Prefer the next-incomplete lesson from the manifest. If everything is
+  // complete and the assessment is unlocked, go straight to the assessment.
+  // Otherwise fall back to the course home.
+  let navigateNextHref = `/learn/${courseSlug}`;
+  if (progress.nextIncompleteLesson) {
+    navigateNextHref = `/learn/${courseSlug}/${progress.nextIncompleteLesson.slug}`;
+  } else if (sequenceNext) {
+    navigateNextHref = `/learn/${courseSlug}/${sequenceNext.slug}`;
+  } else if (assessmentState === "available") {
+    navigateNextHref = `/learn/${courseSlug}/assessment`;
+  } else if (assessmentState === "passed") {
+    navigateNextHref = `/learn/${courseSlug}/certificate`;
+  }
 
   return (
     <LessonViewer
@@ -111,10 +126,11 @@ export default async function LessonPage({ params }: PageProps) {
         indexInModule: found.indexInModule || 1,
       }}
       nextLesson={
-        next
-          ? { slug: next.slug, title: next.title }
+        sequenceNext
+          ? { slug: sequenceNext.slug, title: sequenceNext.title }
           : null
       }
+      navigateNextHref={navigateNextHref}
       sidebar={
         <LessonSidebar
           manifest={manifest}

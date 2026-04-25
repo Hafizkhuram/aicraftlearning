@@ -1196,6 +1196,13 @@
     const score = answers.filter(a => a === true).length;
     const pct = Math.round((score / totalQuestions) * 100);
     const passed = (score / totalQuestions) >= PASS_THRESHOLD;
+    window.parent.postMessage({
+      type: 'aicraft:assessment-complete',
+      score: score,
+      total: totalQuestions,
+      passed: passed,
+      answers: answers
+    }, window.location.origin);
 
     document.getElementById('assessScreen').style.display = 'none';
     document.getElementById('resultScreen').classList.add('show');
@@ -1236,7 +1243,7 @@
     const actions = document.getElementById('resultActions');
     if (passed) {
       actions.innerHTML = `
-        <a href="certificate.html" class="btn btn-primary btn-big">View your certificate →</a>
+        <a href="#" class="btn btn-primary btn-big" onclick="window.parent.postMessage({type:'aicraft:assessment-navigate-certificate'},window.location.origin);return false;">View your certificate →</a>
         <button class="btn btn-ghost" onclick="retakeNow()">↻ Retake for a higher score</button>
       `;
       lastFailTimestamp = null; // clear any cooldown

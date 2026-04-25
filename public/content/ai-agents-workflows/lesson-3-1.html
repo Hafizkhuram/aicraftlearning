@@ -666,7 +666,7 @@ Examples to get you started:
         <span>◯</span>
         <span>Lesson in progress</span>
       </div>
-      <a href="#" class="next-lesson">
+      <a href="#" class="next-lesson" onclick="window.parent.postMessage({type:'aicraft:lesson-navigate-next'},window.location.origin);return false;">
         <span class="next-lesson-label">Next · Lesson 3.2</span>
         <span class="next-lesson-title">Build #2 — Research agent →</span>
       </a>
@@ -934,6 +934,11 @@ Examples to get you started:
     if (quizDone && actionDone && (quizScore ?? answers.filter(a=>a===true).length) >= 1) {
       statusEl.classList.add('complete');
       statusEl.innerHTML = '<span>✓</span><span>Lesson complete</span>';
+      window.parent.postMessage({
+        type: 'aicraft:lesson-complete',
+        score: quizScore ?? answers.filter(a=>a===true).length,
+        total: 3
+      }, window.location.origin);
     } else if (quizDone) {
       statusEl.innerHTML = '<span>◐</span><span>Quiz done — finish your action</span>';
     } else if (actionDone) {

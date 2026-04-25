@@ -686,13 +686,6 @@
         <a href="final-assessment.html" class="btn btn-ghost">← Back to assessment</a>
       </div>
     </div>
-
-    <div class="name-note">
-      <span class="name-note-icon">✓</span>
-      <div>
-        <strong>A note on privacy.</strong> The name you enter stays in your browser — we don't store it anywhere. The verification ID on your certificate is generated locally from your name and today's date, so the certificate can be independently referenced if ever needed.
-      </div>
-    </div>
   </div>
 
   <!-- ================= SCREEN 2: CERTIFICATE ================= -->
@@ -704,7 +697,6 @@
         <span>ID: <span id="headerId" style="font-family:monospace">—</span></span>
       </div>
       <div class="cert-header-actions">
-        <button class="btn btn-ghost" onclick="backToName()">✎ Edit name</button>
         <button class="btn btn-primary" onclick="window.print()">⬇ Download / Print</button>
       </div>
     </div>
@@ -876,89 +868,52 @@ No jargon, no hype — just the fundamentals a working professional actually nee
 </main>
 
 <script>
-  // ------------------ NAME ENTRY ------------------
-  const nameInput = document.getElementById('learnerName');
-  const generateBtn = document.getElementById('generateBtn');
+  // from-query-params-only
+  // ============ READ FROM QUERY PARAMS ============
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('name');
+    const dateRaw = params.get('date');
+    const id = params.get('id');
 
-  nameInput.addEventListener('input', () => {
-    const value = nameInput.value.trim();
-    generateBtn.disabled = value.length < 2;
-  });
+    const nameScreen = document.getElementById('nameScreen');
+    const certScreen = document.getElementById('certScreen');
 
-  nameInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !generateBtn.disabled) {
-      e.preventDefault();
-      generateCertificate();
+    if (!name || !dateRaw || !id) {
+      if (nameScreen) {
+        nameScreen.innerHTML =
+          '<div class="name-meta"><span>AICraft Learning certificate</span></div>' +
+          '<h1 class="name-title">This certificate page must be opened from the AICraft learning area.</h1>' +
+          '<p class="name-lede">Sign in and open your certificate from the course home page to view it.</p>';
+      }
+      return;
     }
-  });
 
-  // Give the input focus on load
-  window.addEventListener('load', () => {
-    setTimeout(() => nameInput.focus(), 300);
-  });
-
-  // ------------------ GENERATE CERTIFICATE ------------------
-  function generateCertificate() {
-    const rawName = nameInput.value.trim();
-    if (rawName.length < 2) return;
-
-    // Gentle normalisation — preserve case the user typed, collapse whitespace
-    const name = rawName.replace(/\s+/g, ' ');
-
-    // Format today's date — full month, British style
-    const now = new Date();
-    const monthNames = ['January','February','March','April','May','June',
-                        'July','August','September','October','November','December'];
-    const dayStr = now.getDate();
-    const monthStr = monthNames[now.getMonth()];
-    const yearStr = now.getFullYear();
-    const fullDate = `${dayStr} ${monthStr} ${yearStr}`;
-    const shortDate = `${dayStr.toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}/${yearStr}`;
-
-    // Verification ID: deterministic hash of name + date
-    // Uses a simple FNV-like hash so the same name on the same day always gives the same ID
-    const idSource = name.toLowerCase() + '|' + shortDate;
-    const verifyId = 'AICL-FUND-' + hashToId(idSource);
-
-    // Fill the certificate
-    document.getElementById('certName').textContent = name;
-    document.getElementById('certDate').textContent = fullDate;
-    document.getElementById('certId').textContent = verifyId;
-    document.getElementById('headerDate').textContent = fullDate;
-    document.getElementById('headerId').textContent = verifyId;
-
-    // Update share template to include the specific year
-    const shareEl = document.getElementById('shareTemplate');
-    shareEl.textContent = shareEl.textContent.trim();
-
-    // Transition to cert screen
-    document.getElementById('nameScreen').style.display = 'none';
-    document.getElementById('certScreen').classList.add('show');
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
-
-  // ------------------ HASH ID GENERATOR ------------------
-  // Stable, deterministic, short — suitable for a visible verification string
-  function hashToId(s) {
-    // FNV-1a 32-bit
-    let h = 0x811c9dc5;
-    for (let i = 0; i < s.length; i++) {
-      h ^= s.charCodeAt(i);
-      h = Math.imul(h, 0x01000193) >>> 0;
+    let prettyDate = dateRaw;
+    try {
+      const d = new Date(dateRaw);
+      if (!isNaN(d.getTime())) {
+        const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        prettyDate = d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+      }
+    } catch (e) {
+      // keep raw value
     }
-    // Render as uppercase base36, pad to 8 chars
-    const base = h.toString(36).toUpperCase().padStart(8, '0');
-    // Split with dash for readability: AAAA-BBBB
-    return base.slice(0,4) + '-' + base.slice(4,8);
-  }
 
-  // ------------------ BACK TO NAME ------------------
-  function backToName() {
-    document.getElementById('certScreen').classList.remove('show');
-    document.getElementById('nameScreen').style.display = 'block';
-    setTimeout(() => nameInput.focus(), 100);
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
+    const setText = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    };
+
+    setText('certName', name);
+    setText('certDate', prettyDate);
+    setText('certId', id);
+    setText('headerDate', prettyDate);
+    setText('headerId', id);
+
+    if (nameScreen) nameScreen.style.display = 'none';
+    if (certScreen) certScreen.classList.add('show');
+  })();
 
   // ------------------ COPY SHARE TEXT ------------------
   function copyShareText() {
@@ -974,7 +929,6 @@ No jargon, no hype — just the fundamentals a working professional actually nee
         btnText.textContent = 'Copy to clipboard';
       }, 2200);
     }).catch(() => {
-      // Fallback for environments without clipboard API
       btnText.textContent = 'Press Ctrl+C / ⌘+C';
       setTimeout(() => { btnText.textContent = 'Copy to clipboard'; }, 2200);
     });

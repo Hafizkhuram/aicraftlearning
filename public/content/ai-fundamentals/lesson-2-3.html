@@ -789,7 +789,7 @@ Write a 50-word product description for the Highbury weekender: full-grain Engli
         <span>◯</span>
         <span>Lesson in progress</span>
       </div>
-      <a href="module-2-review.html" class="next-lesson">
+      <a href="#" class="next-lesson" onclick="window.parent.postMessage({type:'aicraft:lesson-navigate-next'},window.location.origin);return false;">
         <span class="next-lesson-label">Module 2 review</span>
         <span class="next-lesson-title">5 questions to unlock Module 3 →</span>
       </a>
@@ -1091,6 +1091,11 @@ Write a 50-word product description for the Highbury weekender: full-grain Engli
     if (quizDone && actionDone && score >= 2) {
       statusEl.classList.add('complete');
       statusEl.innerHTML = '<span>✓</span><span>Lesson complete · Module 2 done</span>';
+      window.parent.postMessage({
+        type: 'aicraft:lesson-complete',
+        score: quizScore ?? answers.filter(a=>a===true).length,
+        total: 3
+      }, window.location.origin);
     } else if (quizDone) {
       statusEl.innerHTML = '<span>◐</span><span>Quiz done — finish your action</span>';
     } else if (actionDone) {
