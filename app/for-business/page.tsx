@@ -427,7 +427,7 @@ export default function ForBusinessPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-white py-20 sm:py-24 dark:bg-[var(--color-dark-bg)]">
+      <section className="bg-[var(--color-surface)] py-20 sm:py-24 dark:bg-[#0b1322]">
         <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 lg:px-8">
           <FadeIn>
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-primary-green)] dark:text-[var(--color-accent-green)]">
