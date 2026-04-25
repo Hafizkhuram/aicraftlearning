@@ -24,7 +24,7 @@
   "whatIsAios": "An AI operating system isn't software you install. It's the way you organise your business so AI is the default, not an add-on. Every recurring task has an owner — a workflow, an agent, or a person — and the system itself decides which. Your numbers are visible. Your decisions are surfaced. Your repetitive work runs on its own. The outputs that reach your customers are recognisably yours, but produced by a system you designed and maintain. AIOS Mastery teaches you to build this — across five layers, inside your actual business, with tools you'll keep using. No coding. Deep understanding required.",
   "stack": {
     "eyebrow": "The AIOS stack",
-    "heading": "Five layers, built in order.",
+    "heading": "Five layers, built from the ground up.",
     "footer": "Each layer earns its place by what it lets the layer above it do. You build them in sequence — that's why the programme works.",
     "layers": [
       {
@@ -236,25 +236,21 @@
       {
         "title": "AI Fundamentals",
         "tagline": "Build the mental model.",
-        "price": "$29.99",
         "href": "/courses/ai-fundamentals"
       },
       {
         "title": "Claude Code Mastery",
         "tagline": "Use Claude Code as a teammate.",
-        "price": "$39.99",
         "href": "/courses/claude-code-mastery"
       },
       {
         "title": "AI Agents & Workflows",
         "tagline": "Build systems that stay running.",
-        "price": "$99",
         "href": "/courses/ai-agents-workflows"
       },
       {
         "title": "AIOS Mastery",
         "tagline": "Your business, run as an AI operating system.",
-        "price": "from $2,499",
         "href": "/aios-program",
         "isCapstone": true
       }

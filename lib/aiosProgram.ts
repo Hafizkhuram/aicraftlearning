@@ -49,7 +49,6 @@ export type AiosToolChip = {
 export type AiosLadderStep = {
   title: string;
   tagline: string;
-  price: string;
   href: string;
   isCapstone?: boolean;
 };

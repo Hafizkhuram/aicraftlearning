@@ -30,7 +30,10 @@ export function FaqAccordion({ items }: Props) {
               />
             </Accordion.Trigger>
           </Accordion.Header>
-          <Accordion.Content>
+          <Accordion.Content
+            forceMount
+            className="data-[state=closed]:hidden"
+          >
             <p
               className="border-t border-[var(--color-border-subtle)] px-5 py-4 text-[15px] leading-relaxed text-[var(--color-text-muted)] dark:border-slate-800 dark:text-slate-300"
               style={{ borderTopWidth: "0.5px" }}

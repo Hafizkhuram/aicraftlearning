@@ -98,19 +98,24 @@ export default async function AiosProgramPage() {
           </FadeIn>
 
           <FadeIn delay={0.24}>
-            <dl className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3">
+            <dl className="mt-10 flex flex-wrap items-baseline gap-x-3 gap-y-2 sm:gap-x-5">
               {hero.stats.map((stat, idx) => (
-                <div key={stat.label} className="flex items-center gap-3">
-                  <div>
-                    <dt className="text-[11px] font-medium tracking-[0.2em] uppercase text-slate-400">
-                      {stat.label}
-                    </dt>
-                    <dd className="font-display text-2xl font-semibold text-[var(--color-accent-green)] sm:text-3xl">
+                <div key={stat.label} className="flex items-baseline gap-x-3 sm:gap-x-5">
+                  <div className="inline-flex items-baseline gap-2">
+                    <dd className="font-display text-3xl font-semibold leading-none text-[var(--color-accent-green)] sm:text-4xl">
                       {stat.value}
                     </dd>
+                    <dt className="text-[11px] font-semibold tracking-[0.22em] uppercase text-slate-300">
+                      {stat.label}
+                    </dt>
                   </div>
                   {idx < hero.stats.length - 1 ? (
-                    <span aria-hidden="true" className="hidden h-10 w-px bg-slate-700 sm:block" />
+                    <span
+                      aria-hidden="true"
+                      className="text-slate-600"
+                    >
+                      ·
+                    </span>
                   ) : null}
                 </div>
               ))}
@@ -183,22 +188,30 @@ export default async function AiosProgramPage() {
           >
             {stack.layers.map((layer, idx) => {
               const Icon = pickIcon(layer.icon);
-              const isLast = idx === stack.layers.length - 1;
+              const total = stack.layers.length;
+              const isLast = idx === total - 1;
+              // Lower layers (closer to foundation) carry more visual weight.
+              // depth=0 is top (Output, lightest); depth=total-1 is bottom (Context, heaviest).
+              const depth = idx;
+              const accentOpacity = 0.35 + (depth / (total - 1)) * 0.6;
               return (
                 <FadeInItem key={layer.number}>
                   <div
-                    className={`group relative flex flex-col gap-4 px-6 py-7 sm:flex-row sm:items-center sm:gap-6 sm:px-8 ${
-                      isLast
-                        ? ""
-                        : "border-b border-[var(--color-border-subtle)] dark:border-slate-800"
-                    }`}
+                    className="group relative flex flex-col gap-4 px-6 py-7 sm:flex-row sm:items-center sm:gap-6 sm:px-8"
                     style={
-                      isLast ? undefined : { borderBottomWidth: "0.5px" }
+                      isLast
+                        ? undefined
+                        : {
+                            borderBottomWidth: "0.5px",
+                            borderBottomStyle: "solid",
+                            borderBottomColor: "var(--color-border-subtle)",
+                          }
                     }
                   >
                     <span
                       aria-hidden="true"
-                      className="absolute top-7 bottom-7 left-0 w-[3px] rounded-r-full bg-[var(--color-primary-green)] opacity-70"
+                      className="absolute top-0 bottom-0 left-0 w-[3px] bg-[var(--color-primary-green)]"
+                      style={{ opacity: accentOpacity }}
                     />
 
                     <div className="flex items-center gap-5 sm:w-auto">
@@ -227,6 +240,18 @@ export default async function AiosProgramPage() {
               );
             })}
           </FadeInStagger>
+
+          {/* Ground-line — visual cue that Context is the load-bearing foundation */}
+          <div
+            aria-hidden="true"
+            className="mt-3 flex items-center gap-3 px-1 sm:px-2"
+          >
+            <span className="h-px flex-1 bg-[var(--color-primary-green)]/45" />
+            <span className="text-[10px] font-semibold tracking-[0.28em] uppercase text-[var(--color-text-muted)]">
+              Foundation
+            </span>
+            <span className="h-px flex-1 bg-[var(--color-primary-green)]/45" />
+          </div>
 
           <FadeIn delay={0.12}>
             <p className="mt-8 max-w-3xl text-[15px] leading-relaxed text-[var(--color-text-muted)] sm:text-base dark:text-slate-300">
@@ -598,16 +623,7 @@ export default async function AiosProgramPage() {
                     <p className="mt-3 text-[14.5px] leading-relaxed text-slate-300">
                       {step.tagline}
                     </p>
-                    <p
-                      className={`mt-auto pt-7 font-display font-semibold ${
-                        isCapstone
-                          ? "text-2xl text-[var(--color-accent-green)]"
-                          : "text-xl text-[var(--color-text-light)]"
-                      }`}
-                    >
-                      {step.price}
-                    </p>
-                    <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-[var(--color-accent-green)] transition-transform group-hover:translate-x-0.5">
+                    <span className="mt-auto inline-flex items-center gap-1 pt-7 text-xs font-semibold text-[var(--color-accent-green)] transition-transform group-hover:translate-x-0.5">
                       {isCapstone ? "View programme" : "View course"}
                       <ArrowRight size={13} strokeWidth={2} />
                     </span>
