@@ -40,7 +40,17 @@ The Neon Postgres database is shared with a previous build and already has the f
 
 **Only `prisma generate` is permitted.** The `schema.prisma` file describes existing tables — changes to it should be mirrored in the database via `prisma db pull`, not the other way round. If schema drift is discovered, stop and ask the user which way to reconcile. Don't auto-sync in either direction.
 
-**Safe read-only introspection:** `npx prisma db pull --print` prints the DB-inferred schema to stdout without touching anything. Use it to verify alignment when in doubt.
+**Safe read-only introspection:** `npm run db:pull` prints the DB-inferred schema to stdout without touching anything. Use it to verify alignment when in doubt.
+
+**Use the wrapped npm scripts, not raw `npx prisma`.** The Prisma CLI only auto-loads `.env`, not `.env.local`, so raw `npx prisma db pull --print` and `npx prisma studio` fail on this project (DATABASE_URL is set in `.env.local`). The wrappers below shell through `dotenv-cli` so the right env file is read:
+
+```bash
+npm run db:studio    # open Prisma Studio against the live Neon DB
+npm run db:pull      # print live schema to stdout (read-only)
+npm run db:generate  # regenerate the Prisma client after schema.prisma edits
+```
+
+If you find yourself reaching for raw `npx prisma <cmd>`, stop and use these wrappers instead. The Next.js app reads `.env.local` correctly because Next.js handles env loading itself; only the standalone Prisma CLI has this gap.
 
 ### Course data — JSON manifests, not a DB table
 
