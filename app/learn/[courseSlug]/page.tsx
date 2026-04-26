@@ -8,6 +8,7 @@ import type { CourseManifest, CourseLesson } from "@/lib/courses";
 import { getProgressForCourse } from "@/lib/progress";
 import type { CourseProgress } from "@/lib/progress";
 import { EnrollButton } from "@/components/ui/EnrollButton";
+import { PurchaseSuccessBanner } from "@/components/learn/PurchaseSuccessBanner";
 
 export const dynamic = "force-dynamic";
 
@@ -60,7 +61,12 @@ export default async function CourseHomePage({ params }: PageProps) {
   const enrolment = await loadEnrolment(user.id, courseSlug);
 
   if (!enrolment) {
-    return <NotEnrolled course={manifest} />;
+    return (
+      <>
+        <PurchaseSuccessBanner courseSlug={courseSlug} />
+        <NotEnrolled course={manifest} />
+      </>
+    );
   }
 
   const [progress, certificate, latestAttempt] = await Promise.all([
@@ -81,7 +87,9 @@ export default async function CourseHomePage({ params }: PageProps) {
   });
 
   return (
-    <section className="mx-auto w-full max-w-4xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+    <>
+      <PurchaseSuccessBanner courseSlug={courseSlug} />
+      <section className="mx-auto w-full max-w-4xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
       <nav aria-label="Breadcrumb" className="text-xs text-[var(--color-text-muted)]">
         <ol className="flex flex-wrap items-center gap-1.5">
           <li>
@@ -144,6 +152,7 @@ export default async function CourseHomePage({ params }: PageProps) {
         state={assessmentState}
       />
     </section>
+    </>
   );
 }
 

@@ -55,21 +55,22 @@ export async function POST(request: Request) {
     request.headers.get("origin") ??
     (process.env.NODE_ENV === "production" ? siteUrl : "http://localhost:3000");
 
+  if (!manifest.stripePriceId || manifest.stripePriceId.startsWith("price_PLACEHOLDER")) {
+    return NextResponse.json(
+      { error: "Course is not yet available for purchase" },
+      { status: 503 },
+    );
+  }
+
   const stripe = getStripe();
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     payment_method_types: ["card"],
     customer_email: email,
+    client_reference_id: user.id,
     line_items: [
       {
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name: manifest.title,
-            description: manifest.subtitle,
-          },
-          unit_amount: Math.round(manifest.price * 100),
-        },
+        price: manifest.stripePriceId,
         quantity: 1,
       },
     ],
@@ -79,7 +80,7 @@ export async function POST(request: Request) {
       courseSlug,
     },
     success_url: `${origin}/learn/${courseSlug}?purchase=success`,
-    cancel_url: `${origin}/courses/${courseSlug}?purchase=cancelled`,
+    cancel_url: `${origin}/courses/${courseSlug}`,
   });
 
   if (!session.url) {
