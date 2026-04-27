@@ -63,7 +63,21 @@ export async function POST(request: Request) {
       if (isAlreadySubscribedError(error)) {
         return NextResponse.json({ ok: true, alreadySubscribed: true });
       }
-      console.error("[newsletter] Resend error", { error });
+      // Surface Resend's error.name (e.g. "validation_error", "not_found") and
+      // message verbatim so an audience/segment ID rejection is debuggable from
+      // the deploy logs. The audienceId is logged in full — it's just an
+      // identifier, not a secret.
+      console.error(
+        JSON.stringify({
+          scope: "newsletter",
+          msg: "resend_rejected",
+          audienceId,
+          errorName: error.name ?? null,
+          errorMessage: error.message ?? null,
+          errorRaw: error,
+          ts: new Date().toISOString(),
+        }),
+      );
       return NextResponse.json(
         { error: "newsletter_unavailable" },
         { status: 503 },
@@ -80,8 +94,23 @@ export async function POST(request: Request) {
     );
     return NextResponse.json({ ok: true });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("[newsletter] subscribe failed", { message });
+    // Defensive: any thrown error (network failure, malformed response,
+    // unexpected SDK state) returns a clean 503. We log enough context to
+    // distinguish "audience ID rejected" from a real outage.
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    const errorName = err instanceof Error ? err.name : "UnknownError";
+    const errorStack = err instanceof Error ? err.stack : undefined;
+    console.error(
+      JSON.stringify({
+        scope: "newsletter",
+        msg: "subscribe_threw",
+        audienceId,
+        errorName,
+        errorMessage,
+        errorStack,
+        ts: new Date().toISOString(),
+      }),
+    );
     return NextResponse.json(
       { error: "newsletter_unavailable" },
       { status: 503 },
