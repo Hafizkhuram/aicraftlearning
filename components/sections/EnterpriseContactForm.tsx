@@ -1,11 +1,9 @@
 "use client";
 
-// Enterprise contact form — UI only.
-// Phase 10 / post-launch will wire this to a real handler. Phase 9 will also
-// build the consumer /contact page; we deliberately keep this component
-// separate because the enterprise field set (company name, team size) and
-// register differ enough that a shared form would need a config layer that
-// isn't justified by two callers.
+// Enterprise contact form. Kept separate from GeneralContactForm because the
+// enterprise field set (company name, team size) and register differ enough
+// that a shared form would need a config layer that isn't justified by two
+// callers.
 
 import { useState, type FormEvent } from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
@@ -23,12 +21,15 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function EnterpriseContactForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [errors, setErrors] = useState<FormErrors>({});
   const [companyName, setCompanyName] = useState("");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [teamSize, setTeamSize] = useState<string>(TEAM_SIZES[1]);
   const [message, setMessage] = useState("");
+  const [companyWebsite, setCompanyWebsite] = useState(""); // honeypot
 
   function validate(): FormErrors {
     const next: FormErrors = {};
@@ -43,12 +44,53 @@ export function EnterpriseContactForm() {
     return next;
   }
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const next = validate();
     setErrors(next);
     if (Object.keys(next).length > 0) return;
-    setSubmitted(true);
+
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "enterprise",
+          companyName: companyName.trim(),
+          fullName: fullName.trim(),
+          email: email.trim(),
+          teamSize,
+          message: message.trim(),
+          company_website: companyWebsite,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as {
+          error?: string;
+          fields?: Partial<FormErrors>;
+        };
+        if (res.status === 400 && data.fields) {
+          setErrors(data.fields as FormErrors);
+        } else {
+          setSubmitError(
+            data.error ||
+              "Something went wrong sending your enquiry. Please try again.",
+          );
+        }
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setSubmitError(
+        "Couldn't reach our servers. Check your connection and try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   if (submitted) {
@@ -219,15 +261,40 @@ export function EnterpriseContactForm() {
           />
         </Field>
 
+        {/* Honeypot — must stay invisible to humans, bots fill anything */}
+        <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+          <label>
+            Company website
+            <input
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              value={companyWebsite}
+              onChange={(event) => setCompanyWebsite(event.target.value)}
+            />
+          </label>
+        </div>
+
+        {submitError ? (
+          <div
+            role="alert"
+            className="rounded-xl border border-[#FCA5A5] bg-[#FEF2F2] px-4 py-3 text-sm text-[#991B1B] dark:border-[#7F1D1D] dark:bg-[color-mix(in_oklab,#7F1D1D_30%,transparent)] dark:text-[#FECACA]"
+            style={{ borderWidth: "0.5px" }}
+          >
+            {submitError}
+          </div>
+        ) : null}
+
         <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-[var(--color-text-muted)]">
             We reply within one business day.
           </p>
           <button
             type="submit"
-            className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary-green)] px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-px hover:bg-[var(--color-deep-green)]"
+            disabled={submitting}
+            className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary-green)] px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-px hover:bg-[var(--color-deep-green)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:bg-[var(--color-primary-green)]"
           >
-            Send enquiry
+            {submitting ? "Sending…" : "Send enquiry"}
             <ArrowRight
               size={16}
               strokeWidth={2}

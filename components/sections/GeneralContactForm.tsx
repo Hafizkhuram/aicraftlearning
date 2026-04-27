@@ -53,12 +53,15 @@ export function GeneralContactForm() {
   const initialSubject = resolveSubject(searchParams.get("subject"));
 
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [errors, setErrors] = useState<FormErrors>({});
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [subject, setSubject] = useState<SubjectValue>(initialSubject);
   const [message, setMessage] = useState("");
+  const [companyWebsite, setCompanyWebsite] = useState(""); // honeypot
 
   // Re-resolve if the user navigates between /contact?subject=X URLs without a
   // hard refresh (e.g. clicking another contact CTA from a sibling page).
@@ -82,13 +85,53 @@ export function GeneralContactForm() {
     return next;
   }
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const next = validate();
     setErrors(next);
     if (Object.keys(next).length > 0) return;
-    // TODO Phase 10: wire form submit to /api/contact endpoint, share with /for-business
-    setSubmitted(true);
+
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "general",
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim() || undefined,
+          subject,
+          message: message.trim(),
+          company_website: companyWebsite,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as {
+          error?: string;
+          fields?: Partial<FormErrors>;
+        };
+        if (res.status === 400 && data.fields) {
+          setErrors(data.fields as FormErrors);
+        } else {
+          setSubmitError(
+            data.error ||
+              "Something went wrong sending your message. Please try again.",
+          );
+        }
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setSubmitError(
+        "Couldn't reach our servers. Check your connection and try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   function reset() {
@@ -98,7 +141,9 @@ export function GeneralContactForm() {
     setPhone(fresh.phone);
     setMessage(fresh.message);
     setSubject(resolveSubject(searchParams.get("subject")));
+    setCompanyWebsite("");
     setErrors({});
+    setSubmitError(null);
     setSubmitted(false);
   }
 
@@ -251,15 +296,40 @@ export function GeneralContactForm() {
           />
         </Field>
 
+        {/* Honeypot — must stay invisible to humans, bots fill anything */}
+        <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+          <label>
+            Company website
+            <input
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              value={companyWebsite}
+              onChange={(event) => setCompanyWebsite(event.target.value)}
+            />
+          </label>
+        </div>
+
+        {submitError ? (
+          <div
+            role="alert"
+            className="rounded-xl border border-[#FCA5A5] bg-[#FEF2F2] px-4 py-3 text-sm text-[#991B1B] dark:border-[#7F1D1D] dark:bg-[color-mix(in_oklab,#7F1D1D_30%,transparent)] dark:text-[#FECACA]"
+            style={{ borderWidth: "0.5px" }}
+          >
+            {submitError}
+          </div>
+        ) : null}
+
         <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-[var(--color-text-muted)]">
             We reply within one business day.
           </p>
           <button
             type="submit"
-            className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary-green)] px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-px hover:bg-[var(--color-deep-green)]"
+            disabled={submitting}
+            className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--color-primary-green)] px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-px hover:bg-[var(--color-deep-green)] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:bg-[var(--color-primary-green)]"
           >
-            Send message
+            {submitting ? "Sending…" : "Send message"}
             <ArrowRight
               size={16}
               strokeWidth={2}
