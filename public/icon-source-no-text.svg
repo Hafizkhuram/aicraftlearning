@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Central node — no text, used for the 16x16 favicon where the AI lettering would be illegible. -->
+  <circle cx="32" cy="32" r="14" fill="#10B981"/>
+  <!-- Top-right satellite -->
+  <line x1="43" y1="21" x2="54" y2="10" stroke="#34D399" stroke-width="3"/>
+  <circle cx="56" cy="8" r="6" fill="#34D399"/>
+  <!-- Bottom-right satellite -->
+  <line x1="43" y1="43" x2="54" y2="54" stroke="#34D399" stroke-width="3"/>
+  <circle cx="56" cy="56" r="6" fill="#34D399"/>
+  <!-- Top-left satellite -->
+  <line x1="21" y1="21" x2="10" y2="10" stroke="#065F46" stroke-width="3"/>
+  <circle cx="8" cy="8" r="6" fill="#065F46"/>
+  <!-- Bottom-left satellite -->
+  <line x1="21" y1="43" x2="10" y2="54" stroke="#065F46" stroke-width="3"/>
+  <circle cx="8" cy="56" r="6" fill="#065F46"/>
+</svg>

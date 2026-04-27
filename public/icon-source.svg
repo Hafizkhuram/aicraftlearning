@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Central AI node -->
+  <circle cx="32" cy="32" r="12" fill="#10B981"/>
+  <text x="32" y="36.5" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF" letter-spacing="-0.5">AI</text>
+  <!-- Top-right satellite -->
+  <line x1="42" y1="22" x2="54" y2="10" stroke="#34D399" stroke-width="2"/>
+  <circle cx="56" cy="8" r="5" fill="#34D399"/>
+  <!-- Bottom-right satellite -->
+  <line x1="42" y1="42" x2="54" y2="54" stroke="#34D399" stroke-width="2"/>
+  <circle cx="56" cy="56" r="5" fill="#34D399"/>
+  <!-- Top-left satellite -->
+  <line x1="22" y1="22" x2="10" y2="10" stroke="#065F46" stroke-width="2"/>
+  <circle cx="8" cy="8" r="5" fill="#065F46"/>
+  <!-- Bottom-left satellite -->
+  <line x1="22" y1="42" x2="10" y2="54" stroke="#065F46" stroke-width="2"/>
+  <circle cx="8" cy="56" r="5" fill="#065F46"/>
+</svg>

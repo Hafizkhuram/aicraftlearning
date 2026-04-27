@@ -127,8 +127,8 @@ export function Footer() {
             Newsletter
           </h3>
           <p className="mt-5 text-sm leading-relaxed text-slate-400">
-            Weekly AI tips for non-technical professionals. No
-            tool-of-the-week nonsense.
+            Occasional notes from Khuram. Course launches, AIOS openings, the
+            rare worth-reading link.
           </p>
           <div className="mt-4">
             <NewsletterForm />
