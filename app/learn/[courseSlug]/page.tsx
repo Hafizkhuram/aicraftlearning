@@ -63,7 +63,7 @@ export default async function CourseHomePage({ params }: PageProps) {
   if (!enrolment) {
     return (
       <>
-        <PurchaseSuccessBanner courseSlug={courseSlug} />
+        <PurchaseSuccessBanner courseSlug={courseSlug} alreadyEnrolled={false} />
         <NotEnrolled course={manifest} />
       </>
     );
@@ -88,7 +88,7 @@ export default async function CourseHomePage({ params }: PageProps) {
 
   return (
     <>
-      <PurchaseSuccessBanner courseSlug={courseSlug} />
+      <PurchaseSuccessBanner courseSlug={courseSlug} alreadyEnrolled={true} />
       <section className="mx-auto w-full max-w-4xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
       <nav aria-label="Breadcrumb" className="text-xs text-[var(--color-text-muted)]">
         <ol className="flex flex-wrap items-center gap-1.5">

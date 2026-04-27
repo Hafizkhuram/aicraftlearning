@@ -80,7 +80,7 @@ export async function POST(request: Request) {
         clerkId: userId,
         courseSlug,
       },
-      success_url: `${origin}/learn/${courseSlug}?purchase=success`,
+      success_url: `${origin}/learn/${courseSlug}?purchase=success&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/courses/${courseSlug}`,
     });
 
