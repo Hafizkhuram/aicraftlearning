@@ -10,6 +10,7 @@ import { FinalCTA } from "@/components/sections/FinalCTA";
 // and the final CTA respectively. Pulled from v4 polish — re-add once we have
 // real partner logos and real learner quotes (no invented brands or names).
 import { siteName, siteUrl } from "@/lib/constants";
+import { jsonLdScript, organizationSchema } from "@/lib/structured-data";
 
 const homeTitle = `${siteName} — AI courses for tool-fatigued professionals`;
 const homeDescription =
@@ -36,6 +37,10 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(organizationSchema()) }}
+      />
       <Hero />
       <HowItWorks />
       <FeaturedCourses />

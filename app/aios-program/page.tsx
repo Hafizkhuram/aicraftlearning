@@ -22,6 +22,7 @@ import { FadeIn, FadeInItem, FadeInStagger } from "@/components/ui/FadeIn";
 import { FaqAccordion } from "@/components/sections/FaqAccordion";
 import { getAiosProgram } from "@/lib/aiosProgram";
 import { siteName, siteUrl } from "@/lib/constants";
+import { courseSchema, jsonLdScript } from "@/lib/structured-data";
 
 const iconMap: Record<string, LucideIcon> = {
   BookOpen,
@@ -66,8 +67,20 @@ export default async function AiosProgramPage() {
   const { hero, stack, craftDifference, curriculum, tools, whoItsFor, valueLadder, pricing, faqs } =
     program;
 
+  const programUrl = `${siteUrl}${program.metadata.canonical}`;
+  const programJsonLd = courseSchema({
+    name: program.metadata.title,
+    description: `${program.metadata.description} From $2,499; final scope confirmed via discovery call.`,
+    url: programUrl,
+    price: 2499,
+  });
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(programJsonLd) }}
+      />
       {/* Hero — dark */}
       <section className="relative isolate overflow-hidden bg-[var(--color-dark-bg)] text-[var(--color-text-light)]">
         <div

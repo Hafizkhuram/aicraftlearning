@@ -11,6 +11,7 @@ import { getCourseManifest } from "@/lib/courses";
 import type { CourseLevel, CourseManifest } from "@/lib/courses";
 import { getPrisma } from "@/lib/db";
 import { siteName, siteUrl } from "@/lib/constants";
+import { courseSchema, jsonLdScript } from "@/lib/structured-data";
 
 const levelStyles: Record<CourseLevel, string> = {
   Beginner:
@@ -104,8 +105,20 @@ export default async function CourseDetailPage({ params }: PageProps) {
 
   const isEnrolled = await getEnrolment(course.slug);
 
+  const courseUrl = `${siteUrl}/courses/${course.slug}`;
+  const courseJsonLd = courseSchema({
+    name: course.title,
+    description: course.subtitle,
+    url: courseUrl,
+    price: course.price,
+  });
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(courseJsonLd) }}
+      />
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-[var(--color-dark-bg)] text-[var(--color-text-light)]">
         <div
