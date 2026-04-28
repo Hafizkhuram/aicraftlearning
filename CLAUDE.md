@@ -3,8 +3,10 @@
 > **Project:** AICraft Learning (aicraftlearning.com)
 > **Stack:** Next.js 15 (App Router) · TypeScript · Tailwind CSS v4 · Railway
 > **GitHub repo:** Hafizkhuram/aicraftlearning
-> **Status:** Build phase — v4 rebuild (post-Vercel pivot)
+> **Status:** Launch-ready (Phases 1–10 complete)
 > **This file:** Persistent project context for Claude Code. Read this every session.
+>
+> **Companion docs:** [`docs/aicraft-learning-build-record.md`](./docs/aicraft-learning-build-record.md) is the as-built record (read this first when picking up the codebase cold). [`docs/aicraft-learning-build-spec-v1.md`](./docs/aicraft-learning-build-spec-v1.md) is the archived original spec (intent, not current state).
 
 ---
 
@@ -12,7 +14,7 @@
 
 A production website for AICraft Learning — an AI education brand that teaches non-technical professionals and business owners how to build AI systems that actually know their business. The audience is tool-fatigued, overwhelmed, and has been oversold by AI gurus. Everything about this site should feel like a relief from that noise.
 
-**The build guide is in `aicraft-learning-claude-code-prompt.md`.** That file has 10 phases. Work through them in order. Don't skip ahead. Don't invent features that aren't in the spec.
+**The original build guide is in [`docs/aicraft-learning-build-spec-v1.md`](./docs/aicraft-learning-build-spec-v1.md)** — historical context for *why* things are the way they are. The current state of the build is in [`docs/aicraft-learning-build-record.md`](./docs/aicraft-learning-build-record.md); start there for any task that touches existing code.
 
 **Your job has two sides:**
 1. **Frontend craft** — build every page with intentional design, not generic AI-slop.
@@ -21,6 +23,15 @@ A production website for AICraft Learning — an AI education brand that teaches
 ---
 
 ## Durable constraints — never violate these
+
+### Versions pinned, do not upgrade casually
+
+These deps have known breaking changes on the next major and have already cost time on this project. **Never bump them with `npm install <pkg>` (no version) or `npm update`** — pin the version explicitly when adding adjacent deps too.
+
+- **Next.js 15.x** — do not upgrade to 16 without a breaking-change review (config + middleware changes).
+- **Prisma 6.19.3** (`prisma` and `@prisma/client`) — do not upgrade to 7.x; 7 has a breaking schema-config change.
+- **Clerk 6.x** (`@clerk/nextjs`) — do not upgrade to 7; 7's middleware change broke the previous Vercel build.
+- **Tailwind v4** — the oxide native binary fails to install transitively on Railway without `npm install --include=optional`. The fix lives in [`nixpacks.toml`](./nixpacks.toml); don't remove it.
 
 ### Deployment platform — Railway, not Vercel
 
@@ -62,6 +73,18 @@ This is intentional: it keeps course content version-controlled in git, avoids a
 
 The User model in `schema.prisma` has no `firstName` or `lastName` columns (matches the live Neon DB). When code needs the user's display name, read it from the Clerk session (`user.firstName`, `user.lastName` via `currentUser()` on the server or via the user prop from `auth()`). Don't duplicate this into our User table.
 
+### Resend API key — Full access, not Sending access
+
+The newsletter subscribes contacts to a Resend audience via `resend.contacts.create()`. That call requires a **Full access** API key. A "Sending access" key returns 401 even though `resend.emails.send()` (used by the contact form) works fine on either key. If newsletter signups suddenly start failing with `not_found` or unauthorized errors, check the key's permission level first.
+
+### Stripe webhook — never bypass signature verification
+
+The webhook handler at [`/api/webhooks/stripe`](./app/api/webhooks/stripe/route.ts) calls `stripe.webhooks.constructEvent(rawBody, signature, secret)` and 400s if signature verification fails. Don't add an env-based bypass for "easier local development" — for local Stripe testing, use the Stripe CLI (`stripe listen --forward-to localhost:3000/api/webhooks/stripe`), which proxies real webhook events with a valid signature. Bypassing verification would let any unauthenticated POST create enrolment rows.
+
+### Schema drift — surface, don't auto-fix
+
+If `npm run db:pull` ever shows differences between the live Neon DB and `prisma/schema.prisma`, **do not auto-reconcile in either direction**. Surface the drift to the user with the specific column-level diff, ask which side is correct, and reconcile deliberately. The two existing intentional choices — `Enrolment.stripeSessionId` nullable, `AssessmentAttempt.answers` non-null — are both opposite to the original spec; a future "fix" that aligns them back to the spec would break the seed script and possibly silently corrupt enrolment data.
+
 ### Stripe key mode — test, not live
 
 Always use `sk_test_...` and `pk_test_...` keys during development. Never suggest switching to live keys without explicit user instruction. Test card for E2E checks: 4242 4242 4242 4242.
@@ -94,6 +117,18 @@ export function getStripe(): Stripe {
 
 The `next dev --turbopack` command is fine for local development (fast HMR). The production `next build` must NOT use `--turbopack` (known packaging issues with middleware). The `build` script in `package.json` should be just `"next build"`.
 
+### AIOS Mastery is a programme, not a course
+
+AIOS Mastery sells via discovery call only. **Don't add a `/learn/aios-mastery` route. Don't put it in the `/courses` listing. Don't add a `stripePriceId` for it.** Its manifest deliberately lives at [`content/aios-program.json`](./content/aios-program.json), not `content/courses/aios-mastery.json`, so the courses-loading code (`getAllCourseManifests`) never picks it up. The only conversion path is `/contact?subject=aios-discovery-call`.
+
+### Lesson HTML files are patched — do not browse-open
+
+The HTML files in [`public/content/{course}/`](./public/content/) have been patched by [`scripts/patch-html-lessons.js`](./scripts/patch-html-lessons.js) to emit `aicraft:lesson-complete` and `aicraft:lesson-navigate-next` postMessage events to a parent frame, and to read learner data from query params (for `certificate.html`). They no longer work as standalone browser-opens — that's intentional. Future content authoring follows the same pattern: write a standalone HTML file, drop it into `public/content/{course}/`, then run the patch script. The script is idempotent (marker comments per file shape) and safe to re-run.
+
+### Seeded users (Soha and Khuram) write to the live DB
+
+[`scripts/seed-test-users.js`](./scripts/seed-test-users.js) brings two real Clerk users (Soha Fatima, Khuram Shahzad) to a fully-enrolled, certified state across all three self-serve courses. **Their certificates are publicly verifiable** — the verification URLs surface their names and the AICraft brand. They're useful for QA walkthroughs of the dashboard / lesson viewer / certificate flows but **not** appropriate as live demo data for prospects (the certificates are real, not staged). Pre-launch, decide whether to clean up via `SEED_CONFIRM=yes npx tsx scripts/seed-test-users.js --cleanup`.
+
 ### Route protection — layouts, not middleware
 
 Protection logic lives in `/app/learn/layout.tsx` (server component, calls `auth()`, redirects if no userId) and at the top of each protected API route handler. Middleware.ts is kept minimal (just `clerkMiddleware()` wrapping) so Clerk has its auth context available app-wide, but it doesn't do any protection itself. This pattern avoids middleware packaging complexity and works reliably on Railway.
@@ -102,8 +137,8 @@ Protection logic lives in `/app/learn/layout.tsx` (server component, calls `auth
 
 ## Operating principles
 
-- **Follow the build guide.** `aicraft-learning-claude-code-prompt.md` is the source of truth for what to build. If anything in this CLAUDE.md conflicts with the build guide, the build guide wins for what-to-build; this file wins for how-to-build.
-- **Ship working code.** Every phase should compile cleanly before moving on. Run `npm run build` and `npm run lint` at the end of each phase and fix errors before declaring the phase complete.
+- **Read the build record first for cross-cutting work.** [`docs/aicraft-learning-build-record.md`](./docs/aicraft-learning-build-record.md) is the as-built source of truth. The original spec at [`docs/aicraft-learning-build-spec-v1.md`](./docs/aicraft-learning-build-spec-v1.md) is archived — useful for original intent but no longer current.
+- **Ship working code.** Run `npm run build` and `npm run lint` before declaring any non-trivial change complete; fix errors first.
 - **Self-reliant on tooling.** If you need a library, install it. Don't ask permission for routine engineering decisions — just document what you installed and why. **Exceptions:** never install or upgrade Clerk to v7, never run a Prisma migration command, never switch deployment platforms away from Railway.
 - **Plain language in commits and comments.** "Fixed broken image on About page" beats "chore: resolve asset resolution." The user is non-technical.
 - **Don't over-engineer.** This is a marketing website with a learning platform attached, not a distributed system. No microservices, no over-abstracted component libraries, no premature optimisation. Clean code beats clever code.
@@ -348,15 +383,12 @@ Document every significant installation in a short comment or commit message so 
 
 ## Activation
 
-When the user starts a session in this project, they'll typically say something like:
+The build (Phases 1–10) is complete. Future sessions will be feature work, polish, or post-launch additions.
 
-> "Let's build Phase 1."
-
-Respond by:
-1. Confirming which phase.
-2. Reading `aicraft-learning-claude-code-prompt.md` for that phase's spec.
-3. Referencing this file for design and engineering defaults.
-4. Building. Telling them when the phase is ready to review.
+When picking up cold:
+1. Read [`docs/aicraft-learning-build-record.md`](./docs/aicraft-learning-build-record.md) for what's in the box.
+2. Reference this file for design, engineering defaults, and durable constraints.
+3. The original spec at [`docs/aicraft-learning-build-spec-v1.md`](./docs/aicraft-learning-build-spec-v1.md) is archived — read it only when you need original intent for a piece of code that drifted.
 
 ---
 
@@ -375,4 +407,4 @@ These are historical — the current architecture prevents them. Don't try alter
 
 ---
 
-*This file is the permanent project brain. Update it when architectural decisions change. Never duplicate what's in `aicraft-learning-claude-code-prompt.md` — that file owns the what-to-build; this file owns the how-to-build.*
+*This file is the permanent project brain. Update it when architectural decisions change. Never duplicate what's in `docs/aicraft-learning-build-spec-v1.md` — that file owns the what-to-build; this file owns the how-to-build.*

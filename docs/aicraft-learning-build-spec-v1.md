@@ -1,3 +1,17 @@
+# AICraft Learning — Build Spec v1 (Historical)
+
+**Status:** Archived. This is the *original* build spec, used as the prompt for Phases 1–10.
+
+**For the current state of what was actually built**, see:
+- [`aicraft-learning-build-record.md`](./aicraft-learning-build-record.md) — the as-built record
+- [`../CLAUDE.md`](../CLAUDE.md) — operational context for future Claude Code sessions
+
+**What this document is:** the spec we worked from. It captures the original intent of every phase, including some choices that changed during the build.
+
+**What this document is NOT:** the current state of the code. Reading this without cross-referencing the build record will give you the wrong mental model in places.
+
+---
+
 # Claude Code Prompt — AICraft Learning Website (Rebuild v4 · HTML-first · Railway)
 
 **Brand:** AICraft Learning
