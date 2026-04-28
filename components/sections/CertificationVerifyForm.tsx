@@ -71,7 +71,7 @@ export function CertificationVerifyForm() {
               placeholder="e.g. AICRAFT-2026-0001"
               aria-invalid={error ? "true" : undefined}
               aria-describedby={error ? "verify-error" : undefined}
-              className="w-full rounded-xl border border-[var(--color-border-subtle)] bg-white px-4 py-3 text-sm text-[var(--color-text-dark)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary-green)] focus:outline-none dark:border-slate-800 dark:bg-[#0b1322] dark:text-[var(--color-text-light)]"
+              className="w-full rounded-xl border border-[var(--color-border-subtle)] bg-white px-4 py-3 text-sm text-[var(--color-text-dark)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary-green)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-green)] focus-visible:ring-offset-2 dark:border-slate-800 dark:bg-[#0b1322] dark:text-[var(--color-text-light)] dark:focus-visible:ring-offset-slate-900"
               style={{ borderWidth: "0.5px" }}
             />
           </label>

@@ -109,7 +109,7 @@ export function NewsletterForm() {
         disabled={state.kind === "submitting"}
         aria-invalid={state.kind === "error" ? true : undefined}
         aria-describedby={state.kind === "error" ? "newsletter-error" : undefined}
-        className="flex-1 rounded-lg border border-slate-700 bg-slate-900/60 px-4 py-2.5 text-sm text-[var(--color-text-light)] placeholder:text-slate-500 focus:border-[var(--color-accent-green)] focus:outline-none disabled:opacity-60"
+        className="flex-1 rounded-lg border border-slate-700 bg-slate-900/60 px-4 py-2.5 text-sm text-[var(--color-text-light)] placeholder:text-slate-500 focus:border-[var(--color-accent-green)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-green)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-dark-bg)] disabled:opacity-60"
       />
       {/* Honeypot — hidden from real users, visible to bots that fill every field. */}
       <input

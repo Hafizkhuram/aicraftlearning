@@ -5,6 +5,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { SkipLink } from "@/components/layout/SkipLink";
 import { description, siteName, siteUrl, tagline } from "@/lib/constants";
 
 // Self-hosted to avoid fonts.gstatic.com TLS issues (e.g. Cloudflare WARP)
@@ -80,8 +81,11 @@ export default function RootLayout({
       >
         <body className="min-h-screen flex flex-col">
           <Providers>
+            <SkipLink />
             <Navbar />
-            <main className="flex-1">{children}</main>
+            <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
+              {children}
+            </main>
             <Footer />
           </Providers>
         </body>

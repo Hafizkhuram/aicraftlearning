@@ -60,7 +60,7 @@ export function Footer() {
             <li>
               <a
                 href={`mailto:${contactEmail}`}
-                className="text-slate-400 transition-colors hover:text-[var(--color-accent-green)]"
+                className="break-all text-slate-400 transition-colors hover:text-[var(--color-accent-green)]"
               >
                 {contactEmail}
               </a>
@@ -68,7 +68,7 @@ export function Footer() {
             <li>
               <a
                 href={`mailto:${supportEmail}`}
-                className="text-slate-400 transition-colors hover:text-[var(--color-accent-green)]"
+                className="break-all text-slate-400 transition-colors hover:text-[var(--color-accent-green)]"
               >
                 {supportEmail}
               </a>
@@ -76,7 +76,7 @@ export function Footer() {
             <li>
               <a
                 href={`mailto:${enterpriseEmail}`}
-                className="text-slate-400 transition-colors hover:text-[var(--color-accent-green)]"
+                className="break-all text-slate-400 transition-colors hover:text-[var(--color-accent-green)]"
               >
                 {enterpriseEmail}
               </a>

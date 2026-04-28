@@ -311,10 +311,11 @@ function inputClass(invalid: boolean) {
   return [
     "w-full rounded-xl bg-white px-4 py-3 text-sm text-[var(--color-text-dark)]",
     "placeholder:text-[var(--color-text-muted)] focus:outline-none",
+    "focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900",
     "dark:bg-[#0b1322] dark:text-[var(--color-text-light)]",
     invalid
-      ? "border border-[#B91C1C] focus:border-[#B91C1C] dark:border-[#FCA5A5]"
-      : "border border-[var(--color-border-subtle)] focus:border-[var(--color-primary-green)] dark:border-slate-800",
+      ? "border border-[#B91C1C] focus:border-[#B91C1C] focus-visible:ring-[#B91C1C] dark:border-[#FCA5A5]"
+      : "border border-[var(--color-border-subtle)] focus:border-[var(--color-primary-green)] focus-visible:ring-[var(--color-primary-green)] dark:border-slate-800",
   ].join(" ");
 }
 

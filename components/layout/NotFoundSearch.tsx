@@ -38,7 +38,7 @@ export function NotFoundSearch() {
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Search the site"
-          className="w-full rounded-lg border bg-white px-3 py-2.5 pl-10 text-sm text-[var(--color-text-dark)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary-green)] focus:outline-none dark:border-slate-700 dark:bg-slate-900/60 dark:text-[var(--color-text-light)]"
+          className="w-full rounded-lg border bg-white px-3 py-2.5 pl-10 text-sm text-[var(--color-text-dark)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary-green)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-green)] focus-visible:ring-offset-2 dark:border-slate-700 dark:bg-slate-900/60 dark:text-[var(--color-text-light)] dark:focus-visible:ring-offset-slate-900"
           style={{ borderColor: "var(--color-border-subtle)", borderWidth: "0.5px" }}
         />
       </div>

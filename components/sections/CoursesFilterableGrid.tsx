@@ -89,7 +89,7 @@ export function CoursesFilterableGrid({ courses, recommendedSlug }: Props) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search courses…"
-            className="w-full rounded-full border border-[var(--color-border-subtle)] bg-white py-2 pr-4 pl-9 text-sm text-[var(--color-text-dark)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary-green)] focus:outline-none dark:border-slate-800 dark:bg-[#0F172A] dark:text-[var(--color-text-light)]"
+            className="w-full rounded-full border border-[var(--color-border-subtle)] bg-white py-2 pr-4 pl-9 text-sm text-[var(--color-text-dark)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary-green)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-green)] focus-visible:ring-offset-2 dark:border-slate-800 dark:bg-[#0F172A] dark:text-[var(--color-text-light)] dark:focus-visible:ring-offset-slate-900"
             style={{ borderWidth: "0.5px" }}
           />
         </label>

@@ -135,7 +135,7 @@ export function PurchaseSuccessBanner({ courseSlug, alreadyEnrolled }: Props) {
                   setPollAttempt((n) => n + 1);
                   router.refresh();
                 }}
-                className="inline-flex items-center gap-1.5 rounded-md bg-[var(--color-primary-green)] px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-[var(--color-deep-green)] focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2 focus:ring-offset-[var(--color-light-mint)] focus:outline-none"
+                className="inline-flex items-center gap-1.5 rounded-md bg-[var(--color-primary-green)] px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-[var(--color-deep-green)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-green)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-light-mint)] dark:focus-visible:ring-offset-slate-900"
               >
                 <RefreshCw size={13} strokeWidth={2.2} aria-hidden="true" />
                 Refresh
@@ -154,7 +154,7 @@ export function PurchaseSuccessBanner({ courseSlug, alreadyEnrolled }: Props) {
           type="button"
           onClick={handleDismiss}
           aria-label="Dismiss payment confirmation"
-          className="absolute top-2 right-2 inline-flex h-8 w-8 items-center justify-center rounded-md text-[var(--color-deep-green)]/70 transition-colors hover:bg-white/60 hover:text-[var(--color-deep-green)] focus:ring-2 focus:ring-[var(--color-primary-green)] focus:ring-offset-2 focus:ring-offset-[var(--color-light-mint)] focus:outline-none dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
+          className="absolute top-2 right-2 inline-flex h-8 w-8 items-center justify-center rounded-md text-[var(--color-deep-green)]/70 transition-colors hover:bg-white/60 hover:text-[var(--color-deep-green)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-green)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-light-mint)] dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white dark:focus-visible:ring-offset-slate-900"
         >
           <X size={16} strokeWidth={2} aria-hidden="true" />
         </button>
